@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Baloo_2, Nunito } from "next/font/google";
 import "./globals.css";
-import AnnouncementBar from "@/components/AnnouncementBar";
 
 const baloo = Baloo_2({
   variable: "--font-baloo",
@@ -38,7 +37,6 @@ export default function RootLayout({
   return (
     <html lang="fr" className="h-full">
       <body className={`${baloo.variable} ${nunito.variable} min-h-full antialiased`}>
-        <AnnouncementBar />
         {children}
       </body>
     </html>

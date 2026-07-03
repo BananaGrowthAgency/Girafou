@@ -112,6 +112,10 @@ body {
   will-change: transform;
 }
 
+/* ── Hide scrollbar (mobile category nav) ── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+
 /* ── Button shine ── */
 .btn-shine {
   position: relative;

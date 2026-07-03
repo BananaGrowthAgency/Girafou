@@ -1,0 +1,173 @@
+import type { Menu } from "./types";
+
+// Initial menu, extracted verbatim from the previously hardcoded Carte* components.
+// Used to seed a park's menu.json the first time and as the fallback when the
+// blob does not exist yet. Editing happens in /admin, not here.
+export const girafouSeed: Menu = {
+  park: "girafou",
+  updatedAt: "1970-01-01T00:00:00.000Z",
+  categories: [
+    {
+      id: "boissons",
+      label: "Boissons",
+      emoji: "🥤",
+      layout: "columns",
+      heading: "Les Boissons",
+      columns: [
+        {
+          id: "boissons-froides",
+          title: "Boissons froides",
+          emoji: "🥤",
+          image: "/images/resto/boissons/froides.jpg",
+          items: [
+            { id: "b-caprisun", name: "Capri-sun 20cl", price: "1,50 €" },
+            { id: "b-coca", name: "Coca 50cl", price: "2,50 €" },
+            { id: "b-coca-cherry", name: "Coca Cherry 50cl", price: "2,50 €" },
+            { id: "b-coca-zero", name: "Coca zéro 50cl", price: "2,50 €" },
+            { id: "b-fanta", name: "Fanta 50cl", price: "2,50 €" },
+            { id: "b-sprite", name: "Sprite 50cl", price: "2,50 €" },
+            { id: "b-icetea", name: "Ice tea 50cl", price: "2,50 €" },
+            { id: "b-oasis", name: "Oasis 50cl", price: "2,50 €" },
+          ],
+        },
+        {
+          id: "boissons-chaudes",
+          title: "Boissons chaudes",
+          emoji: "☕",
+          image: "/images/resto/boissons/chaudes.jpg",
+          footnote: "Tous les cafés sont disponibles en version décaféinée",
+          items: [
+            { id: "c-petit-cafe", name: "Petit café", price: "1,50 €" },
+            { id: "c-cafe-allonge", name: "Café allongé", price: "1,60 €" },
+            { id: "c-grand-cafe", name: "Grand café", price: "2,00 €" },
+            { id: "c-petit-creme", name: "Petit café crème", price: "1,60 €" },
+            { id: "c-grand-creme", name: "Grand café crème", price: "2,10 €" },
+            { id: "c-viennois", name: "Café viennois", price: "2,70 €" },
+            { id: "c-chocolat", name: "Chocolat chaud", price: "3,00 €" },
+            { id: "c-choco-viennois", name: "Chocolat viennois", price: "3,70 €" },
+            { id: "c-the", name: "Thé", price: "2,50 €" },
+          ],
+        },
+        {
+          id: "eaux-sirops",
+          title: "Eaux & Sirops",
+          emoji: "💧",
+          image: "/images/resto/boissons/eaux-sirops.jpg",
+          footnote: "Gobelet consigné à 1 €",
+          items: [
+            { id: "e-cristaline", name: "Eau cristaline 50cl", price: "1,20 €" },
+            { id: "e-cristaline-fraise", name: "Eau cristaline fraise 50cl", price: "1,80 €" },
+            { id: "e-gazeuse", name: "Eau gazeuse cristaline 50cl", price: "2,00 €" },
+            { id: "e-pellegrino", name: "San Pellegrino 50cl", price: "2,30 €" },
+            { id: "e-1-5l", name: "Eau 1,5L", price: "2,00 €" },
+            { id: "e-sirop", name: "Sirop à l’eau 50cl", price: "1,00 €" },
+            { id: "e-pichet", name: "Pichet de sirop", price: "3,50 €" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "pizzas",
+      label: "Pizzas",
+      emoji: "🍕",
+      layout: "grid",
+      heading: "Les Pizzas",
+      subtitle:
+        "Chez Girafou, nous privilégions la qualité ! Nos plats sont préparés sur place avec amour. Notre poulet peut être halal sur demande.",
+      items: [
+        { id: "p-3-fromages", name: "3 fromages", desc: "Tomate, mozzarella, chèvre, bleu", price: "11,90 €", image: "/images/resto/pizzas/3-fromages.jpg" },
+        { id: "p-bolognaise", name: "Bolognaise", desc: "Tomate, mozzarella, viande hachée, origan", note: "sauce barbecue sur demande", price: "11,90 €", image: "/images/resto/pizzas/bolognaise.jpg" },
+        { id: "p-chevre-miel", name: "Chèvre miel", desc: "Tomate, mozzarella, chèvre, miel", price: "11,90 €", image: "/images/resto/pizzas/chevre-miel.jpg" },
+        { id: "p-poulette", name: "Poulette", desc: "Tomate, mozzarella, poulet, champignons, origan", price: "11,90 €", image: "/images/resto/pizzas/poulette.jpg" },
+        { id: "p-reine", name: "Reine", desc: "Tomate, mozzarella, jambon, champignons, origan", price: "11,90 €", image: "/images/resto/pizzas/reine.jpg" },
+        { id: "p-margarita", name: "Margarita", desc: "Tomate, mozzarella, origan", price: "11,90 €", image: "/images/resto/pizzas/margarita.jpg" },
+      ],
+    },
+    {
+      id: "sucre",
+      label: "Crêpes & Gaufres",
+      emoji: "🧇",
+      layout: "columns",
+      heading: "Crêpes & Gaufres",
+      columns: [
+        {
+          id: "crepes",
+          title: "Crêpes",
+          items: [
+            { id: "cr-sucre", name: "Crêpe sucre", price: "2,50 €" },
+            { id: "cr-cbs", name: "Crêpe caramel beurre salé", price: "3,00 €" },
+            { id: "cr-nutella", name: "Crêpe nutella", price: "3,00 €" },
+            { id: "cr-fraise", name: "Crêpe fraise", price: "3,00 €" },
+            { id: "cr-miel", name: "Crêpe miel", price: "3,00 €" },
+          ],
+        },
+        {
+          id: "gaufres",
+          title: "Gaufres",
+          items: [
+            { id: "ga-sucre", name: "Gaufre sucre", price: "3,00 €" },
+            { id: "ga-cbs", name: "Gaufre caramel beurre salé", price: "3,50 €" },
+            { id: "ga-nutella", name: "Gaufre nutella", price: "3,50 €" },
+            { id: "ga-fraise", name: "Gaufre fraise", price: "3,50 €" },
+            { id: "ga-miel", name: "Gaufre miel", price: "3,50 €" },
+            { id: "ga-chantilly", name: "Gaufre chantilly", price: "3,50 €" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "glaces",
+      label: "Glaces",
+      emoji: "🍦",
+      layout: "grid",
+      heading: "Les Glaces",
+      items: [
+        { id: "g-magnum", name: "Magnum", desc: "Amande, classique, chocolat blanc ou pistache", price: "3,90 €", image: "/images/resto/glaces/magnum.jpg" },
+        { id: "g-ben-jerrys", name: "Ben & Jerry's", price: "4,50 €", image: "/images/resto/glaces/ben-jerrys.jpg" },
+        { id: "g-cornetto", name: "Cornetto", desc: "Vanille ou chocolat", price: "3,80 €", image: "/images/resto/glaces/cornetto.jpg" },
+        { id: "g-cornetto-ital", name: "Cornetto à l’italienne", desc: "Fraise", price: "3,80 €", image: "/images/resto/glaces/cornetto-italienne.jpg" },
+        { id: "g-volcanix", name: "Volcanix", price: "3,50 €", image: "/images/resto/glaces/volcanix.jpg" },
+        { id: "g-minecraft", name: "Minecraft", price: "3,20 €", image: "/images/resto/glaces/minecraft.jpg" },
+        { id: "g-haribo", name: "Haribo", price: "3,20 €", image: "/images/resto/glaces/haribo.jpg" },
+        { id: "g-twister", name: "Twister", price: "2,80 €", image: "/images/resto/glaces/twister.jpg" },
+        { id: "g-calipo", name: "Calipo cola", price: "2,90 €", image: "/images/resto/glaces/calipo.jpg" },
+        { id: "g-twister-freez", name: "Twister freez", price: "2,30 €", image: "/images/resto/glaces/twister-freez.jpg" },
+        { id: "g-donut", name: "Donut", price: "1,80 €", image: "/images/resto/glaces/donut.jpg" },
+        { id: "g-rocket", name: "Rocket", price: "1,80 €", image: "/images/resto/glaces/rocket.jpg" },
+      ],
+    },
+    {
+      id: "gouter",
+      label: "Goûter",
+      emoji: "🍬",
+      layout: "columns",
+      heading: "Goûter & Confiseries",
+      columns: [
+        {
+          id: "gouter-col",
+          title: "Goûter",
+          items: [
+            { id: "go-smarties", name: "Smarties tube", price: "1,50 €" },
+            { id: "go-bueno", name: "Kinder Bueno", price: "1,50 €" },
+            { id: "go-compote", name: "Compote", price: "1,30 €" },
+            { id: "go-pocket", name: "Gâteaux pocket", price: "1,50 €" },
+            { id: "go-kinder", name: "Kinder", price: "2,50 €" },
+            { id: "go-madeleine3", name: "Madeleine x3", price: "2,10 €" },
+            { id: "go-part-gateau", name: "Part de gâteau", price: "2,00 €" },
+            { id: "go-grand-paquet", name: "Grand paquet gâteau", price: "3,50 €" },
+            { id: "go-madeleine", name: "Madeleine", price: "0,90 €" },
+          ],
+        },
+        {
+          id: "confiseries",
+          title: "Confiseries",
+          items: [
+            { id: "co-haribo-40", name: "Haribo 40g", price: "1,00 €" },
+            { id: "co-haribo-100", name: "Mix Haribo 100g", price: "1,60 €", note: "halal sur demande" },
+            { id: "co-haribo-200", name: "Mix Haribo 200g", price: "3,00 €" },
+          ],
+        },
+      ],
+    },
+  ],
+};

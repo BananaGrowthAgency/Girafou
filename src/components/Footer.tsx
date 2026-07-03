@@ -22,13 +22,13 @@ const infoLinks = [
   { label: "Conditions générales utilisateur", href: "#" },
 ];
 
-export default function Footer() {
+export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }) {
   return (
     <footer className="relative overflow-hidden" style={{ background: "#1C1008" }}>
       {/* Top wave */}
       <div className="absolute top-0 left-0 right-0 pointer-events-none">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path d="M0,30 C400,60 800,0 1200,30 C1320,40 1400,20 1440,30 L1440,0 L0,0 Z" fill="#FFE8A0" />
+          <path d="M0,30 C400,60 800,0 1200,30 C1320,40 1400,20 1440,30 L1440,0 L0,0 Z" fill={waveColor} />
         </svg>
       </div>
       <div className="absolute top-10 left-0 w-72 h-72 rounded-full pointer-events-none"

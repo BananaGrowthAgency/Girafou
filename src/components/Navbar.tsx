@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 
 const links = [
   { label: "Accueil", href: "#" },
   { label: "Activités", href: "#activites" },
-  { label: "Restauration", href: "#restauration" },
+  { label: "Restauration", href: "/restauration" },
   { label: "Nos offres", href: "#anniversaires" },
   { label: "Anniversaires", href: "#anniversaires" },
   { label: "Infos pratiques", href: "#infos" },
@@ -73,14 +74,14 @@ export default function Navbar() {
             <ul className="hidden md:flex items-center gap-4 lg:gap-6">
               {links.map((l) => (
                 <li key={l.label} className="flex-shrink-0">
-                  <a
+                  <Link
                     href={l.href}
                     className="relative text-[13px] lg:text-[14px] font-bold text-white/80 hover:text-amber-400 transition-colors duration-200 group whitespace-nowrap"
                     style={{ fontFamily: "var(--font-nunito)" }}
                   >
                     {l.label}
                     <span className="absolute -bottom-0.5 left-0 w-0 h-[2.5px] bg-gradient-to-r from-amber-400 to-orange-500 group-hover:w-full transition-all duration-300 rounded-full" />
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -130,7 +131,7 @@ export default function Navbar() {
           >
             <div className="px-6 py-6 flex flex-col gap-5">
               {links.map((l) => (
-                <a
+                <Link
                   key={l.label}
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
@@ -138,7 +139,7 @@ export default function Navbar() {
                   style={{ fontFamily: "var(--font-nunito)" }}
                 >
                   {l.label}
-                </a>
+                </Link>
               ))}
               <a
                 href="#anniversaires"

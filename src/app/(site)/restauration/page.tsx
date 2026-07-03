@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CarteHero from "@/components/CarteHero";
-import CarteNav, { type NavCategory } from "@/components/CarteNav";
 import CarteEvents from "@/components/CarteEvents";
-import MenuSections from "@/components/MenuSections";
+import EditableMenu from "@/components/EditableMenu";
 import { getMenu } from "@/lib/menu/store";
+import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "La Carte — Girafou",
@@ -16,19 +17,16 @@ export const metadata: Metadata = {
 export default async function RestaurationPage() {
   const menu = await getMenu();
 
-  // Nav mirrors the editable categories, plus the static "Fêtes" section (CarteEvents).
-  const navCategories: NavCategory[] = [
-    ...menu.categories.map((c) => ({ id: c.id, label: c.label, emoji: c.emoji })),
-    { id: "evenements", label: "Fêtes", emoji: "🎉" },
-  ];
+  // Only a logged-in manager sees the edit affordances (pencil, in-place editing).
+  const token = (await cookies()).get(SESSION_COOKIE)?.value;
+  const editable = await verifySessionToken(token);
 
   return (
     <>
       <Navbar />
       <main>
         <CarteHero />
-        <CarteNav categories={navCategories} />
-        <MenuSections menu={menu} />
+        <EditableMenu menu={menu} editable={editable} />
         <CarteEvents />
       </main>
       <Footer waveColor="#FFFDF5" />

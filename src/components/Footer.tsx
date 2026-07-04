@@ -18,7 +18,7 @@ const plage = [
 const infoLinks = [
   { label: "Conditions générales de ventes", href: "#" },
   { label: "Contactez-nous", href: "mailto:contact@girafou.com" },
-  { label: "Plan d'accès", href: "#infos" },
+  { label: "Plan d'accès", href: "/#infos" },
   { label: "Conditions générales utilisateur", href: "#" },
 ];
 

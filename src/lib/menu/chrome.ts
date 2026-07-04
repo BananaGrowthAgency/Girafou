@@ -13,16 +13,20 @@ export type CategoryChrome = {
   columnsClass?: string; // layout "columns"
   // Top color of the section — used to tint the Wave divider above it.
   waveFill: string;
+  // Gradient for this category's promo banner (Category.highlight), if any.
+  highlightGradient?: string;
 };
 
 // Default grids used for categories created from /admin without a hand-tuned design.
 export const DEFAULT_ITEMS_CLASS = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4";
 export const DEFAULT_COLUMNS_CLASS = "grid grid-cols-1 md:grid-cols-2 gap-5";
+export const DEFAULT_HIGHLIGHT_GRADIENT = "linear-gradient(135deg, #FF5722, #F5A623)";
 
 export const DEFAULT_CHROME: CategoryChrome = {
   background: "linear-gradient(to bottom, #FFF3EE 0%, #FFFDF5 100%)",
   accent: "#FF5722",
   waveFill: "#FFF3EE",
+  highlightGradient: DEFAULT_HIGHLIGHT_GRADIENT,
 };
 
 export const categoryChrome: Record<string, CategoryChrome> = {
@@ -39,6 +43,7 @@ export const categoryChrome: Record<string, CategoryChrome> = {
     patterned: true,
     itemsClass: "grid grid-cols-2 md:grid-cols-3 gap-4",
     waveFill: "#FFDDC2",
+    highlightGradient: "linear-gradient(135deg, #FF5722, #F5A623)",
   },
   sucre: {
     background: "linear-gradient(to bottom, #FCE7F3 0%, #FFFDF5 100%)",
@@ -59,6 +64,7 @@ export const categoryChrome: Record<string, CategoryChrome> = {
     accent: "#B45309",
     columnsClass: "grid grid-cols-1 md:grid-cols-2 gap-5",
     waveFill: "#FFF3D0",
+    highlightGradient: "linear-gradient(135deg, #7C3AED, #FF4081)",
   },
 };
 

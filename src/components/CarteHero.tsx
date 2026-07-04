@@ -26,15 +26,21 @@ export default function CarteHero() {
       <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, #E0F2F1)" }} />
 
       <div ref={ref} className="relative max-w-4xl mx-auto px-6 py-20 text-center">
-        <motion.span
+        <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold mb-4"
-          style={{ fontFamily: "var(--font-nunito)" }}
+          className="mb-4"
         >
-          🍕 Manger sur place
-        </motion.span>
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold"
+            style={{ fontFamily: "var(--font-nunito)" }}
+          >
+            🍕 Manger sur place
+          </motion.span>
+        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}

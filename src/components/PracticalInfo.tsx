@@ -25,7 +25,7 @@ export default function PracticalInfo() {
   const starsOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
-    <section ref={sectionRef} id="infos" className="relative py-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(to bottom, #FFF8E1 0%, #FFE8A0 100%)" }}>
+    <section ref={sectionRef} id="infos" className="relative py-16 sm:py-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(to bottom, #FFF8E1 0%, #FFE8A0 100%)" }}>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
 
@@ -125,9 +125,9 @@ export default function PracticalInfo() {
               </h3>
               <div className="space-y-0 divide-y divide-amber-50">
                 {hours.map((h, i) => (
-                  <div key={i} className="flex items-center justify-between py-3.5">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 py-3.5">
                     <span className="font-bold text-amber-800" style={{ fontFamily: "var(--font-nunito)" }}>{h.day}</span>
-                    <span className="font-extrabold text-amber-500" style={{ fontFamily: "var(--font-baloo)" }}>{h.time}</span>
+                    <span className="font-extrabold text-amber-500 text-sm sm:text-base" style={{ fontFamily: "var(--font-baloo)" }}>{h.time}</span>
                   </div>
                 ))}
               </div>

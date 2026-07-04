@@ -57,10 +57,10 @@ export default function CarteEvents() {
             Viens fêter ton anniversaire à Girafou !
           </h3>
           <p className="text-sm text-white/80 leading-relaxed mb-5" style={{ fontFamily: "var(--font-nunito)" }}>
-            Nos formules tout inclus garantissent une fête mémorable, de l&rsquo;amusement aux friandises, prise en charge par notre équipe.
+            Ici, nous prenons en charge chaque détail pour faire de l&rsquo;anniversaire de votre enfant un moment unique ! Les parents, détendez-vous : nos formules tout inclus garantissent une fête mémorable, où chaque aspect, de l&rsquo;amusement aux friandises, est pris en charge par notre équipe. Laissez-nous créer des souvenirs magiques pendant que vous profitez pleinement de ce moment !
           </p>
           <Link
-            href="/#anniversaires"
+            href="/anniversaires"
             className="btn-shine inline-block px-5 py-3 rounded-2xl bg-white font-extrabold text-sm hover:-translate-y-0.5 transition-all duration-200"
             style={{ color: "#C0392B", fontFamily: "var(--font-nunito)" }}
           >

@@ -18,6 +18,20 @@ function seedFor(slug: string): Menu {
   return SEEDS[slug] ?? { park: slug, updatedAt: new Date(0).toISOString(), categories: [] };
 }
 
+// A menu saved before a given field existed (e.g. Category.highlight/extraColumns)
+// won't have it. Backfill those from the seed, by category id, without touching
+// anything an admin already edited — self-healing, no migration script needed.
+function backfillFromSeed(menu: Menu): Menu {
+  const seed = seedFor(PARK_SLUG);
+  for (const seedCat of seed.categories) {
+    const cat = menu.categories.find((c) => c.id === seedCat.id);
+    if (!cat) continue;
+    if (cat.highlight === undefined && seedCat.highlight) cat.highlight = seedCat.highlight;
+    if (cat.extraColumns === undefined && seedCat.extraColumns) cat.extraColumns = seedCat.extraColumns;
+  }
+  return menu;
+}
+
 // Uncached read straight from Blob. Used by admin Server Actions so mutations
 // always start from the current menu, never a stale cache entry.
 export async function getMenuFresh(): Promise<Menu> {
@@ -31,7 +45,7 @@ export async function getMenuFresh(): Promise<Menu> {
       cache: "no-store",
     });
     if (!res.ok) return seedFor(PARK_SLUG);
-    return (await res.json()) as Menu;
+    return backfillFromSeed((await res.json()) as Menu);
   } catch {
     // No Blob token yet (e.g. build time / unconfigured local) → fall back to seed.
     return seedFor(PARK_SLUG);

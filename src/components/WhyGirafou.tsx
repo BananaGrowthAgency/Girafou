@@ -83,7 +83,7 @@ export default function WhyGirafou() {
       </div>
 
       {/* ── Main section ── */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-10 sm:py-24">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
@@ -133,7 +133,7 @@ export default function WhyGirafou() {
             Pourquoi choisir Girafou ?
           </span>
           <h2
-            className="text-5xl md:text-6xl font-extrabold text-white leading-tight"
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
             Bien plus qu&rsquo;un{" "}

@@ -22,6 +22,15 @@ export type MenuColumn = {
 
 export type CategoryLayout = "grid" | "columns" | "list";
 
+// Promo banner (e.g. "Formule du midi"). Colors/gradient stay in chrome.ts —
+// only the text, price and photo are editable content.
+export type Highlight = {
+  badge: string;
+  text: string;
+  price: string;
+  image?: string; // Vercel Blob URL
+};
+
 export type Category = {
   id: string; // used as the section anchor (#id) and the chrome key
   label: string; // short label for the sticky nav
@@ -31,6 +40,8 @@ export type Category = {
   subtitle?: string;
   items?: MenuItem[]; // layout "grid" | "list"
   columns?: MenuColumn[]; // layout "columns"
+  highlight?: Highlight; // optional promo banner shown below the main layout
+  extraColumns?: MenuColumn[]; // optional secondary cards row (e.g. Chips, Fruits)
 };
 
 export type Menu = {

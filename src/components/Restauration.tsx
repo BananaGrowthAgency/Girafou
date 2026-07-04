@@ -118,7 +118,7 @@ export default function Restauration() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="restauration" className="relative py-24 overflow-hidden">
+    <section id="restauration" className="relative pt-24 pb-16 sm:py-24 overflow-hidden">
       {/* Food pattern background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -199,13 +199,13 @@ export default function Restauration() {
           </motion.div>
 
           <div
-            className="relative rounded-2xl overflow-hidden flex items-stretch"
+            className="relative rounded-2xl overflow-hidden flex flex-col sm:flex-row sm:items-stretch"
             style={{ background: "#E8400C" }}
           >
-            {/* Text — left */}
-            <div className="flex flex-col justify-center py-8 flex-shrink-0" style={{ paddingLeft: "clamp(4rem, 8vw, 6rem)", paddingRight: "2rem", minWidth: "220px" }}>
+            {/* Text — top on mobile, left on desktop */}
+            <div className="flex flex-col justify-center py-6 sm:py-8 sm:flex-shrink-0" style={{ paddingLeft: "clamp(3rem, 8vw, 6rem)", paddingRight: "1.5rem" }}>
               <h3
-                className="text-2xl font-extrabold text-white mb-2 leading-tight"
+                className="text-xl sm:text-2xl font-extrabold text-white mb-2 leading-tight"
                 style={{ fontFamily: "var(--font-baloo)" }}
               >
                 Option Pizza
@@ -214,22 +214,20 @@ export default function Restauration() {
                 className="text-white/85 text-sm leading-snug"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
-                Réservée aux anniversaires du matin.<br />
-                Les enfants réalisent eux-mêmes<br />
-                leur pizza et la mangent ensemble.
+                Réservée aux anniversaires du matin. Les enfants réalisent eux-mêmes leur pizza et la mangent ensemble.
               </p>
             </div>
 
-            {/* 3 photos side by side — right, taking most of the width */}
-            <div className="flex gap-2 p-3 flex-1">
+            {/* 3 photos side by side */}
+            <div className="flex gap-2 p-3 sm:flex-1">
               {pizzaSlides.map((src, i) => (
-                <div key={i} className="relative flex-1 rounded-xl overflow-hidden" style={{ minHeight: 180 }}>
+                <div key={i} className="relative flex-1 rounded-xl overflow-hidden min-h-[110px] sm:min-h-[180px]">
                   <Image
                     src={src}
                     alt={`Option Pizza ${i + 1}`}
                     fill
                     className="object-cover"
-                    sizes="25vw"
+                    sizes="(max-width: 640px) 33vw, 25vw"
                   />
                 </div>
               ))}

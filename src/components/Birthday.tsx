@@ -118,7 +118,7 @@ export default function Birthday() {
   const starsOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
-    <section ref={sectionRef} id="anniversaires" className="relative py-24 overflow-hidden">
+    <section ref={sectionRef} id="anniversaires" className="relative py-16 sm:py-24 overflow-hidden">
       {/* White base */}
       <div className="absolute inset-0" style={{ background: "#ffffff" }} />
       {/* Subtle amber radial glow top-right */}
@@ -187,7 +187,7 @@ export default function Birthday() {
             Des fêtes inoubliables
           </span>
           <h2
-            className="text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight"
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
             Anniversaires{" "}

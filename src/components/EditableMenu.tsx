@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Wave from "./Wave";
 import CarteNav, { type NavCategory } from "./CarteNav";
 import type { Category, CategoryLayout, Menu, MenuColumn, MenuItem } from "@/lib/menu/types";
-import { chromeFor, DEFAULT_ITEMS_CLASS, DEFAULT_COLUMNS_CLASS } from "@/lib/menu/chrome";
+import { chromeFor, DEFAULT_ITEMS_CLASS, DEFAULT_COLUMNS_CLASS, DEFAULT_HIGHLIGHT_GRADIENT } from "@/lib/menu/chrome";
 import {
   saveMenuAction,
   uploadPhotoAction,
@@ -102,6 +102,76 @@ export default function EditableMenu({ menu: initial, editable }: { menu: Menu; 
     [patch],
   );
 
+  // Same as above, but for a column's own header photo (not one of its items).
+  // Shared by both `columns` (the main layout) and `extraColumns` (Chips, Fruits…).
+  const pickColumnPhotoIn = useCallback(
+    async (arrayKey: "columns" | "extraColumns", catId: string, colId: string, file: File, oldUrl?: string) => {
+      const key = `${catId}|${arrayKey}|${colId}`;
+      setUploading((u) => ({ ...u, [key]: true }));
+      try {
+        const fd = new FormData();
+        fd.set("photo", file);
+        if (oldUrl) fd.set("oldUrl", oldUrl);
+        const url = await uploadPhotoAction(fd);
+        patch((m) => {
+          const col = findCat(m, catId)![arrayKey]!.find((c) => c.id === colId);
+          if (col) col.image = url;
+        });
+      } finally {
+        setUploading((u) => ({ ...u, [key]: false }));
+      }
+    },
+    [patch],
+  );
+
+  const removeColumnPhotoIn = useCallback(
+    (arrayKey: "columns" | "extraColumns", catId: string, colId: string, url?: string) => {
+      patch((m) => {
+        const col = findCat(m, catId)![arrayKey]!.find((c) => c.id === colId);
+        if (col) delete col.image;
+      });
+      if (url) deletePhotosAction([url]);
+    },
+    [patch],
+  );
+
+  const pickColumnPhoto = useCallback((c: string, col: string, f: File, old?: string) => pickColumnPhotoIn("columns", c, col, f, old), [pickColumnPhotoIn]);
+  const removeColumnPhoto = useCallback((c: string, col: string, url?: string) => removeColumnPhotoIn("columns", c, col, url), [removeColumnPhotoIn]);
+  const pickExtraColumnPhoto = useCallback((c: string, col: string, f: File, old?: string) => pickColumnPhotoIn("extraColumns", c, col, f, old), [pickColumnPhotoIn]);
+  const removeExtraColumnPhoto = useCallback((c: string, col: string, url?: string) => removeColumnPhotoIn("extraColumns", c, col, url), [removeColumnPhotoIn]);
+
+  // Promo banner photo (Category.highlight).
+  const pickHighlightPhoto = useCallback(
+    async (catId: string, file: File, oldUrl?: string) => {
+      const key = `${catId}|highlight`;
+      setUploading((u) => ({ ...u, [key]: true }));
+      try {
+        const fd = new FormData();
+        fd.set("photo", file);
+        if (oldUrl) fd.set("oldUrl", oldUrl);
+        const url = await uploadPhotoAction(fd);
+        patch((m) => {
+          const cat = findCat(m, catId)!;
+          if (cat.highlight) cat.highlight.image = url;
+        });
+      } finally {
+        setUploading((u) => ({ ...u, [key]: false }));
+      }
+    },
+    [patch],
+  );
+
+  const removeHighlightPhoto = useCallback(
+    (catId: string, url?: string) => {
+      patch((m) => {
+        const cat = findCat(m, catId)!;
+        if (cat.highlight) delete cat.highlight.image;
+      });
+      if (url) deletePhotosAction([url]);
+    },
+    [patch],
+  );
+
   const nav: NavCategory[] = [
     ...menu.categories.map((c) => ({ id: c.id, label: c.label || "…", emoji: c.emoji })),
     { id: "evenements", label: "Fêtes", emoji: "🎉" },
@@ -123,6 +193,12 @@ export default function EditableMenu({ menu: initial, editable }: { menu: Menu; 
           patch={patch}
           pickPhoto={pickPhoto}
           removePhoto={removePhoto}
+          pickColumnPhoto={pickColumnPhoto}
+          removeColumnPhoto={removeColumnPhoto}
+          pickExtraColumnPhoto={pickExtraColumnPhoto}
+          removeExtraColumnPhoto={removeExtraColumnPhoto}
+          pickHighlightPhoto={pickHighlightPhoto}
+          removeHighlightPhoto={removeHighlightPhoto}
         />
       ))}
 
@@ -149,16 +225,32 @@ type SectionProps = {
   patch: (fn: (m: Menu) => void) => void;
   pickPhoto: (c: string, col: string | undefined, it: string, f: File, old?: string) => void;
   removePhoto: (c: string, col: string | undefined, it: string, url?: string) => void;
+  pickColumnPhoto: (c: string, col: string, f: File, old?: string) => void;
+  removeColumnPhoto: (c: string, col: string, url?: string) => void;
+  pickExtraColumnPhoto: (c: string, col: string, f: File, old?: string) => void;
+  removeExtraColumnPhoto: (c: string, col: string, url?: string) => void;
+  pickHighlightPhoto: (c: string, f: File, old?: string) => void;
+  removeHighlightPhoto: (c: string, url?: string) => void;
+  // True once this category has scrolled into view — coordinates the header
+  // fade-in with the staggered card/column delays below it, like the home page.
+  // Always true while editing, so admin content is never hidden behind an
+  // animation that hasn't fired yet.
+  show: boolean;
 };
 
-function CategorySection(props: SectionProps) {
+function CategorySection(props: Omit<SectionProps, "show">) {
   const { category: cat, index, total, editing, patch } = props;
   const chrome = chromeFor(cat.id);
   const isColumns = cat.layout === "columns";
 
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const show = editing || inView;
+  const sectionProps: SectionProps = { ...props, show };
+
   return (
     <>
-      <Wave fill={chrome.waveFill} above={index === 0 ? chrome.waveFill : undefined} />
+      <Wave fill={chrome.waveFill} above={index === 0 ? chrome.waveFill : undefined} deep />
       <section
         id={cat.id}
         className={`relative scroll-mt-32 py-16 overflow-hidden ${chrome.patterned ? "spots-pattern" : ""}`}
@@ -170,9 +262,13 @@ function CategorySection(props: SectionProps) {
             style={{ background: `radial-gradient(circle, ${chrome.glow.color} 0%, transparent 70%)`, filter: "blur(50px)" }}
           />
         )}
-        {cat.id === "pizzas" && <PizzaSticker />}
-
-        <div className="relative max-w-5xl mx-auto px-6">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 30 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="relative max-w-5xl mx-auto px-6"
+        >
           {editing && (
             <CategoryBar category={cat} index={index} total={total} patch={patch} />
           )}
@@ -201,32 +297,36 @@ function CategorySection(props: SectionProps) {
           {!editing && !cat.subtitle && <div className="mb-4" />}
 
           {isColumns ? (
-            <ColumnsLayout {...props} />
+            <ColumnsLayout {...sectionProps} />
           ) : (
-            <GridLayout {...props} />
+            <GridLayout {...sectionProps} />
           )}
 
-          {cat.id === "pizzas" && <PizzaExtras />}
-          {cat.id === "gouter" && <GouterFormule />}
-        </div>
+          <HighlightSection {...sectionProps} />
+          <ExtraColumnsRow {...sectionProps} />
+        </motion.div>
       </section>
     </>
   );
 }
 
 /* ─────────────────────────── grid layout ─────────────────────────── */
-function GridLayout({ category: cat, editing, uploading, patch, pickPhoto, removePhoto }: SectionProps) {
+function GridLayout({ category: cat, editing, uploading, patch, pickPhoto, removePhoto, show }: SectionProps) {
   const chrome = chromeFor(cat.id);
   const items = cat.items ?? [];
   return (
     <div className={chrome.itemsClass ?? DEFAULT_ITEMS_CLASS}>
       {items.map((item, i) => (
-        <div
+        <motion.div
           key={item.id}
+          initial={{ opacity: 0, y: 30 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
           className="group relative rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-300 flex flex-col border border-amber-100"
         >
           <PhotoSlot
-            item={item}
+            image={item.image}
+            label={item.name}
             emoji={cat.emoji}
             accent={chrome.accent}
             editing={editing}
@@ -262,7 +362,7 @@ function GridLayout({ category: cat, editing, uploading, patch, pickPhoto, remov
               label={item.name}
             />
           )}
-        </div>
+        </motion.div>
       ))}
       {editing && (
         <AddCard onClick={() => patch((m) => { listOf(findCat(m, cat.id)!).push({ id: uid(), name: "Nouvel article", price: "" }); })} />
@@ -272,13 +372,30 @@ function GridLayout({ category: cat, editing, uploading, patch, pickPhoto, remov
 }
 
 /* ─────────────────────────── columns layout ─────────────────────────── */
-function ColumnsLayout({ category: cat, editing, patch }: SectionProps) {
+function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPhoto, removeColumnPhoto, show }: SectionProps) {
   const chrome = chromeFor(cat.id);
   const columns = cat.columns ?? [];
   return (
     <div className={chrome.columnsClass ?? DEFAULT_COLUMNS_CLASS}>
       {columns.map((col, ci) => (
-        <div key={col.id} className="bg-white rounded-3xl overflow-hidden shadow-md shadow-amber-50 border border-amber-100">
+        <motion.div
+          key={col.id}
+          initial={{ opacity: 0, y: 35 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, delay: 0.1 + ci * 0.12 }}
+          className="bg-white rounded-3xl overflow-hidden shadow-md shadow-amber-50 border border-amber-100"
+        >
+          <PhotoSlot
+            image={col.image}
+            label={col.title}
+            emoji={col.emoji ?? cat.emoji}
+            accent={chrome.accent}
+            editing={editing}
+            uploading={uploading[`${cat.id}|col|${col.id}`]}
+            onPick={(f) => pickColumnPhoto(cat.id, col.id, f, col.image)}
+            onRemove={() => removeColumnPhoto(cat.id, col.id, col.image)}
+            heightClass="h-32"
+          />
           <div className="p-6">
             {editing && (
               <RowControls
@@ -328,7 +445,7 @@ function ColumnsLayout({ category: cat, editing, patch }: SectionProps) {
               />
             )}
           </div>
-        </div>
+        </motion.div>
       ))}
       {editing && (
         <AddCard
@@ -376,15 +493,17 @@ function EdText({
 }
 
 function PhotoSlot({
-  item, emoji, accent, editing, uploading, onPick, onRemove,
+  image, label, emoji, accent, editing, uploading, onPick, onRemove, heightClass = "h-36",
 }: {
-  item: MenuItem; emoji: string; accent: string; editing: boolean; uploading?: boolean;
-  onPick: (f: File) => void; onRemove: () => void;
+  image?: string; label: string; emoji: string; accent: string; editing: boolean; uploading?: boolean;
+  onPick: (f: File) => void; onRemove: () => void; heightClass?: string;
 }) {
+  const [broken, setBroken] = useState(false);
+  const showPhoto = !!image && !broken;
   return (
-    <div className="relative h-36 flex-shrink-0 bg-amber-50">
-      {item.image ? (
-        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="(max-width: 640px) 50vw, 220px" />
+    <div className={`relative flex-shrink-0 bg-amber-50 ${heightClass}`}>
+      {showPhoto ? (
+        <Image src={image} alt={label} fill className="object-cover" sizes="(max-width: 640px) 50vw, 340px" onError={() => setBroken(true)} />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center border-b-2" style={{ borderColor: accent + "40" }}>
           <span className="text-3xl opacity-50">{emoji}</span>
@@ -396,10 +515,10 @@ function PhotoSlot({
       {editing && !uploading && (
         <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
           <label className="px-3 py-1.5 rounded-lg bg-white text-xs font-extrabold text-amber-900 cursor-pointer shadow">
-            {item.image ? "Changer la photo" : "Ajouter une photo"}
+            {image ? "Changer la photo" : "Ajouter une photo"}
             <input type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onPick(f); e.target.value = ""; }} />
           </label>
-          {item.image && (
+          {image && (
             <button onClick={onRemove} className="px-2 py-1 rounded-lg bg-red-500/90 text-white text-[11px] font-bold">Retirer</button>
           )}
         </div>
@@ -490,11 +609,11 @@ function CategoryBar({ category: cat, index, total, patch }: { category: Categor
   );
 }
 
-function AddCard({ onClick, label = "+ Ajouter un article", tall }: { onClick: () => void; label?: string; tall?: boolean }) {
+function AddCard({ onClick, label = "+ Ajouter un article", tall, className = "" }: { onClick: () => void; label?: string; tall?: boolean; className?: string }) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center justify-center rounded-2xl border-2 border-dashed border-amber-300 text-amber-700 font-bold hover:bg-amber-50 transition-colors ${tall ? "min-h-[8rem] p-6" : "min-h-[8rem]"}`}
+      className={`w-full flex items-center justify-center rounded-2xl border-2 border-dashed border-amber-300 text-amber-700 font-bold hover:bg-amber-50 transition-colors ${tall ? "min-h-[8rem] p-6" : "min-h-[8rem]"} ${className}`}
     >
       {label}
     </button>
@@ -548,53 +667,167 @@ function EditToolbar({ editing, setEditing, status }: { editing: boolean; setEdi
   );
 }
 
-/* ─────────────────────────── static bespoke decorations ─────────────────────────── */
-function PizzaSticker() {
+
+/* ─────────────────────────── promo banner (Category.highlight) ─────────────────────────── */
+function HighlightSection({
+  category: cat, editing, uploading, patch, pickHighlightPhoto, removeHighlightPhoto, show,
+}: SectionProps) {
+  const chrome = chromeFor(cat.id);
+
+  if (!cat.highlight) {
+    if (!editing) return null;
+    return (
+      <AddCard
+        tall
+        label="+ Ajouter un encart promo"
+        onClick={() => patch((m) => {
+          findCat(m, cat.id)!.highlight = { badge: "⭐ Offre spéciale", text: "Description de l’offre", price: "0,00 €" };
+        })}
+        className="mt-6 mb-5"
+      />
+    );
+  }
+
+  const h = cat.highlight;
   return (
-    <motion.div className="hidden md:block absolute pointer-events-none select-none z-10" style={{ right: "1rem", top: "-1.5rem" }}>
-      <motion.div animate={{ y: [0, -8, -2, -6, 0], rotateZ: [0, -3, 0, 3, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/resto/pastille-pizza-2-50.png" alt="2,50 € par enfant" loading="lazy" style={{ height: "clamp(70px, 8vw, 100px)", width: "auto", display: "block", filter: "drop-shadow(-2px 6px 12px rgba(0,0,0,0.25))" }} />
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={show ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: 0.4 }}
+      className="relative rounded-3xl overflow-hidden text-white shadow-xl mt-6 mb-5"
+      style={{ background: chrome.highlightGradient ?? DEFAULT_HIGHLIGHT_GRADIENT }}
+    >
+      <PhotoSlot
+        image={h.image} label={h.badge || "Offre"} emoji={cat.emoji} accent="#ffffff"
+        editing={editing}
+        uploading={uploading[`${cat.id}|highlight`]}
+        onPick={(f) => pickHighlightPhoto(cat.id, f, h.image)}
+        onRemove={() => removeHighlightPhoto(cat.id, h.image)}
+        heightClass="h-32"
+      />
+      <div className="p-6 md:p-7">
+        {editing && (
+          <button
+            onClick={() => {
+              if (!window.confirm("Supprimer cet encart promo ?")) return;
+              patch((m) => { delete findCat(m, cat.id)!.highlight; });
+              if (h.image) deletePhotosAction([h.image]);
+            }}
+            className="float-right text-xs font-bold text-white/70 hover:text-white bg-black/20 hover:bg-black/30 px-2 py-1 rounded"
+          >
+            ✕ Supprimer
+          </button>
+        )}
+        <EdText
+          as="span" editing={editing} value={h.badge} placeholder="Badge (ex : ⭐ Formule)"
+          onCommit={(v) => patch((m) => { findCat(m, cat.id)!.highlight!.badge = v; })}
+          className="inline-block px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold mb-2" style={{ fontFamily: NUNITO }}
+        />
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <EdText
+            as="p" editing={editing} value={h.text} placeholder="Description de l’offre"
+            onCommit={(v) => patch((m) => { findCat(m, cat.id)!.highlight!.text = v; })}
+            className="text-lg font-extrabold leading-snug" style={{ fontFamily: BALOO }}
+          />
+          <EdText
+            as="span" editing={editing} value={h.price} placeholder="Prix"
+            onCommit={(v) => patch((m) => { findCat(m, cat.id)!.highlight!.price = v; })}
+            className="text-3xl font-extrabold" style={{ fontFamily: BALOO }}
+          />
+        </div>
+      </div>
     </motion.div>
   );
 }
 
-function PizzaExtras() {
-  return (
-    <>
-      <div className="relative rounded-3xl p-6 md:p-7 text-white shadow-xl overflow-hidden mt-6 mb-5" style={{ background: "linear-gradient(135deg, #FF5722, #F5A623)" }}>
-        <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold mb-2" style={{ fontFamily: NUNITO }}>⭐ Formule du midi</span>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <p className="text-lg font-extrabold leading-snug" style={{ fontFamily: BALOO }}>Pizza au choix + un pichet de sirop au choix</p>
-          <span className="text-3xl font-extrabold" style={{ fontFamily: BALOO }}>14,90 €</span>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div className="bg-white rounded-3xl p-6 shadow-md shadow-amber-50 border border-amber-100">
-          <h3 className="text-lg font-extrabold text-amber-900 mb-2" style={{ fontFamily: BALOO }}>Chips</h3>
-          <p className="flex justify-between text-[15px] font-bold text-amber-900 py-1" style={{ fontFamily: NUNITO }}><span>Chips nature</span><span className="text-orange-600" style={{ fontFamily: BALOO }}>1,60 €</span></p>
-          <p className="flex justify-between text-[15px] font-bold text-amber-900 py-1" style={{ fontFamily: NUNITO }}><span>Petit Pringles</span><span className="text-orange-600" style={{ fontFamily: BALOO }}>1,90 €</span></p>
-        </div>
-        <div className="bg-white rounded-3xl p-6 shadow-md shadow-amber-50 border border-amber-100 flex flex-col justify-center">
-          <h3 className="text-lg font-extrabold text-amber-900 mb-2" style={{ fontFamily: BALOO }}>Fruits</h3>
-          <p className="text-sm text-amber-800/55" style={{ fontFamily: NUNITO }}>Voir sur le bar en fonction de la saison 🍎</p>
-        </div>
-      </div>
-    </>
-  );
-}
+/* ─────────────────────────── secondary cards row (Category.extraColumns) ─────────────────────────── */
+function ExtraColumnsRow({
+  category: cat, editing, uploading, patch, pickExtraColumnPhoto, removeExtraColumnPhoto, show,
+}: SectionProps) {
+  const chrome = chromeFor(cat.id);
+  const columns = cat.extraColumns ?? [];
+  if (!columns.length && !editing) return null;
 
-function GouterFormule() {
   return (
-    <div className="relative rounded-3xl p-6 md:p-7 text-white shadow-xl overflow-hidden mt-5" style={{ background: "linear-gradient(135deg, #7C3AED, #FF4081)" }}>
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold mb-2" style={{ fontFamily: NUNITO }}>⭐ Formule goûter</span>
-          <p className="text-lg font-extrabold leading-snug" style={{ fontFamily: BALOO }}>1 crêpe au choix + 1 Capri-Sun</p>
-        </div>
-        <span className="text-3xl font-extrabold" style={{ fontFamily: BALOO }}>4,30 €</span>
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {columns.map((col, ci) => (
+        <motion.div
+          key={col.id}
+          initial={{ opacity: 0, y: 25 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.5 + ci * 0.1 }}
+          className="bg-white rounded-3xl overflow-hidden shadow-md shadow-amber-50 border border-amber-100 flex flex-col"
+        >
+          <PhotoSlot
+            image={col.image} label={col.title} emoji={col.emoji ?? cat.emoji} accent={chrome.accent}
+            editing={editing}
+            uploading={uploading[`${cat.id}|extraColumns|${col.id}`]}
+            onPick={(f) => pickExtraColumnPhoto(cat.id, col.id, f, col.image)}
+            onRemove={() => removeExtraColumnPhoto(cat.id, col.id, col.image)}
+            heightClass="h-28"
+          />
+          <div className="p-6 flex-1 flex flex-col">
+            {editing && (
+              <RowControls
+                index={ci} total={columns.length} inline
+                onUp={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!, ci, -1))}
+                onDown={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!, ci, 1))}
+                onDelete={() => {
+                  patch((m) => { const cols = findCat(m, cat.id)!.extraColumns!; cols.splice(cols.findIndex((x) => x.id === col.id), 1); });
+                  const imgs = [col.image, ...col.items.map((i) => i.image)].filter(Boolean) as string[];
+                  if (imgs.length) deletePhotosAction(imgs);
+                }}
+                label={col.title}
+              />
+            )}
+            <EdText
+              as="h3" editing={editing} value={col.title} placeholder="Titre"
+              onCommit={(v) => patch((m) => { findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.title = v; })}
+              className="text-lg font-extrabold mb-2" style={{ color: chrome.accent, fontFamily: BALOO }}
+            />
+            <div>
+              {col.items.map((item, ii) => (
+                <PriceRowEditable
+                  key={item.id}
+                  item={item} index={ii} total={col.items.length}
+                  editing={editing}
+                  onCommit={(field, v) => patch((m) => {
+                    const it = findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items.find((y) => y.id === item.id)!;
+                    if (field === "note") { if (v) it.note = v; else delete it.note; }
+                    else if (field === "desc") { if (v) it.desc = v; else delete it.desc; }
+                    else it[field] = v;
+                  })}
+                  onUp={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items, ii, -1))}
+                  onDown={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items, ii, 1))}
+                  onDelete={() => patch((m) => { const l = findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items; l.splice(l.findIndex((y) => y.id === item.id), 1); })}
+                />
+              ))}
+            </div>
+            {editing && (
+              <button
+                onClick={() => patch((m) => { findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items.push({ id: uid(), name: "Nouvel article", price: "" }); })}
+                className="mt-2 text-sm font-bold text-orange-600 hover:underline"
+              >
+                + Ajouter une ligne
+              </button>
+            )}
+            {(editing || col.footnote) && (
+              <EdText
+                as="p" editing={editing} value={col.footnote ?? ""} placeholder="Note (optionnel)"
+                onCommit={(v) => patch((m) => { const c = findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!; if (v) c.footnote = v; else delete c.footnote; })}
+                className="text-xs text-amber-800/45 mt-3 italic" style={{ fontFamily: NUNITO }}
+              />
+            )}
+          </div>
+        </motion.div>
+      ))}
+      {editing && (
+        <AddCard
+          tall
+          label="+ Ajouter une carte"
+          onClick={() => patch((m) => { const c = findCat(m, cat.id)!; if (!c.extraColumns) c.extraColumns = []; c.extraColumns.push({ id: uid(), title: "Nouvelle carte", items: [] }); })}
+        />
+      )}
     </div>
   );
 }

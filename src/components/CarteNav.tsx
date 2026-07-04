@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export type NavCategory = { id: string; label: string; emoji: string };
 
 export default function CarteNav({ categories }: { categories: NavCategory[] }) {
   const [active, setActive] = useState(categories[0]?.id ?? "");
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sections = categories
@@ -26,6 +27,13 @@ export default function CarteNav({ categories }: { categories: NavCategory[] }) 
     return () => observer.disconnect();
   }, [categories]);
 
+  // Keep the active pill in view as the user scrolls the page — slides the
+  // horizontal pill strip left/right so you can always see which section you're in.
+  useEffect(() => {
+    const pill = scrollerRef.current?.querySelector<HTMLElement>(`[data-cat-id="${active}"]`);
+    pill?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, [active]);
+
   return (
     <div className="sticky top-[88px] z-40 h-0 overflow-visible px-4 pointer-events-none">
       <div
@@ -37,11 +45,12 @@ export default function CarteNav({ categories }: { categories: NavCategory[] }) 
           border: "1px solid rgba(139,94,60,0.12)",
         }}
       >
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar max-w-[88vw]">
+        <div ref={scrollerRef} className="flex gap-1.5 overflow-x-auto no-scrollbar max-w-[88vw]">
           {categories.map((c) => (
             <a
               key={c.id}
               href={`#${c.id}`}
+              data-cat-id={c.id}
               className="relative flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap"
               style={{ fontFamily: "var(--font-nunito)", color: active === c.id ? "#fff" : "#8B5E3C" }}
             >

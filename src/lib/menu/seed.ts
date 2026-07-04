@@ -73,7 +73,7 @@ export const girafouSeed: Menu = {
       layout: "grid",
       heading: "Les Pizzas",
       subtitle:
-        "Chez Girafou, nous privilégions la qualité ! Nos plats sont préparés sur place avec amour. Notre poulet peut être halal sur demande.",
+        "Chez Girafou, nous privilégions la qualité ! Nos plats sont préparés sur place avec amour. Notre poulet peut être halal sur demande, respectant ainsi les choix alimentaires et les préférences de nos clients.",
       items: [
         { id: "p-3-fromages", name: "3 fromages", desc: "Tomate, mozzarella, chèvre, bleu", price: "11,90 €", image: "/images/resto/pizzas/3-fromages.jpg" },
         { id: "p-bolognaise", name: "Bolognaise", desc: "Tomate, mozzarella, viande hachée, origan", note: "sauce barbecue sur demande", price: "11,90 €", image: "/images/resto/pizzas/bolognaise.jpg" },
@@ -81,6 +81,30 @@ export const girafouSeed: Menu = {
         { id: "p-poulette", name: "Poulette", desc: "Tomate, mozzarella, poulet, champignons, origan", price: "11,90 €", image: "/images/resto/pizzas/poulette.jpg" },
         { id: "p-reine", name: "Reine", desc: "Tomate, mozzarella, jambon, champignons, origan", price: "11,90 €", image: "/images/resto/pizzas/reine.jpg" },
         { id: "p-margarita", name: "Margarita", desc: "Tomate, mozzarella, origan", price: "11,90 €", image: "/images/resto/pizzas/margarita.jpg" },
+      ],
+      highlight: {
+        badge: "⭐ Formule du midi",
+        text: "Pizza au choix + un pichet de sirop au choix",
+        price: "14,90 €",
+        image: "/images/resto/pizzas/formule-midi.jpg",
+      },
+      extraColumns: [
+        {
+          id: "chips",
+          title: "Chips",
+          image: "/images/resto/pizzas/chips.jpg",
+          items: [
+            { id: "chips-nature", name: "Chips nature", price: "1,60 €" },
+            { id: "chips-pringles", name: "Petit Pringles", price: "1,90 €" },
+          ],
+        },
+        {
+          id: "fruits",
+          title: "Fruits",
+          image: "/images/resto/pizzas/fruits.jpg",
+          items: [],
+          footnote: "Voir sur le bar en fonction de la saison 🍎",
+        },
       ],
     },
     {
@@ -161,13 +185,19 @@ export const girafouSeed: Menu = {
         {
           id: "confiseries",
           title: "Confiseries",
+          footnote: "Disponible en version halal sur demande",
           items: [
             { id: "co-haribo-40", name: "Haribo 40g", price: "1,00 €" },
-            { id: "co-haribo-100", name: "Mix Haribo 100g", price: "1,60 €", note: "halal sur demande" },
+            { id: "co-haribo-100", name: "Mix Haribo 100g", price: "1,60 €" },
             { id: "co-haribo-200", name: "Mix Haribo 200g", price: "3,00 €" },
           ],
         },
       ],
+      highlight: {
+        badge: "⭐ Formule goûter",
+        text: "1 crêpe au choix + 1 Capri-Sun",
+        price: "4,30 €",
+      },
     },
   ],
 };

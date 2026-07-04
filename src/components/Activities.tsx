@@ -246,7 +246,7 @@ export default function Activities() {
             9 activités pour s&rsquo;amuser sans limites
           </span>
           <h2
-            className="text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight"
+            className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
             Des aventures pour{" "}

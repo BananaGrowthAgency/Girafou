@@ -68,6 +68,10 @@ export type Formule = {
   heroFocus?: string;
   // Fond illustré de marque pour la section « Ce que comprend la formule ».
   fondImage?: string;
+  // Texte court de l'« extra » mis en avant sur le fond (gros « + » + texte).
+  fondExtra?: string;
+  // Pastille de prix découpée (fond transparent) affichée sur la carte mobile.
+  fondBadge?: string;
 };
 
 export const FORMULES: Formule[] = [
@@ -82,9 +86,10 @@ export const FORMULES: Formule[] = [
     soft: "#FFF3EE",
     emoji: "🎂",
     illustration: "/images/birthday/formula-pizza.png",
-    heroImage: "/images/anniversaires/ptits-gourmands-hero.jpg",
+    heroImage: "/images/anniversaires/parc-hero.jpg",
     heroFocus: "center 42%",
     fondImage: "/images/anniversaires/ptits-gourmands-fond-v2.png",
+    fondBadge: "/images/anniversaires/ptits-badge.png",
   },
   {
     slug: "formule-du-lion",
@@ -99,6 +104,11 @@ export const FORMULES: Formule[] = [
     emoji: "🦁",
     illustration: "/images/birthday/formula-lion.png",
     highlight: true,
+    heroImage: "/images/anniversaires/parc-hero.jpg",
+    heroFocus: "center 42%",
+    fondImage: "/images/anniversaires/lion-fond-2025.png",
+    fondBadge: "/images/anniversaires/lion-badge.png",
+    fondExtra: "Coca, IceTea, Oasis tropical AU CHOIX",
   },
   {
     slug: "gira-fun-karaoke",
@@ -107,11 +117,16 @@ export const FORMULES: Formule[] = [
     tagline: "Musique & fête",
     extra: "Une session de 30 min dans notre BOX KARAFUN — viens chanter tes chansons préférées avec tes copains !",
     optionPizza: true,
-    accent: "#7C3AED",
-    gradient: "linear-gradient(135deg, #7C3AED, #EC4899)",
-    soft: "#F5F0FF",
+    accent: "#FF5722",
+    gradient: "linear-gradient(135deg, #FF5722, #F5A623)",
+    soft: "#FFF3EE",
     emoji: "🎤",
     illustration: "/images/birthday/formula-karaoke.png",
+    heroImage: "/images/anniversaires/parc-hero.jpg",
+    heroFocus: "center 42%",
+    fondImage: "/images/anniversaires/karaoke-fond.png",
+    fondBadge: "/images/anniversaires/karaoke-badge.png",
+    fondExtra: "Et une session de 30 minutes dans notre BOX KARAFUN\nVient chanter sur tes chansons préférés avec tous tes copains",
   },
 ];
 

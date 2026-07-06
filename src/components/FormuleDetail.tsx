@@ -17,9 +17,10 @@ const BROWN = "#5A3520";
 
 /** Contenu de marque (titre + sous-titre + liste « + » + CTA) posé sur le fond illustré. */
 function FondBranded({ f }: { f: Formule }) {
-  // Le 1er élément sert de sous-titre ; le reste forme la liste. + éventuel extra.
+  // Le 1er élément sert de sous-titre ; le reste forme la liste.
+  // L'« extra » (ex. la boisson du Lion) est mis en avant à part, sous la liste.
   const [, ...items] = BASE_INCLUSIONS;
-  const list = f.extra ? [...items, { b: f.extra }] : items;
+  const extraText = f.fondExtra ?? f.extra;
 
   const content = (
     <div className="text-center" style={{ color: BROWN }}>
@@ -35,7 +36,7 @@ function FondBranded({ f }: { f: Formule }) {
       </p>
 
       <ul className="mt-4 sm:mt-5 space-y-2">
-        {list.map((it, i) => (
+        {items.map((it, i) => (
           <li key={i} className="text-[13.5px] sm:text-[16px] leading-snug px-1">
             <span className="font-extrabold mr-1" style={{ color: f.accent }}>+</span>
             <span className="font-extrabold">{it.b}</span>
@@ -44,16 +45,25 @@ function FondBranded({ f }: { f: Formule }) {
         ))}
       </ul>
 
-      <a
-        href={RESERVATION_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn-shine mt-6 inline-block px-12 py-3.5 rounded-full text-white font-extrabold text-base sm:text-lg shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
-        style={{ background: f.gradient, fontFamily: NUNITO }}
-      >
-        Je réserve
-      </a>
+      {extraText && (
+        <div className="mt-3 sm:mt-4">
+          <div className="text-3xl sm:text-4xl font-extrabold leading-none" style={{ color: f.accent }}>+</div>
+          <p className="mt-1.5 sm:mt-2 text-base sm:text-xl font-extrabold leading-snug px-2 whitespace-pre-line">{extraText}</p>
+        </div>
+      )}
     </div>
+  );
+
+  const cta = (
+    <a
+      href={RESERVATION_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn-shine inline-block px-12 py-3.5 rounded-full text-white font-extrabold text-base sm:text-lg shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
+      style={{ background: f.gradient, fontFamily: NUNITO }}
+    >
+      Je réserve
+    </a>
   );
 
   return (
@@ -64,6 +74,7 @@ function FondBranded({ f }: { f: Formule }) {
           <Image src={f.fondImage!} alt="" fill sizes="840px" className="object-cover" />
           <div className="absolute inset-0 flex flex-col justify-center" style={{ padding: "3% 8% 16%" }}>
             {content}
+            <div className="text-center mt-5 sm:mt-6">{cta}</div>
           </div>
         </div>
       </div>
@@ -75,6 +86,10 @@ function FondBranded({ f }: { f: Formule }) {
         <span className="absolute top-4 right-6 w-2 h-2 rounded-full" style={{ background: f.accent, opacity: 0.55 }} />
         <span className="absolute top-8 right-10 w-1.5 h-1.5 rounded-full" style={{ background: "#4FC3E8", opacity: 0.55 }} />
         {content}
+        {f.fondBadge && (
+          <Image src={f.fondBadge} alt={`${f.price} par enfant`} width={214} height={222} className="mx-auto mt-5 w-32 h-auto" />
+        )}
+        <div className="text-center mt-5">{cta}</div>
       </div>
     </>
   );
@@ -127,7 +142,7 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
   const heroInner = (
     <div className="relative max-w-4xl mx-auto px-6 text-center">
       {/* Fil d'ariane */}
-      <div className="flex items-center justify-center gap-2 text-white/75 text-sm font-bold mb-5" style={{ fontFamily: NUNITO }}>
+      <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-white/75 text-xs sm:text-sm font-bold mb-5" style={{ fontFamily: NUNITO }}>
         <Link href="/anniversaires" className="hover:text-white transition-colors">Anniversaires</Link>
         <span>›</span>
         <span className="text-white">{f.name}</span>

@@ -16,7 +16,7 @@ export default function AnniversairesPage() {
       <main>
         <AnniversairesHub />
       </main>
-      <Footer />
+      <Footer waveColor="#FFFDF5" />
     </>
   );
 }

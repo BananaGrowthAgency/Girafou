@@ -31,7 +31,7 @@ export default async function FormulePage(props: { params: Promise<{ slug: strin
       <main>
         <FormuleDetail formule={formule} />
       </main>
-      <Footer />
+      <Footer waveColor="#FFFDF5" />
     </>
   );
 }

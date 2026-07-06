@@ -42,11 +42,8 @@ export function OptionPizzaBanner() {
         />
       </motion.div>
 
-      <div className="relative rounded-3xl overflow-hidden flex flex-col sm:flex-row sm:items-stretch" style={{ background: "#E8400C" }}>
-        <div className="flex flex-col justify-center py-6 sm:py-8" style={{ paddingLeft: "clamp(3rem, 8vw, 5.5rem)", paddingRight: "1.5rem" }}>
-          <span className="inline-block w-fit px-3 py-1 rounded-full bg-white/20 text-white text-xs font-extrabold mb-2" style={{ fontFamily: NUNITO }}>
-            En option · {OPTION_PIZZA.price}
-          </span>
+      <div className="relative rounded-3xl overflow-hidden flex flex-col sm:flex-row sm:items-center" style={{ background: "#E8400C" }}>
+        <div className="flex flex-col justify-center py-6 sm:py-8 sm:flex-1" style={{ paddingLeft: "clamp(3rem, 8vw, 5.5rem)", paddingRight: "1.5rem" }}>
           <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-2 leading-tight" style={{ fontFamily: BALOO }}>
             {OPTION_PIZZA.title}
           </h3>
@@ -54,10 +51,10 @@ export function OptionPizzaBanner() {
             {OPTION_PIZZA.text}
           </p>
         </div>
-        <div className="flex gap-2 p-3 sm:flex-1">
+        <div className="grid grid-cols-3 gap-2.5 p-3 sm:p-4 sm:w-[46%] sm:flex-none">
           {pizzaSlides.map((src, i) => (
-            <div key={i} className="relative flex-1 rounded-xl overflow-hidden min-h-[110px] sm:min-h-[170px]">
-              <Image src={src} alt={`Option Pizza ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 33vw, 25vw" />
+            <div key={i} className="relative rounded-xl overflow-hidden aspect-square">
+              <Image src={src} alt={`Option Pizza ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 30vw, 150px" quality={90} />
             </div>
           ))}
         </div>
@@ -77,9 +74,40 @@ export function ConditionsBlock() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5 }}
-        className="flex items-center gap-4 rounded-2xl bg-white border border-amber-100 shadow-md p-5"
+        className="relative flex items-center gap-4 rounded-2xl bg-white border border-amber-100 shadow-md p-5 lg:pl-24"
       >
-        <span className="flex-shrink-0 text-3xl">🧦</span>
+        {/* Badge « Chaussettes Obligatoires » flottant — coin haut-gauche, comme sur la home */}
+        <motion.div
+          className="hidden lg:block absolute pointer-events-none select-none z-10"
+          style={{ left: "-1.9rem", top: "-2rem" }}
+        >
+          <motion.div
+            initial={{ opacity: 0, x: -30, scale: 0.9 }}
+            animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.div
+              animate={{ y: [0, -10, -2, -8, 0], rotateZ: [0, 2, 0, -2, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              style={{ perspective: 900, transformStyle: "preserve-3d" }}
+            >
+              <motion.div
+                animate={{ rotateY: [0, 8, 0, -8, 0], rotateX: [0, 4, 6, 2, 0], scale: [1, 1.04, 1.01, 1.03, 1] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/chaussettes-obligatoires.png"
+                  alt="Chaussettes obligatoires"
+                  style={{ height: "clamp(66px, 7vw, 92px)", width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(0,0,0,0.18))" }}
+                />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        <span className="flex-shrink-0 text-3xl lg:hidden">🧦</span>
         <div>
           <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>Chaussettes obligatoires</p>
           <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{CHAUSSETTES}</p>

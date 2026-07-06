@@ -8,19 +8,24 @@ export const RESERVATION_URL = "https://girafou.qweekle.com/shop/girafou";
 // Créneaux horaires communs aux 3 formules.
 export const CRENEAUX = "De 10h à 13h ou de 14h à 18h";
 
+// Une inclusion = un début en gras (b) + un complément en texte normal (t).
+export type Inclusion = { b: string; t?: string };
+
 // Inclusions communes à toutes les formules (dans l'ordre du site).
-export const BASE_INCLUSIONS: string[] = [
-  "L'entrée au parc Girafou",
-  "Une table réservée rien que pour vous tout le temps de l'anniversaire",
-  "Un gâteau au chocolat personnalisé avec le prénom de l'enfant",
-  "Des sirops à l'eau à volonté",
-  "Un cadeau pour votre enfant",
-  "Une photo de groupe",
-  "Une super boum",
-  "Des cartons d'invitation",
-  "Une entrée classique offerte pour l'enfant qui fête son anniversaire, valable un an",
-  "Une portion de bonbons Haribo par enfant",
-  "1 jeton par enfant à utiliser dans nos karts ou nos hélicos",
+// Le 1er élément (« L'entrée au parc Girafou ») sert de sous-titre sur les
+// pages formules ; les suivants forment la liste « + ».
+export const BASE_INCLUSIONS: Inclusion[] = [
+  { b: "L'entrée au parc Girafou" },
+  { b: "Une table réservée", t: "rien que pour vous tout le temps de l'anniversaire de votre enfant" },
+  { b: "Un gâteau au chocolat", t: "personnalisé avec le prénom de l'enfant" },
+  { b: "Des sirops à l'eau", t: "à volonté" },
+  { b: "Un cadeau", t: "pour votre enfant" },
+  { b: "Une photo de groupe" },
+  { b: "Une super boum" },
+  { b: "Des cartons d'invitation" },
+  { b: "Une entrée classique offerte", t: "pour l'enfant qui fête son anniversaire, valable un an" },
+  { b: "Une portion de bonbons Haribo", t: "par enfant" },
+  { b: "1 jeton par enfant", t: "à utiliser dans nos karts ou nos hélicos" },
 ];
 
 // Encart « option pizza » présent sur les pages formules.
@@ -57,6 +62,12 @@ export type Formule = {
   // Illustration existante (réutilisée en attendant les photos réelles).
   illustration: string;
   highlight?: boolean; // "plus populaire"
+  // Photo réelle du parc utilisée en fond du hero (optionnelle, par formule).
+  heroImage?: string;
+  // object-position de la photo du hero (par défaut "center").
+  heroFocus?: string;
+  // Fond illustré de marque pour la section « Ce que comprend la formule ».
+  fondImage?: string;
 };
 
 export const FORMULES: Formule[] = [
@@ -71,6 +82,9 @@ export const FORMULES: Formule[] = [
     soft: "#FFF3EE",
     emoji: "🎂",
     illustration: "/images/birthday/formula-pizza.png",
+    heroImage: "/images/anniversaires/ptits-gourmands-hero.jpg",
+    heroFocus: "center 42%",
+    fondImage: "/images/anniversaires/ptits-gourmands-fond-v2.png",
   },
   {
     slug: "formule-du-lion",

@@ -56,7 +56,7 @@ export default function WhyGirafou() {
   const cometeOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: "#1C1008" }}>
+    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: "#FFFDF5" }}>
 
       {/* Giant spot decorations */}
       <div className="absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full pointer-events-none"
@@ -67,12 +67,12 @@ export default function WhyGirafou() {
         style={{ backgroundImage: "radial-gradient(circle, #F5A623 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
 
       {/* ── Marquee ticker ── */}
-      <div className="relative overflow-hidden py-5 border-b border-white/5">
+      <div className="relative overflow-hidden py-5 border-b border-amber-900/10">
         <div className="flex gap-0 w-max animate-marquee">
           {[...ticker, ...ticker].map((t, i) => (
             <span
               key={i}
-              className="flex items-center gap-4 px-6 text-amber-300 font-bold text-sm uppercase tracking-widest whitespace-nowrap"
+              className="flex items-center gap-4 px-6 text-amber-600 font-bold text-sm uppercase tracking-widest whitespace-nowrap"
               style={{ fontFamily: "var(--font-nunito)" }}
             >
               {t}
@@ -129,13 +129,13 @@ export default function WhyGirafou() {
           <motion.span
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-400/30 text-amber-300 text-sm font-bold mb-4"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Pourquoi choisir Girafou ?
           </motion.span>
           <h2
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight break-words"
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
             Bien plus qu&rsquo;un{" "}
@@ -156,12 +156,12 @@ export default function WhyGirafou() {
               initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.1 + i * 0.12 }}
-              className="group relative rounded-3xl p-7 border border-white/8 hover:border-white/15 transition-all duration-300"
-              style={{ background: r.bg, backdropFilter: "blur(4px)" }}
+              className="group relative rounded-3xl p-7 border border-amber-100 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300"
+              style={{ background: r.bg }}
             >
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg"
-                style={{ background: r.bg, border: `1.5px solid ${r.color}40` }}
+                style={{ background: "#FFFFFF", border: `1.5px solid ${r.color}40` }}
               >
                 {r.icon}
               </div>
@@ -172,7 +172,7 @@ export default function WhyGirafou() {
                 {r.title}
               </h3>
               <p
-                className="text-sm text-white/55 leading-relaxed"
+                className="text-sm text-amber-900/60 leading-relaxed"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
                 {r.desc}
@@ -201,7 +201,7 @@ export default function WhyGirafou() {
           </a>
           <a
             href="#anniversaires"
-            className="px-10 py-5 rounded-2xl font-extrabold text-lg text-amber-300 border-2 border-amber-400/30 hover:border-amber-400/70 hover:text-amber-200 transition-all duration-200"
+            className="px-10 py-5 rounded-2xl font-extrabold text-lg text-amber-700 border-2 border-amber-300 hover:border-amber-500 hover:text-amber-900 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Organiser un anniversaire

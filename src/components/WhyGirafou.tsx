@@ -93,7 +93,7 @@ export default function WhyGirafou() {
         >
           {/* Comet PNG — floating 3D, right of h2 */}
           <motion.div
-            className="hidden lg:block absolute pointer-events-none select-none z-10"
+            className="absolute pointer-events-none select-none z-10"
             style={{ right: "-1rem", top: "-8%", opacity: cometeOpacity }}
           >
             <motion.div
@@ -116,7 +116,7 @@ export default function WhyGirafou() {
                     src="/images/comete.png"
                     alt="Comète"
                     style={{
-                      height: "clamp(80px, 10vw, 130px)",
+                      height: "clamp(48px, 10vw, 130px)",
                       width: "auto",
                       display: "block",
                       filter: "drop-shadow(-3px 8px 14px rgba(245,166,35,0.3))",
@@ -126,12 +126,14 @@ export default function WhyGirafou() {
               </motion.div>
             </motion.div>
           </motion.div>
-          <span
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-400/30 text-amber-300 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Pourquoi choisir Girafou ?
-          </span>
+          </motion.span>
           <h2
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}

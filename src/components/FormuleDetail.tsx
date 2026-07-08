@@ -192,29 +192,29 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
         <section ref={pizzaRef} className="relative pt-16 pb-2 overflow-hidden">
           {/* Confetti gauche — collé au coin gauche, comme sur la home */}
           <motion.div
-            className="hidden lg:block absolute pointer-events-none select-none"
-            style={{ left: "-3rem", top: 0, zIndex: 0 }}
+            className="absolute pointer-events-none select-none"
+            style={{ left: "clamp(-3rem, -6vw, -0.75rem)", top: 0, zIndex: 0 }}
             initial={{ opacity: 0, x: -40 }}
             animate={pizzaInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div animate={{ y: [0, -8, -2, -6, 0], rotateZ: [0, -1, 0, 1, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(100px, 16vw, 220px)", width: "auto", display: "block" }} />
+              <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(64px, 16vw, 220px)", width: "auto", display: "block" }} />
             </motion.div>
           </motion.div>
 
           {/* Confetti droite — collé au coin droit */}
           <motion.div
-            className="hidden lg:block absolute pointer-events-none select-none"
-            style={{ right: "-3rem", top: 0, zIndex: 0 }}
+            className="absolute pointer-events-none select-none"
+            style={{ right: "clamp(-3rem, -6vw, -0.75rem)", top: 0, zIndex: 0 }}
             initial={{ opacity: 0, x: 40 }}
             animate={pizzaInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div animate={{ y: [0, -10, -3, -7, 0], rotateZ: [0, 1, 0, -1, 0] }} transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(100px, 16vw, 220px)", width: "auto", display: "block" }} />
+              <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(64px, 16vw, 220px)", width: "auto", display: "block" }} />
             </motion.div>
           </motion.div>
 

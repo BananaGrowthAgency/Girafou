@@ -139,12 +139,14 @@ export default function Restauration() {
           transition={{ duration: 0.7 }}
           className="text-center mb-10"
         >
-          <span
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Manger sur place
-          </span>
+          </motion.span>
           <h2
             className="text-4xl md:text-5xl font-extrabold leading-tight mb-3"
             style={{ fontFamily: "var(--font-baloo)", color: "#1C1008", textShadow: "-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 2px 8px rgba(255,255,255,0.8)" }}

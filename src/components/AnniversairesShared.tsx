@@ -107,7 +107,19 @@ export function ConditionsBlock() {
           </motion.div>
         </motion.div>
 
-        <span className="flex-shrink-0 text-3xl lg:hidden">🧦</span>
+        {/* Chaussettes — sticker flottant (mobile) */}
+        <motion.div
+          className="lg:hidden flex-shrink-0"
+          animate={{ y: [0, -8, 0], rotateZ: [0, 2, 0, -2, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/chaussettes-obligatoires.png"
+            alt="Chaussettes obligatoires"
+            style={{ height: 56, width: "auto", display: "block", filter: "drop-shadow(-2px 6px 10px rgba(0,0,0,0.18))" }}
+          />
+        </motion.div>
         <div>
           <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>Chaussettes obligatoires</p>
           <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{CHAUSSETTES}</p>

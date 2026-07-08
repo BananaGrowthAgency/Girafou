@@ -6,12 +6,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FORMULES } from "@/lib/anniversaires";
+import { ACTIVITES } from "@/lib/activites";
 
 type NavLink = { label: string; href: string; children?: { label: string; href: string }[] };
 
 const links: NavLink[] = [
   { label: "Accueil", href: "/" },
-  { label: "Activités", href: "/#activites" },
+  {
+    label: "Activités",
+    href: "/#activites",
+    children: ACTIVITES.map((a) => ({ label: a.name, href: `/activites/${a.slug}` })),
+  },
   { label: "Restauration", href: "/restauration" },
   { label: "Nos offres", href: "/#anniversaires" },
   {
@@ -25,6 +30,7 @@ const links: NavLink[] = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openSub, setOpenSub] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -51,11 +57,11 @@ export default function Navbar() {
         {/* Barra / cápsula */}
         <div
           style={{
-            background: "#1C1008",
+            background: "#FFFFFF",
             borderRadius: scrolled ? (menuOpen ? "28px 28px 0 0" : 999) : 0,
-            border: scrolled ? "1px solid rgba(180,110,30,0.45)" : "none",
-            borderBottom: scrolled && menuOpen ? "1px solid rgba(180,110,30,0.2)" : undefined,
-            boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.6)" : "none",
+            border: scrolled ? "1px solid rgba(90,53,32,0.12)" : "none",
+            borderBottom: scrolled && menuOpen ? "1px solid rgba(90,53,32,0.06)" : (scrolled ? undefined : "1px solid rgba(90,53,32,0.10)"),
+            boxShadow: scrolled ? "0 8px 40px rgba(90,53,32,0.16)" : "0 1px 2px rgba(90,53,32,0.05)",
             backdropFilter: scrolled ? "blur(20px)" : "none",
             maxWidth: scrolled ? 1100 : "100%",
             marginLeft: "auto",
@@ -87,7 +93,7 @@ export default function Navbar() {
                   <li key={l.label} className="relative flex-shrink-0 group/nav">
                     <Link
                       href={l.href}
-                      className={`relative inline-flex items-center gap-1 text-[13px] lg:text-[14px] font-bold transition-colors duration-200 group whitespace-nowrap ${active ? "text-amber-400" : "text-white/80 hover:text-amber-400"}`}
+                      className={`relative inline-flex items-center gap-1 text-[13px] lg:text-[14px] font-bold transition-colors duration-200 group whitespace-nowrap ${active ? "text-orange-500" : "text-amber-900/75 hover:text-orange-500"}`}
                       style={{ fontFamily: "var(--font-nunito)" }}
                     >
                       {l.label}
@@ -103,7 +109,7 @@ export default function Navbar() {
                       <div className="absolute left-1/2 -translate-x-1/2 top-full pt-4 opacity-0 invisible translate-y-1 group-hover/nav:opacity-100 group-hover/nav:visible group-hover/nav:translate-y-0 transition-all duration-200 z-50">
                         <div
                           className="rounded-2xl py-2 min-w-[230px] shadow-2xl"
-                          style={{ background: "#1C1008", border: "1px solid rgba(180,110,30,0.4)", backdropFilter: "blur(20px)" }}
+                          style={{ background: "#FFFFFF", border: "1px solid rgba(90,53,32,0.12)", boxShadow: "0 12px 40px rgba(90,53,32,0.18)" }}
                         >
                           {l.children.map((c) => {
                             const cActive = pathname === c.href;
@@ -111,7 +117,7 @@ export default function Navbar() {
                               <Link
                                 key={c.href}
                                 href={c.href}
-                                className={`block px-5 py-2.5 text-[13px] font-bold transition-colors hover:bg-white/5 ${cActive ? "text-amber-400" : "text-white/75 hover:text-amber-400"}`}
+                                className={`block px-5 py-2.5 text-[13px] font-bold transition-colors hover:bg-black/[0.03] ${cActive ? "text-orange-500" : "text-amber-900/70 hover:text-orange-500"}`}
                                 style={{ fontFamily: "var(--font-nunito)" }}
                               >
                                 {c.label}
@@ -130,7 +136,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
               <a
                 href="tel:0231537268"
-                className="text-xs font-bold text-white/50 hover:text-amber-400 transition-colors whitespace-nowrap"
+                className="text-xs font-bold text-amber-900/50 hover:text-orange-500 transition-colors whitespace-nowrap"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
                 02 31 53 72 68
@@ -147,12 +153,12 @@ export default function Navbar() {
             {/* Mobile burger */}
             <button
               className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px]"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => { setMenuOpen(!menuOpen); setOpenSub(null); }}
               aria-label="Menu"
             >
-              <span className={`w-6 h-[2.5px] bg-white/80 rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7.5px]" : ""}`} />
-              <span className={`w-6 h-[2.5px] bg-white/80 rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
-              <span className={`w-6 h-[2.5px] bg-white/80 rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7.5px]" : ""}`} />
+              <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7.5px]" : ""}`} />
+              <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
+              <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7.5px]" : ""}`} />
             </button>
           </nav>
         </div>
@@ -167,48 +173,76 @@ export default function Navbar() {
               transition={{ duration: 0.3 }}
               className="md:hidden overflow-hidden"
               style={{
-                background: "#1C1008",
+                background: "#FFFFFF",
                 maxWidth: scrolled ? 1100 : "100%",
                 marginLeft: "auto",
                 marginRight: "auto",
                 borderRadius: scrolled ? "0 0 28px 28px" : 0,
-                border: scrolled ? "1px solid rgba(180,110,30,0.45)" : "none",
+                border: scrolled ? "1px solid rgba(90,53,32,0.12)" : "none",
                 borderTop: "none",
-                boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.6)" : "none",
+                boxShadow: scrolled ? "0 8px 40px rgba(90,53,32,0.16)" : "none",
                 backdropFilter: scrolled ? "blur(20px)" : "none",
               }}
             >
-              <div className="px-6 py-6 flex flex-col gap-5 border-t border-amber-900/30">
+              <div className="px-6 py-6 flex flex-col gap-5 border-t border-amber-900/10">
                 {links.map((l) => {
                   const active = !l.href.includes("#") && (l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(l.href + "/"));
+                  const open = openSub === l.label;
                   return (
                     <div key={l.label} className="flex flex-col gap-3">
-                      <Link
-                        href={l.href}
-                        onClick={() => setMenuOpen(false)}
-                        className={`flex items-center gap-2 text-lg font-extrabold transition-colors ${active ? "text-amber-400" : "text-white/80 hover:text-amber-400"}`}
-                        style={{ fontFamily: "var(--font-nunito)" }}
-                      >
-                        {l.label}
-                        {active && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
-                      </Link>
+                      <div className="flex items-center justify-between gap-2">
+                        <Link
+                          href={l.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex items-center gap-2 text-lg font-extrabold transition-colors ${active ? "text-orange-500" : "text-amber-900/80 hover:text-orange-500"}`}
+                          style={{ fontFamily: "var(--font-nunito)" }}
+                        >
+                          {l.label}
+                          {active && <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />}
+                        </Link>
+                        {l.children && (
+                          <button
+                            type="button"
+                            onClick={() => setOpenSub(open ? null : l.label)}
+                            aria-label={`${open ? "Masquer" : "Afficher"} ${l.label}`}
+                            aria-expanded={open}
+                            className="flex-shrink-0 p-2 -mr-2 text-amber-900/55 hover:text-orange-500 transition-colors"
+                          >
+                            <svg className={`w-4 h-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`} viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="3 4.5 6 7.5 9 4.5" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
                       {l.children && (
-                        <div className="flex flex-col gap-2.5 pl-4 border-l border-amber-900/40">
-                          {l.children.map((c) => {
-                            const cActive = pathname === c.href;
-                            return (
-                              <Link
-                                key={c.href}
-                                href={c.href}
-                                onClick={() => setMenuOpen(false)}
-                                className={`text-sm font-bold transition-colors ${cActive ? "text-amber-400" : "text-white/55 hover:text-amber-400"}`}
-                                style={{ fontFamily: "var(--font-nunito)" }}
-                              >
-                                {c.label}
-                              </Link>
-                            );
-                          })}
-                        </div>
+                        <AnimatePresence initial={false}>
+                          {open && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-col gap-2.5 pl-4 border-l border-amber-900/15 pt-0.5">
+                                {l.children.map((c) => {
+                                  const cActive = pathname === c.href;
+                                  return (
+                                    <Link
+                                      key={c.href}
+                                      href={c.href}
+                                      onClick={() => setMenuOpen(false)}
+                                      className={`text-sm font-bold transition-colors ${cActive ? "text-orange-500" : "text-amber-900/55 hover:text-orange-500"}`}
+                                      style={{ fontFamily: "var(--font-nunito)" }}
+                                    >
+                                      {c.label}
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       )}
                     </div>
                   );

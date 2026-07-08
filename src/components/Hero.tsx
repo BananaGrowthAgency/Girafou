@@ -42,7 +42,7 @@ const stats = [
   {
     icon: (
       // Arrows pointing outward — surface/espace
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="white" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="#F5A623" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
         <polyline points="30 6 42 6 42 18" />
         <polyline points="18 42 6 42 6 30" />
         <line x1="42" y1="6" x2="28" y2="20" />
@@ -59,7 +59,7 @@ const stats = [
   {
     icon: (
       // Lightning bolt — activités dynamiques
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="white" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="#F5A623" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
         <polygon points="26 4 6 28 24 28 22 44 42 20 24 20 26 4" />
       </svg>
     ),
@@ -69,7 +69,7 @@ const stats = [
   {
     icon: (
       // Star — avis clients
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="white" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="#F5A623" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
         <polygon points="24 5 29.5 17.5 43 19 33 28.5 35.5 42 24 35.5 12.5 42 15 28.5 5 19 18.5 17.5 24 5" />
       </svg>
     ),
@@ -79,7 +79,7 @@ const stats = [
   {
     icon: (
       // Map pin — 2 sites en Normandie
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="white" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="#F5A623" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
         <path d="M24 44c8-9 13-15.5 13-23a13 13 0 0 0-26 0c0 7.5 5 14 13 23z" />
         <circle cx="24" cy="20" r="5" />
       </svg>
@@ -98,6 +98,9 @@ export default function Hero() {
 
   const textY = useTransform(scrollYProgress, [0, 1], [0, -80]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
+  const statsRef = useRef<HTMLDivElement>(null);
+  const statsInView = useInView(statsRef, { once: true, margin: "-40px" });
 
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -205,7 +208,7 @@ export default function Hero() {
       {/* ── Hero text content ── */}
       <motion.div
         style={{ y: textY, opacity: overlayOpacity }}
-        className="relative z-20 h-full flex flex-col justify-end sm:justify-center max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-40 sm:pb-36 pr-0 sm:pr-[clamp(0px,30vw,460px)]"
+        className="relative z-20 h-full flex flex-col justify-end sm:justify-center max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-48 sm:pb-36 pr-0 sm:pr-[clamp(0px,30vw,460px)]"
       >
         <motion.h1
           initial={mounted ? { opacity: 0, y: 30 } : false}
@@ -268,18 +271,19 @@ export default function Hero() {
 
       {/* ── STAT CARDS — overlap bottom of hero ── */}
       <div className="absolute bottom-10 left-0 right-0 z-30 translate-y-1/2 px-6 lg:px-10 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           {stats.map((s, i) => (
             <motion.div
               key={i}
-              initial={mounted ? { opacity: 0, y: 40 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 40, scale: 0.94 }}
+              animate={statsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-xl sm:rounded-2xl p-2.5 sm:p-5 flex flex-col items-center text-center overflow-hidden group"
               style={{
-                background: "rgba(22, 12, 4, 0.88)",
+                background: "rgba(255,255,255,0.94)",
                 border: "1.5px solid rgba(245,166,35,0.35)",
                 backdropFilter: "blur(16px)",
+                boxShadow: "0 12px 34px rgba(90,53,32,0.16)",
               }}
             >
               {/* Amber glow corner */}
@@ -293,7 +297,7 @@ export default function Hero() {
                 style={{ boxShadow: "inset 0 0 0 1.5px rgba(245,166,35,0.7)" }}
               />
 
-              <div className="mb-1 sm:mb-3 opacity-60 scale-[0.6] sm:scale-100">{s.icon}</div>
+              <div className="mb-1 sm:mb-3 opacity-90 scale-[0.6] sm:scale-100">{s.icon}</div>
               <div
                 className="text-lg sm:text-3xl font-extrabold mb-0.5 sm:mb-1 whitespace-nowrap tabular-nums"
                 style={{
@@ -305,7 +309,7 @@ export default function Hero() {
               >
                 {s.prefix}<CountUp to={s.to} duration={1600} />{s.suffix}
               </div>
-              <p className="text-white/55 text-[10px] sm:text-xs font-semibold leading-tight" style={{ fontFamily: "var(--font-nunito)" }}>
+              <p className="text-amber-900/60 text-[10px] sm:text-xs font-semibold leading-tight" style={{ fontFamily: "var(--font-nunito)" }}>
                 {s.label}
               </p>
             </motion.div>

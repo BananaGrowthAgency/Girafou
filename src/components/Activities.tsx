@@ -3,102 +3,10 @@
 import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { ACTIVITES, type Activite } from "@/lib/activites";
 
-/* Each activity: provide `image` path once photos are in /public/images/ */
-const activities = [
-  {
-    id: "helicoptere",
-    title: "Hélicoptère",
-    desc: "Exclusif en Normandie — monte à bord d'un vrai hélicoptère et survole le parc.",
-    image: "/images/activites/helicoptere.jpg",
-    tag: "Exclusif",
-    tagBg: "#1E88E5",
-    accent: "#1E88E5",
-    accentLight: "#E3F2FD",
-  },
-  {
-    id: "neoxperience",
-    title: "NeoXperience",
-    desc: "Le mur interactif révolutionnaire qui mêle jeux vidéo et sport pour des sensations inédites.",
-    image: "/images/activites/neoxperience.jpg",
-    tag: "Nouveau",
-    tagBg: "#7C3AED",
-    accent: "#7C3AED",
-    accentLight: "#EDE9FE",
-  },
-  {
-    id: "karting",
-    title: "Karting & Motos",
-    desc: "Pilote ton kart ou ta moto sur la piste — pour les petits pilotes en herbe !",
-    image: "/images/activites/karting.jpg",
-    tag: "Populaire",
-    tagBg: "#FF5722",
-    accent: "#FF5722",
-    accentLight: "#FBE9E7",
-  },
-  {
-    id: "trampolines",
-    title: "Trampolines",
-    desc: "Des trampolines XXL pour des sauts spectaculaires et des heures de bonheur aérien.",
-    image: "/images/activites/trampolines.jpg",
-    tag: "Fun",
-    tagBg: "#00897B",
-    accent: "#00897B",
-    accentLight: "#E0F2F1",
-  },
-  {
-    id: "gonflables",
-    title: "Structures gonflables",
-    desc: "Labyrinthes géants, châteaux gonflables et toboggans — l'aventure en souplesse.",
-    image: "/images/activites/gonflables.jpg",
-    tag: "Classique",
-    tagBg: "#F59E0B",
-    accent: "#F59E0B",
-    accentLight: "#FFFBEB",
-  },
-  {
-    id: "piscine-balles",
-    title: "Piscine à balles",
-    desc: "Plonge dans un océan de balles colorées — le paradis des petits explorateurs (2–6 ans).",
-    image: "/images/activites/piscine-balles.jpg",
-    tag: "2–6 ans",
-    tagBg: "#0288D1",
-    accent: "#0288D1",
-    accentLight: "#E1F5FE",
-  },
-  {
-    id: "zones-saut",
-    title: "Zones de saut",
-    desc: "Des espaces dédiés au saut avec modules mousse, obstacles et espaces de grimpe.",
-    image: "/images/activites/zones-saut.jpg",
-    tag: "Adrénaline",
-    tagBg: "#E91E63",
-    accent: "#E91E63",
-    accentLight: "#FCE4EC",
-  },
-  {
-    id: "labyrinthes",
-    title: "Labyrinthe",
-    desc: "Structures multi-niveaux avec tunnels secrets, passages mystérieux et espaces de grimpe.",
-    image: "/images/activites/labyrinthes.jpg",
-    tag: "Aventure",
-    tagBg: "#5E35B1",
-    accent: "#5E35B1",
-    accentLight: "#EDE7F6",
-  },
-  {
-    id: "toboggan",
-    title: "Luge & Toboggans",
-    desc: "Des toboggans géants et luges intérieures pour des descentes à toute vitesse !",
-    image: "/images/activites/toboggan.jpg",
-    tag: "Sensations",
-    tagBg: "#00ACC1",
-    accent: "#00ACC1",
-    accentLight: "#E0F7FA",
-  },
-];
-
-function ActivityCard({ act, index }: { act: typeof activities[0]; index: number }) {
+function ActivityCard({ act, index }: { act: Activite; index: number }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -131,7 +39,7 @@ function ActivityCard({ act, index }: { act: typeof activities[0]; index: number
         {!imgErr ? (
           <Image
             src={act.image}
-            alt={act.title}
+            alt={act.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             onError={() => setImgErr(true)}
@@ -141,7 +49,7 @@ function ActivityCard({ act, index }: { act: typeof activities[0]; index: number
           /* Placeholder shown until real photo is provided */
           <div className="absolute inset-0 img-placeholder rounded-none border-0" style={{ background: act.accentLight }}>
             <span className="text-4xl opacity-40">📸</span>
-            <span className="text-xs opacity-50">photo/{act.id}.jpg</span>
+            <span className="text-xs opacity-50">photo/{act.slug}.jpg</span>
           </div>
         )}
 
@@ -158,20 +66,21 @@ function ActivityCard({ act, index }: { act: typeof activities[0]; index: number
           className="text-xl font-extrabold mb-0.5"
           style={{ fontFamily: "var(--font-baloo)", color: act.accent }}
         >
-          {act.title}
+          {act.name}
         </h3>
         <p
           className="text-sm text-amber-900/60 leading-relaxed flex-1"
           style={{ fontFamily: "var(--font-nunito)" }}
         >
-          {act.desc}
+          {act.cardDesc}
         </p>
-        <button
+        <Link
+          href={`/activites/${act.slug}`}
           className="self-start mt-1 px-4 py-2 rounded-xl text-white text-xs font-extrabold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           style={{ background: act.accent, fontFamily: "var(--font-nunito)" }}
         >
           En savoir +
-        </button>
+        </Link>
       </div>
 
       {/* Shine on hover */}
@@ -204,7 +113,7 @@ export default function Activities() {
           transition={{ duration: 0.7 }}
           className="relative text-center mb-14"
         >
-          {/* Socks mascot — floating 3D, left of h2 */}
+          {/* Socks mascot — desktop : flotte à gauche du h2 */}
           <motion.div
             className="hidden lg:block absolute pointer-events-none select-none z-10"
             style={{ left: "-1rem", top: "-8%", opacity: socksOpacity }}
@@ -239,12 +148,14 @@ export default function Activities() {
             </motion.div>
             </motion.div>
           </motion.div>
-          <span
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             9 activités pour s&rsquo;amuser sans limites
-          </span>
+          </motion.span>
           <h2
             className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight"
             style={{ fontFamily: "var(--font-baloo)" }}
@@ -261,9 +172,28 @@ export default function Activities() {
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {activities.map((act, i) => (
-            <ActivityCard key={act.id} act={act} index={i} />
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Socks mascot — mobile : flotte juste au-dessus des cartes, à gauche (n'occupe pas d'espace) */}
+          <motion.div
+            className="lg:hidden absolute -left-2 bottom-full -mb-3 pointer-events-none select-none z-0"
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <motion.div
+              animate={{ y: [0, -10, 0], rotateZ: [0, 2, 0, -2, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/chaussettes-obligatoires.png"
+                alt="Chaussettes obligatoires"
+                style={{ height: 72, width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(0,0,0,0.18))" }}
+              />
+            </motion.div>
+          </motion.div>
+          {ACTIVITES.map((act, i) => (
+            <ActivityCard key={act.slug} act={act} index={i} />
           ))}
         </div>
 

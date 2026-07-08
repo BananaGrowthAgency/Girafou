@@ -75,13 +75,13 @@ export default function AnniversairesHub() {
         <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full pointer-events-none animate-blob-delay" style={{ background: "radial-gradient(circle, rgba(255,87,34,0.12) 0%, transparent 70%)", filter: "blur(40px)" }} />
 
         {/* Confettis */}
-        <motion.div className="hidden lg:block absolute pointer-events-none select-none" style={{ left: "-2rem", top: "1rem", zIndex: 0 }} animate={{ y: [0, -8, 0], rotateZ: [0, -1, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
+        <motion.div className="absolute pointer-events-none select-none" style={{ left: "clamp(-2rem, -5vw, -0.7rem)", top: "1rem", zIndex: 0 }} animate={{ y: [0, -8, 0], rotateZ: [0, -1, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(90px, 13vw, 170px)", width: "auto" }} />
+          <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(58px, 13vw, 170px)", width: "auto" }} />
         </motion.div>
-        <motion.div className="hidden lg:block absolute pointer-events-none select-none" style={{ right: "-2rem", top: "1rem", zIndex: 0 }} animate={{ y: [0, -10, 0], rotateZ: [0, 1, 0] }} transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}>
+        <motion.div className="absolute pointer-events-none select-none" style={{ right: "clamp(-2rem, -5vw, -0.7rem)", top: "1rem", zIndex: 0 }} animate={{ y: [0, -10, 0], rotateZ: [0, 1, 0] }} transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(90px, 13vw, 170px)", width: "auto" }} />
+          <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(58px, 13vw, 170px)", width: "auto" }} />
         </motion.div>
 
         <div ref={heroRef} className="relative max-w-3xl mx-auto px-6 text-center">

@@ -14,27 +14,27 @@ export default function CarteEvents() {
     <section id="evenements" className="relative scroll-mt-32 py-14 overflow-hidden">
       {/* Confetti — reused from the home Birthday section for visual continuity */}
       <motion.div
-        className="hidden lg:block absolute pointer-events-none select-none"
-        style={{ left: "-3rem", top: 0, zIndex: 0 }}
+        className="absolute pointer-events-none select-none"
+        style={{ left: "clamp(-3rem, -6vw, -0.75rem)", top: 0, zIndex: 0 }}
       >
         <motion.div
           animate={{ y: [0, -8, -2, -6, 0], rotateZ: [0, -1, 0, 1, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(90px, 14vw, 180px)", width: "auto", display: "block" }} />
+          <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(58px, 14vw, 180px)", width: "auto", display: "block" }} />
         </motion.div>
       </motion.div>
       <motion.div
-        className="hidden lg:block absolute pointer-events-none select-none"
-        style={{ right: "-3rem", top: 0, zIndex: 0 }}
+        className="absolute pointer-events-none select-none"
+        style={{ right: "clamp(-3rem, -6vw, -0.75rem)", top: 0, zIndex: 0 }}
       >
         <motion.div
           animate={{ y: [0, -10, -3, -7, 0], rotateZ: [0, 1, 0, -1, 0] }}
           transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(90px, 14vw, 180px)", width: "auto", display: "block" }} />
+          <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(58px, 14vw, 180px)", width: "auto", display: "block" }} />
         </motion.div>
       </motion.div>
 

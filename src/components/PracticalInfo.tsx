@@ -39,7 +39,7 @@ export default function PracticalInfo() {
         >
           {/* Star left */}
           <motion.div
-            className="hidden lg:block absolute pointer-events-none select-none z-10"
+            className="absolute pointer-events-none select-none z-10"
             style={{ left: "-1rem", top: "-8%", opacity: starsOpacity }}
           >
             <motion.div
@@ -58,7 +58,7 @@ export default function PracticalInfo() {
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/etoile-1.png" alt="" loading="lazy" style={{ height: "clamp(36px, 4vw, 56px)", width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(245,166,35,0.35))" }} />
+                  <img src="/images/etoile-1.png" alt="" loading="lazy" style={{ height: "clamp(24px, 4vw, 56px)", width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(245,166,35,0.35))" }} />
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -66,8 +66,8 @@ export default function PracticalInfo() {
 
           {/* Star right */}
           <motion.div
-            className="hidden lg:block absolute pointer-events-none select-none z-10"
-            style={{ right: "2rem", top: "30%", opacity: starsOpacity }}
+            className="absolute pointer-events-none select-none z-10 top-2 right-2 lg:top-[30%] lg:right-8"
+            style={{ opacity: starsOpacity }}
           >
             <motion.div
               initial={{ opacity: 0, x: 40 }}
@@ -85,17 +85,19 @@ export default function PracticalInfo() {
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/etoile-2.png" alt="" loading="lazy" style={{ height: "clamp(36px, 4vw, 56px)", width: "auto", display: "block", filter: "drop-shadow(3px 8px 14px rgba(245,166,35,0.35))" }} />
+                  <img src="/images/etoile-2.png" alt="" loading="lazy" style={{ height: "clamp(22px, 4vw, 56px)", width: "auto", display: "block", filter: "drop-shadow(3px 8px 14px rgba(245,166,35,0.35))" }} />
                 </motion.div>
               </motion.div>
             </motion.div>
           </motion.div>
-          <span
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Comment nous rejoindre
-          </span>
+          </motion.span>
           <h2
             className="text-5xl md:text-6xl font-extrabold text-amber-900"
             style={{ fontFamily: "var(--font-baloo)" }}

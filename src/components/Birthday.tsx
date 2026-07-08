@@ -133,8 +133,8 @@ export default function Birthday() {
 
       {/* Confetti left — pegado al borde superior, detrás de todo el contenido */}
       <motion.div
-        className="hidden lg:block absolute pointer-events-none select-none"
-        style={{ left: "-3rem", top: 0, zIndex: 0, opacity: starsOpacity }}
+        className="absolute pointer-events-none select-none"
+        style={{ left: "clamp(-3rem, -6vw, -0.75rem)", top: 0, zIndex: 0, opacity: starsOpacity }}
       >
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -146,15 +146,15 @@ export default function Birthday() {
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(100px, 16vw, 220px)", width: "auto", display: "block" }} />
+            <img src="/images/birthday/confettis-left.png" alt="" loading="lazy" style={{ height: "clamp(64px, 16vw, 220px)", width: "auto", display: "block" }} />
           </motion.div>
         </motion.div>
       </motion.div>
 
       {/* Confetti right — pegado al borde superior, detrás de todo el contenido */}
       <motion.div
-        className="hidden lg:block absolute pointer-events-none select-none"
-        style={{ right: "-3rem", top: 0, zIndex: 0, opacity: starsOpacity }}
+        className="absolute pointer-events-none select-none"
+        style={{ right: "clamp(-3rem, -6vw, -0.75rem)", top: 0, zIndex: 0, opacity: starsOpacity }}
       >
         <motion.div
           initial={{ opacity: 0, x: 40 }}
@@ -166,7 +166,7 @@ export default function Birthday() {
             transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(100px, 16vw, 220px)", width: "auto", display: "block" }} />
+            <img src="/images/birthday/confettis-right.png" alt="" loading="lazy" style={{ height: "clamp(64px, 16vw, 220px)", width: "auto", display: "block" }} />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -180,12 +180,14 @@ export default function Birthday() {
           transition={{ duration: 0.7 }}
           className="relative text-center mb-16"
         >
-          <span
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 border border-pink-100 text-pink-600 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Des fêtes inoubliables
-          </span>
+          </motion.span>
           <h2
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}

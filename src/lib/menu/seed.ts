@@ -88,7 +88,7 @@ export const girafouSeed: Menu = {
         price: "14,90 €",
         image: "/images/resto/pizzas/formule-midi.jpg",
       },
-      extraColumns: [
+      columns: [
         {
           id: "chips",
           title: "Chips",

@@ -1,7 +1,7 @@
 import "server-only";
 import { put, del, list } from "@vercel/blob";
 import { unstable_cache, revalidateTag, revalidatePath } from "next/cache";
-import type { Menu } from "./types";
+import type { Category, Menu, MenuColumn } from "./types";
 import { girafouSeed } from "./seed";
 
 // One park per deploy. Data is isolated under parks/<slug>/ so the same code can
@@ -18,16 +18,23 @@ function seedFor(slug: string): Menu {
   return SEEDS[slug] ?? { park: slug, updatedAt: new Date(0).toISOString(), categories: [] };
 }
 
-// A menu saved before a given field existed (e.g. Category.highlight/extraColumns)
-// won't have it. Backfill those from the seed, by category id, without touching
-// anything an admin already edited — self-healing, no migration script needed.
+// A menu saved before a given field existed (e.g. Category.highlight) won't have
+// it. Backfill those from the seed, by category id, without touching anything an
+// admin already edited — self-healing, no migration script needed.
 function backfillFromSeed(menu: Menu): Menu {
   const seed = seedFor(PARK_SLUG);
   for (const seedCat of seed.categories) {
     const cat = menu.categories.find((c) => c.id === seedCat.id);
     if (!cat) continue;
     if (cat.highlight === undefined && seedCat.highlight) cat.highlight = seedCat.highlight;
-    if (cat.extraColumns === undefined && seedCat.extraColumns) cat.extraColumns = seedCat.extraColumns;
+  }
+  // Legacy migration: the "cartes secondaires" (extraColumns) mechanism was
+  // merged into the standard sous-catégories (columns). Move any leftover
+  // extraColumns saved in an older blob into columns and drop the old field.
+  for (const cat of menu.categories) {
+    const legacy = (cat as Category & { extraColumns?: MenuColumn[] }).extraColumns;
+    if (legacy?.length) cat.columns = [...(cat.columns ?? []), ...legacy];
+    delete (cat as { extraColumns?: unknown }).extraColumns;
   }
   return menu;
 }

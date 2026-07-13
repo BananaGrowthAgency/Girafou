@@ -41,7 +41,6 @@ export type Category = {
   items?: MenuItem[]; // layout "grid" | "list"
   columns?: MenuColumn[]; // layout "columns"
   highlight?: Highlight; // optional promo banner shown below the main layout
-  extraColumns?: MenuColumn[]; // optional secondary cards row (e.g. Chips, Fruits)
 };
 
 export type Menu = {

@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Wave from "./Wave";
 import CarteNav, { type NavCategory } from "./CarteNav";
-import type { Category, CategoryLayout, Menu, MenuColumn, MenuItem } from "@/lib/menu/types";
+import type { Category, CategoryLayout, Menu, MenuItem } from "@/lib/menu/types";
 import { chromeFor, DEFAULT_ITEMS_CLASS, DEFAULT_COLUMNS_CLASS, DEFAULT_HIGHLIGHT_GRADIENT } from "@/lib/menu/chrome";
 import {
   saveMenuAction,
@@ -102,11 +102,10 @@ export default function EditableMenu({ menu: initial, editable }: { menu: Menu; 
     [patch],
   );
 
-  // Same as above, but for a column's own header photo (not one of its items).
-  // Shared by both `columns` (the main layout) and `extraColumns` (Chips, Fruits…).
-  const pickColumnPhotoIn = useCallback(
-    async (arrayKey: "columns" | "extraColumns", catId: string, colId: string, file: File, oldUrl?: string) => {
-      const key = `${catId}|${arrayKey}|${colId}`;
+  // A column's own header photo (Category.columns[].image), not one of its items.
+  const pickColumnPhoto = useCallback(
+    async (catId: string, colId: string, file: File, oldUrl?: string) => {
+      const key = `${catId}|columns|${colId}`;
       setUploading((u) => ({ ...u, [key]: true }));
       try {
         const fd = new FormData();
@@ -114,7 +113,7 @@ export default function EditableMenu({ menu: initial, editable }: { menu: Menu; 
         if (oldUrl) fd.set("oldUrl", oldUrl);
         const url = await uploadPhotoAction(fd);
         patch((m) => {
-          const col = findCat(m, catId)![arrayKey]!.find((c) => c.id === colId);
+          const col = findCat(m, catId)!.columns!.find((c) => c.id === colId);
           if (col) col.image = url;
         });
       } finally {
@@ -124,21 +123,16 @@ export default function EditableMenu({ menu: initial, editable }: { menu: Menu; 
     [patch],
   );
 
-  const removeColumnPhotoIn = useCallback(
-    (arrayKey: "columns" | "extraColumns", catId: string, colId: string, url?: string) => {
+  const removeColumnPhoto = useCallback(
+    (catId: string, colId: string, url?: string) => {
       patch((m) => {
-        const col = findCat(m, catId)![arrayKey]!.find((c) => c.id === colId);
+        const col = findCat(m, catId)!.columns!.find((c) => c.id === colId);
         if (col) delete col.image;
       });
       if (url) deletePhotosAction([url]);
     },
     [patch],
   );
-
-  const pickColumnPhoto = useCallback((c: string, col: string, f: File, old?: string) => pickColumnPhotoIn("columns", c, col, f, old), [pickColumnPhotoIn]);
-  const removeColumnPhoto = useCallback((c: string, col: string, url?: string) => removeColumnPhotoIn("columns", c, col, url), [removeColumnPhotoIn]);
-  const pickExtraColumnPhoto = useCallback((c: string, col: string, f: File, old?: string) => pickColumnPhotoIn("extraColumns", c, col, f, old), [pickColumnPhotoIn]);
-  const removeExtraColumnPhoto = useCallback((c: string, col: string, url?: string) => removeColumnPhotoIn("extraColumns", c, col, url), [removeColumnPhotoIn]);
 
   // Promo banner photo (Category.highlight).
   const pickHighlightPhoto = useCallback(
@@ -195,8 +189,6 @@ export default function EditableMenu({ menu: initial, editable }: { menu: Menu; 
           removePhoto={removePhoto}
           pickColumnPhoto={pickColumnPhoto}
           removeColumnPhoto={removeColumnPhoto}
-          pickExtraColumnPhoto={pickExtraColumnPhoto}
-          removeExtraColumnPhoto={removeExtraColumnPhoto}
           pickHighlightPhoto={pickHighlightPhoto}
           removeHighlightPhoto={removeHighlightPhoto}
         />
@@ -227,8 +219,6 @@ type SectionProps = {
   removePhoto: (c: string, col: string | undefined, it: string, url?: string) => void;
   pickColumnPhoto: (c: string, col: string, f: File, old?: string) => void;
   removeColumnPhoto: (c: string, col: string, url?: string) => void;
-  pickExtraColumnPhoto: (c: string, col: string, f: File, old?: string) => void;
-  removeExtraColumnPhoto: (c: string, col: string, url?: string) => void;
   pickHighlightPhoto: (c: string, f: File, old?: string) => void;
   removeHighlightPhoto: (c: string, url?: string) => void;
   // True once this category has scrolled into view — coordinates the header
@@ -277,7 +267,7 @@ function CategorySection(props: Omit<SectionProps, "show">) {
             as="h2"
             editing={editing}
             value={cat.heading}
-            placeholder="Titre de la section"
+            placeholder="Titre de la catégorie"
             onCommit={(v) => patch((m) => { findCat(m, cat.id)!.heading = v; })}
             className="text-3xl md:text-4xl font-extrabold text-amber-900 mb-2"
             style={{ fontFamily: BALOO }}
@@ -303,7 +293,15 @@ function CategorySection(props: Omit<SectionProps, "show">) {
           )}
 
           <HighlightSection {...sectionProps} />
-          <ExtraColumnsRow {...sectionProps} />
+
+          {/* Sous-catégories under a grid category (e.g. Chips & Fruits below the
+              pizza grid). A columns category already shows these as its main
+              content, so this secondary block is only for grid categories. */}
+          {!isColumns && (cat.columns?.length || editing) ? (
+            <div className="mt-6">
+              <ColumnsLayout {...sectionProps} />
+            </div>
+          ) : null}
         </motion.div>
       </section>
     </>
@@ -365,7 +363,7 @@ function GridLayout({ category: cat, editing, uploading, patch, pickPhoto, remov
         </motion.div>
       ))}
       {editing && (
-        <AddCard onClick={() => patch((m) => { listOf(findCat(m, cat.id)!).push({ id: uid(), name: "Nouvel article", price: "" }); })} />
+        <AddCard onClick={() => patch((m) => { listOf(findCat(m, cat.id)!).push({ id: uid(), name: "Nouveau produit", price: "" }); })} />
       )}
     </div>
   );
@@ -407,7 +405,7 @@ function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPho
               />
             )}
             <EdText
-              as="h3" editing={editing} value={col.title} placeholder="Titre"
+              as="h3" editing={editing} value={col.title} placeholder="Titre de la sous-catégorie"
               onCommit={(v) => patch((m) => { findCat(m, cat.id)!.columns!.find((x) => x.id === col.id)!.title = v; })}
               className="text-lg font-extrabold mb-2" style={{ color: chrome.accent, fontFamily: BALOO }}
             />
@@ -431,10 +429,10 @@ function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPho
             </div>
             {editing && (
               <button
-                onClick={() => patch((m) => { findCat(m, cat.id)!.columns!.find((x) => x.id === col.id)!.items.push({ id: uid(), name: "Nouvel article", price: "" }); })}
+                onClick={() => patch((m) => { findCat(m, cat.id)!.columns!.find((x) => x.id === col.id)!.items.push({ id: uid(), name: "Nouveau produit", price: "" }); })}
                 className="mt-2 text-sm font-bold text-orange-600 hover:underline"
               >
-                + Ajouter une ligne
+                + Ajouter un produit
               </button>
             )}
             {(editing || col.footnote) && (
@@ -450,8 +448,8 @@ function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPho
       {editing && (
         <AddCard
           tall
-          onClick={() => patch((m) => { const c = findCat(m, cat.id)!; if (!c.columns) c.columns = []; c.columns.push({ id: uid(), title: "Nouvelle colonne", items: [] }); })}
-          label="+ Ajouter une colonne"
+          onClick={() => patch((m) => { const c = findCat(m, cat.id)!; if (!c.columns) c.columns = []; c.columns.push({ id: uid(), title: "Nouvelle sous-catégorie", items: [] }); })}
+          label="+ Ajouter une sous-catégorie"
         />
       )}
     </div>
@@ -603,13 +601,13 @@ function CategoryBar({ category: cat, index, total, patch }: { category: Categor
       <span className="ml-auto flex items-center gap-1">
         <MiniBtn disabled={index === 0} onClick={() => patch((m) => move(m.categories, index, -1))}>↑</MiniBtn>
         <MiniBtn disabled={index === total - 1} onClick={() => patch((m) => move(m.categories, index, 1))}>↓</MiniBtn>
-        <button onClick={() => { if (window.confirm(`Supprimer la catégorie « ${cat.label} » et tous ses articles ?`)) patch((m) => { m.categories = m.categories.filter((c) => c.id !== cat.id); }); }} className="text-xs font-bold text-red-500 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50">Supprimer la catégorie</button>
+        <button onClick={() => { if (window.confirm(`Supprimer la catégorie « ${cat.label} » et tous ses produits ?`)) patch((m) => { m.categories = m.categories.filter((c) => c.id !== cat.id); }); }} className="text-xs font-bold text-red-500 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50">Supprimer la catégorie</button>
       </span>
     </div>
   );
 }
 
-function AddCard({ onClick, label = "+ Ajouter un article", tall, className = "" }: { onClick: () => void; label?: string; tall?: boolean; className?: string }) {
+function AddCard({ onClick, label = "+ Ajouter un produit", tall, className = "" }: { onClick: () => void; label?: string; tall?: boolean; className?: string }) {
   return (
     <button
       onClick={onClick}
@@ -633,7 +631,7 @@ function AddCategory({ patch }: { patch: (fn: (m: Menu) => void) => void }) {
       <p className="font-extrabold text-amber-900" style={{ fontFamily: BALOO }}>Ajouter une catégorie</p>
       <div className="flex gap-3">
         <button onClick={() => add("grid")} className="px-5 py-2.5 rounded-xl border-2 border-dashed border-amber-300 font-bold text-amber-800 hover:bg-amber-50">🖼️ Grille (avec photos)</button>
-        <button onClick={() => add("columns")} className="px-5 py-2.5 rounded-xl border-2 border-dashed border-amber-300 font-bold text-amber-800 hover:bg-amber-50">📋 Colonnes (listes de prix)</button>
+        <button onClick={() => add("columns")} className="px-5 py-2.5 rounded-xl border-2 border-dashed border-amber-300 font-bold text-amber-800 hover:bg-amber-50">📋 Listes de prix</button>
       </div>
     </div>
   );
@@ -737,98 +735,6 @@ function HighlightSection({
         </div>
       </div>
     </motion.div>
-  );
-}
-
-/* ─────────────────────────── secondary cards row (Category.extraColumns) ─────────────────────────── */
-function ExtraColumnsRow({
-  category: cat, editing, uploading, patch, pickExtraColumnPhoto, removeExtraColumnPhoto, show,
-}: SectionProps) {
-  const chrome = chromeFor(cat.id);
-  const columns = cat.extraColumns ?? [];
-  if (!columns.length && !editing) return null;
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-      {columns.map((col, ci) => (
-        <motion.div
-          key={col.id}
-          initial={{ opacity: 0, y: 25 }}
-          animate={show ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 + ci * 0.1 }}
-          className="bg-white rounded-3xl overflow-hidden shadow-md shadow-amber-50 border border-amber-100 flex flex-col"
-        >
-          <PhotoSlot
-            image={col.image} label={col.title} emoji={col.emoji ?? cat.emoji} accent={chrome.accent}
-            editing={editing}
-            uploading={uploading[`${cat.id}|extraColumns|${col.id}`]}
-            onPick={(f) => pickExtraColumnPhoto(cat.id, col.id, f, col.image)}
-            onRemove={() => removeExtraColumnPhoto(cat.id, col.id, col.image)}
-            heightClass="h-28"
-          />
-          <div className="p-6 flex-1 flex flex-col">
-            {editing && (
-              <RowControls
-                index={ci} total={columns.length} inline
-                onUp={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!, ci, -1))}
-                onDown={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!, ci, 1))}
-                onDelete={() => {
-                  patch((m) => { const cols = findCat(m, cat.id)!.extraColumns!; cols.splice(cols.findIndex((x) => x.id === col.id), 1); });
-                  const imgs = [col.image, ...col.items.map((i) => i.image)].filter(Boolean) as string[];
-                  if (imgs.length) deletePhotosAction(imgs);
-                }}
-                label={col.title}
-              />
-            )}
-            <EdText
-              as="h3" editing={editing} value={col.title} placeholder="Titre"
-              onCommit={(v) => patch((m) => { findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.title = v; })}
-              className="text-lg font-extrabold mb-2" style={{ color: chrome.accent, fontFamily: BALOO }}
-            />
-            <div>
-              {col.items.map((item, ii) => (
-                <PriceRowEditable
-                  key={item.id}
-                  item={item} index={ii} total={col.items.length}
-                  editing={editing}
-                  onCommit={(field, v) => patch((m) => {
-                    const it = findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items.find((y) => y.id === item.id)!;
-                    if (field === "note") { if (v) it.note = v; else delete it.note; }
-                    else if (field === "desc") { if (v) it.desc = v; else delete it.desc; }
-                    else it[field] = v;
-                  })}
-                  onUp={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items, ii, -1))}
-                  onDown={() => patch((m) => move(findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items, ii, 1))}
-                  onDelete={() => patch((m) => { const l = findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items; l.splice(l.findIndex((y) => y.id === item.id), 1); })}
-                />
-              ))}
-            </div>
-            {editing && (
-              <button
-                onClick={() => patch((m) => { findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!.items.push({ id: uid(), name: "Nouvel article", price: "" }); })}
-                className="mt-2 text-sm font-bold text-orange-600 hover:underline"
-              >
-                + Ajouter une ligne
-              </button>
-            )}
-            {(editing || col.footnote) && (
-              <EdText
-                as="p" editing={editing} value={col.footnote ?? ""} placeholder="Note (optionnel)"
-                onCommit={(v) => patch((m) => { const c = findCat(m, cat.id)!.extraColumns!.find((x) => x.id === col.id)!; if (v) c.footnote = v; else delete c.footnote; })}
-                className="text-xs text-amber-800/45 mt-3 italic" style={{ fontFamily: NUNITO }}
-              />
-            )}
-          </div>
-        </motion.div>
-      ))}
-      {editing && (
-        <AddCard
-          tall
-          label="+ Ajouter une carte"
-          onClick={() => patch((m) => { const c = findCat(m, cat.id)!; if (!c.extraColumns) c.extraColumns = []; c.extraColumns.push({ id: uid(), title: "Nouvelle carte", items: [] }); })}
-        />
-      )}
-    </div>
   );
 }
 

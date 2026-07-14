@@ -148,7 +148,7 @@ export default function PracticalInfo() {
                   <span className="text-2xl">🏠</span>
                   <div>
                     <p className="font-bold text-amber-900" style={{ fontFamily: "var(--font-nunito)" }}>Bénouville</p>
-                    <p className="text-sm text-amber-700/55" style={{ fontFamily: "var(--font-nunito)" }}>Proche de l&rsquo;aéroport de Caen-Carpiquet</p>
+                    <p className="text-sm text-amber-800/70" style={{ fontFamily: "var(--font-nunito)" }}>70 Rue de la Plaine, 14970</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

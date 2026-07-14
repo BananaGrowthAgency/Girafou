@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BASE_INCLUSIONS,
-  RESERVATION_URL,
   type Formule,
 } from "@/lib/anniversaires";
 import { OptionPizzaBanner, ConditionsBlock } from "./AnniversairesShared";
@@ -56,7 +55,7 @@ function FondBranded({ f }: { f: Formule }) {
 
   const cta = (
     <a
-      href={RESERVATION_URL}
+      href={f.reserveUrl}
       target="_blank"
       rel="noopener noreferrer"
       className="btn-shine inline-block px-12 py-3.5 rounded-full text-white font-extrabold text-base sm:text-lg shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
@@ -236,7 +235,7 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
             <div className="rounded-3xl bg-white shadow-xl border border-amber-100 p-6 sm:p-8">
               <InclusionsList f={f} inView={listInView} />
               <a
-                href={RESERVATION_URL}
+                href={f.reserveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-shine mt-7 w-full py-4 rounded-2xl text-center text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-all duration-200 block"

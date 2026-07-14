@@ -14,7 +14,7 @@ const links: NavLink[] = [
   { label: "Accueil", href: "/" },
   {
     label: "Activités",
-    href: "/#activites",
+    href: "/activites",
     children: ACTIVITES.map((a) => ({ label: a.name, href: `/activites/${a.slug}` })),
   },
   { label: "Restauration", href: "/restauration" },
@@ -24,7 +24,15 @@ const links: NavLink[] = [
     href: "/anniversaires",
     children: FORMULES.map((f) => ({ label: f.name, href: `/anniversaires/${f.slug}` })),
   },
-  { label: "Infos pratiques", href: "/#infos" },
+  {
+    label: "Infos pratiques",
+    href: "/#infos",
+    children: [
+      { label: "F.A.Q", href: "/faq" },
+      { label: "Plan d'accès", href: "/#infos" },
+      { label: "Contactez-nous", href: "mailto:contact@girafou.com" },
+    ],
+  },
 ];
 
 // Boutique / réservation en ligne (Qweekle) — ouverture dans un nouvel onglet.
@@ -172,7 +180,7 @@ export default function Navbar() {
 
             {/* CTA */}
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-              <PhoneButton showNumber />
+              <PhoneButton showNumber={!scrolled} />
               <a
                 href={SHOP_URL}
                 target="_blank"

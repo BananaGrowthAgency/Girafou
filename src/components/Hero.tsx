@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useMounted } from "@/hooks/useMounted";
 
 function CountUp({ to, duration = 1800 }: { to: number; duration?: number }) {
@@ -240,13 +241,13 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.65 }}
           className="grid self-start gap-2.5 sm:flex sm:flex-row sm:self-auto sm:gap-3"
         >
-          <a
-            href="#activites"
+          <Link
+            href="/activites"
             className="btn-shine text-center px-5 py-2.5 text-sm sm:px-7 sm:py-3.5 sm:text-base rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-extrabold shadow-2xl shadow-orange-900/40 hover:-translate-y-1 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
             Découvrir les activités
-          </a>
+          </Link>
           <a
             href="#anniversaires"
             className="text-center px-5 py-2.5 text-sm sm:px-7 sm:py-3.5 sm:text-base rounded-2xl text-white font-extrabold hover:-translate-y-1 transition-all duration-200"

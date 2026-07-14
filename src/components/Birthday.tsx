@@ -3,10 +3,14 @@
 import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
+// slug -> page /anniversaires/{slug} ; reserveUrl -> lien Qweekle propre à la formule.
 const formulas = [
   {
     name: "P'tits Gourmands",
+    slug: "ptits-gourmands",
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
     sub: "Pizza en famille",
     horaire: "Matin uniquement · 10h–13h",
     color: "#FF5722",
@@ -17,6 +21,8 @@ const formulas = [
   },
   {
     name: "Formule du Lion",
+    slug: "formule-du-lion",
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-lion?lang=fr",
     sub: "L'anniversaire complet",
     horaire: "10h–13h ou 14h–18h",
     color: "#F5A623",
@@ -27,6 +33,9 @@ const formulas = [
   },
   {
     name: "Gira Fun Karaoké",
+    slug: "gira-fun-karaoke",
+    // 2 packs Qweekle (matin / après-midi) sans page commune -> catalogue anniversaires.
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires?lang=fr",
     sub: "Musique & fête",
     horaire: "10h–13h ou 14h–18h",
     color: "#7C3AED",
@@ -91,19 +100,21 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
 
         <div className="flex gap-3 mt-auto">
           <a
-            href="tel:0231537268"
+            href={f.reserveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-shine flex-1 py-3 rounded-2xl text-center text-white font-extrabold text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
             style={{ background: f.color, fontFamily: "var(--font-nunito)" }}
           >
             Je réserve
           </a>
-          <a
-            href="#infos"
+          <Link
+            href={`/anniversaires/${f.slug}`}
             className="flex-1 py-3 rounded-2xl text-center font-extrabold text-sm border-2 hover:scale-[1.02] transition-all duration-200"
             style={{ borderColor: f.color, color: f.color, fontFamily: "var(--font-nunito)" }}
           >
             En savoir +
-          </a>
+          </Link>
         </div>
       </div>
     </motion.div>

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import ChaussettesNote from "./ChaussettesNote";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -111,8 +112,6 @@ export default function NosOffres() {
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
   const resaRef = useRef(null);
   const resaInView = useInView(resaRef, { once: true, margin: "-60px" });
-  const noteRef = useRef(null);
-  const noteInView = useInView(noteRef, { once: true, margin: "-60px" });
 
   return (
     <>
@@ -120,12 +119,12 @@ export default function NosOffres() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/nos-offres/hero.jpg"
-            alt="Le parc Girafou"
+            src="/images/resto/carte-hero-trampoline.jpg"
+            alt="Enfant sautant sur le trampoline Girafou"
             fill
             priority
             sizes="100vw"
-            className="object-cover"
+            className="object-cover object-top"
           />
           {/* Overlay pour la lisibilité du texte */}
           <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(28,16,8,0.72) 0%, rgba(28,16,8,0.5) 55%, rgba(192,57,43,0.55) 100%)" }} />
@@ -188,25 +187,7 @@ export default function NosOffres() {
 
       {/* ── Note chaussettes ── */}
       <section className="relative pb-20 max-w-5xl mx-auto px-6" style={{ background: "#FFFDF5" }}>
-        <motion.div
-          ref={noteRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={noteInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-5 rounded-2xl p-5 sm:p-6 border-2 border-dashed"
-          style={{ borderColor: "#F5A623", background: "#FFF8E7" }}
-        >
-          <Image
-            src="/images/chaussettes-obligatoires.png"
-            alt="Chaussettes obligatoires"
-            width={90}
-            height={90}
-            className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 object-contain"
-          />
-          <p className="text-sm sm:text-base text-amber-900/75 leading-relaxed" style={{ fontFamily: NUNITO }}>
-            Pour accéder aux jeux vos enfants doivent être obligatoirement en chaussette. L&rsquo;accès pied-nus sera refusé pour des raisons d&rsquo;hygiènes et de bienêtre de tous. Merci de votre compréhension.
-          </p>
-        </motion.div>
+        <ChaussettesNote />
       </section>
     </>
   );

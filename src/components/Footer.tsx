@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 const parc = [
   { icon: "📍", text: "ZA Clos de la Hogue, 14970 Bénouville" },
@@ -112,7 +113,10 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
 
           {/* 4 — F.A.Q */}
           <div>
-            <h4 className="font-extrabold text-sm uppercase tracking-wider mb-4" style={{ fontFamily: "var(--font-nunito)", ...titleStyle }}>F.A.Q</h4>
+            {/* mt+mb compensés : F.A.Q descend un peu (plus proche de la liste) sans déplacer la liste. */}
+            <h4 className="mt-3 mb-1">
+              <Link href="/faq" className="text-white/85 hover:text-white text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>F.A.Q</Link>
+            </h4>
             <ul className="space-y-2">
               {infoLinks.map((item) => (
                 <li key={item.label}>

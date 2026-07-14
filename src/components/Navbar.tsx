@@ -18,7 +18,7 @@ const links: NavLink[] = [
     children: ACTIVITES.map((a) => ({ label: a.name, href: `/activites/${a.slug}` })),
   },
   { label: "Restauration", href: "/restauration" },
-  { label: "Nos offres", href: "/#anniversaires" },
+  { label: "Nos offres", href: "/nos-offres" },
   {
     label: "Anniversaires",
     href: "/anniversaires",
@@ -26,6 +26,44 @@ const links: NavLink[] = [
   },
   { label: "Infos pratiques", href: "/#infos" },
 ];
+
+// Boutique / réservation en ligne (Qweekle) — ouverture dans un nouvel onglet.
+const SHOP_URL =
+  "https://girafou.qweekle.com/shop/girafou?_gl=1*1xl4d5m*_gcl_au*NDAwNzYxOTg1LjE3ODIzNDQwMDQ.*_ga*MTQ5MTU5NjY1MC4xNzgyMzQ0MDA0*_ga_W96LVS4H2M*czE3ODQwMjYyMDMkbzEzJGcxJHQxNzg0MDI2ODA5JGo1OSRsMCRoNTMwMzE3NDg.";
+
+// Bouton téléphone : icône dans une pastille ronde + numéro optionnel (desktop).
+// Au survol, l'icône « sonne » (vibration) — l'effet est propagé depuis le lien via variants.
+function PhoneButton({ showNumber = false }: { showNumber?: boolean }) {
+  return (
+    <motion.a
+      href="tel:0231537268"
+      aria-label="Appeler le 02 31 53 72 68"
+      title="02 31 53 72 68"
+      initial="rest"
+      animate="rest"
+      whileHover="ring"
+      className="group flex items-center gap-2 text-amber-900/70 hover:text-orange-500 transition-colors"
+    >
+      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-500/10 group-hover:bg-orange-500/20 transition-colors">
+        <motion.svg
+          className="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden
+          variants={{ rest: { rotate: 0 }, ring: { rotate: [0, -18, 15, -13, 11, -8, 6, -3, 0] } }}
+          transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 0.25, ease: "easeInOut" }}
+        >
+          <path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+        </motion.svg>
+      </span>
+      {showNumber && (
+        <span className="text-sm font-bold whitespace-nowrap" style={{ fontFamily: "var(--font-nunito)" }}>
+          02 31 53 72 68
+        </span>
+      )}
+    </motion.a>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -134,32 +172,31 @@ export default function Navbar() {
 
             {/* CTA */}
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+              <PhoneButton showNumber />
               <a
-                href="tel:0231537268"
-                className="text-xs font-bold text-amber-900/50 hover:text-orange-500 transition-colors whitespace-nowrap"
-                style={{ fontFamily: "var(--font-nunito)" }}
-              >
-                02 31 53 72 68
-              </a>
-              <Link
-                href="/#anniversaires"
+                href={SHOP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-shine px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-white text-sm font-extrabold shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
                 Réserver
-              </Link>
+              </a>
             </div>
 
-            {/* Mobile burger */}
-            <button
-              className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px]"
-              onClick={() => { setMenuOpen(!menuOpen); setOpenSub(null); }}
-              aria-label="Menu"
-            >
+            {/* Mobile: téléphone (icône seule) + burger */}
+            <div className="md:hidden flex items-center gap-1">
+              <PhoneButton />
+              <button
+                className="w-10 h-10 flex flex-col items-center justify-center gap-[5px]"
+                onClick={() => { setMenuOpen(!menuOpen); setOpenSub(null); }}
+                aria-label="Menu"
+              >
               <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7.5px]" : ""}`} />
               <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
               <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7.5px]" : ""}`} />
-            </button>
+              </button>
+            </div>
           </nav>
         </div>
 
@@ -247,14 +284,16 @@ export default function Navbar() {
                     </div>
                   );
                 })}
-                <Link
-                  href="/#anniversaires"
+                <a
+                  href={SHOP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMenuOpen(false)}
                   className="btn-shine mt-1 px-6 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-white text-center font-extrabold shadow-lg"
                   style={{ fontFamily: "var(--font-nunito)" }}
                 >
                   Réserver maintenant
-                </Link>
+                </a>
               </div>
             </motion.div>
           )}

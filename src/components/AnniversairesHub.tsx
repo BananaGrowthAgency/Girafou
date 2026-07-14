@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FORMULES, CRENEAUX, RESERVATION_URL, type Formule } from "@/lib/anniversaires";
+import { FORMULES, CRENEAUX, type Formule } from "@/lib/anniversaires";
 import { OptionPizzaBanner, ConditionsBlock } from "./AnniversairesShared";
 
 const BALOO = "var(--font-baloo)";
@@ -40,7 +40,7 @@ function FormuleCard({ f, i, inView }: { f: Formule; i: number; inView: boolean 
 
         <div className="flex gap-3 mt-auto">
           <a
-            href={RESERVATION_URL}
+            href={f.reserveUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-shine flex-1 py-3 rounded-2xl text-center text-white font-extrabold text-sm shadow-md hover:scale-[1.02] transition-all duration-200"

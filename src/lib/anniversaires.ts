@@ -49,6 +49,8 @@ export const CHAUSSETTES =
 export type Formule = {
   slug: string;
   name: string;
+  // Lien de réservation Qweekle propre à la formule (sinon boutique générale).
+  reserveUrl: string;
   price: string; // par enfant
   tagline: string;
   // Ligne supplémentaire propre à la formule (au-delà de la base), si elle existe.
@@ -78,6 +80,7 @@ export const FORMULES: Formule[] = [
   {
     slug: "ptits-gourmands",
     name: "Formule P'tits Gourmands",
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
     price: "14,90 €",
     tagline: "L'anniversaire tout compris",
     optionPizza: true,
@@ -94,6 +97,7 @@ export const FORMULES: Formule[] = [
   {
     slug: "formule-du-lion",
     name: "Formule du Lion",
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-lion?lang=fr",
     price: "16,50 €",
     tagline: "La plus complète",
     extra: "Une boisson au choix : Coca, IceTea ou Oasis tropical",
@@ -113,6 +117,8 @@ export const FORMULES: Formule[] = [
   {
     slug: "gira-fun-karaoke",
     name: "Gira Fun Karaoké",
+    // 2 packs Qweekle (matin / après-midi) sans page commune -> catalogue anniversaires.
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires?lang=fr",
     price: "16,90 €",
     tagline: "Musique & fête",
     extra: "Une session de 30 min dans notre BOX KARAFUN — viens chanter tes chansons préférées avec tes copains !",

@@ -17,6 +17,18 @@ import { logout } from "@/app/admin/auth-actions";
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 
+// Le CMS ne gère l'emoji qu'au niveau section : les colonnes héritent donc du même.
+// Ce fallback par titre donne un emoji propre à certaines colonnes — basé sur le
+// titre, il marche aussi avec les données du Blob (prod) sans rien modifier.
+const COLUMN_EMOJI: Record<string, string> = {
+  chips: "🍟",
+  fruits: "🍎",
+  "goûter": "🍫",
+  gouter: "🍫",
+};
+const columnEmoji = (title: string): string | undefined =>
+  COLUMN_EMOJI[title.trim().toLowerCase()];
+
 /* ─────────────── mutation helpers (operate on a cloned draft) ─────────────── */
 const findCat = (m: Menu, id: string) => m.categories.find((c) => c.id === id);
 function listOf(cat: Category, colId?: string): MenuItem[] {
@@ -386,7 +398,7 @@ function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPho
           <PhotoSlot
             image={col.image}
             label={col.title}
-            emoji={col.emoji ?? cat.emoji}
+            emoji={col.emoji ?? columnEmoji(col.title) ?? cat.emoji}
             accent={chrome.accent}
             editing={editing}
             uploading={uploading[`${cat.id}|col|${col.id}`]}

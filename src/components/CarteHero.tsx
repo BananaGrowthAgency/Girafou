@@ -12,18 +12,22 @@ export default function CarteHero() {
     <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "56vh" }}>
       {/* Background photo */}
       <Image
-        src="/images/resto/carte-hero-trampoline.jpg"
-        alt="Enfant sautant sur le trampoline Girafou"
+        src="/images/nos-offres/hero.jpg"
+        alt="Le parc de jeux Girafou"
         fill
         priority
-        className="object-cover object-top"
+        className="object-cover object-bottom"
         sizes="100vw"
       />
 
       {/* Dark overlay for legibility */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(28,16,8,0.55) 0%, rgba(28,16,8,0.45) 45%, rgba(28,16,8,0.7) 100%)" }} />
-      {/* Bottom fade into the Boissons section's teal, for a continuous transition */}
-      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, #E0F2F1)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(28,16,8,0.55) 0%, rgba(28,16,8,0.45) 100%)" }} />
+      {/* Vague en bas vers la section carte (comme cette image l'avait sur Nos offres) */}
+      <div className="absolute bottom-0 left-0 right-0 pointer-events-none leading-[0]">
+        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[60px]">
+          <path d="M0,50 C360,90 720,10 1080,40 C1260,55 1380,45 1440,40 L1440,80 L0,80 Z" fill="#E0F2F1" />
+        </svg>
+      </div>
 
       <div ref={ref} className="relative max-w-4xl mx-auto px-6 py-20 text-center">
         <motion.div

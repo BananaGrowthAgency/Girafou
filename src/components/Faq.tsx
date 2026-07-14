@@ -159,26 +159,40 @@ function FaqItem({ item, isOpen, onToggle }: { item: QA; isOpen: boolean; onTogg
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="rounded-2xl bg-white shadow-sm border border-[#F5A623]/20 overflow-hidden"
+      className={`group rounded-2xl bg-white overflow-hidden border-2 transition-[border-color,box-shadow] duration-200 ${
+        isOpen
+          ? "border-[#F5A623]/60 shadow-lg"
+          : "border-[#F5A623]/15 shadow-sm hover:border-[#F5A623]/50 hover:shadow-md"
+      }`}
     >
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-4 text-left px-5 sm:px-6 py-4 sm:py-5"
+        className={`w-full flex items-center justify-between gap-4 text-left px-5 sm:px-6 py-4 sm:py-5 cursor-pointer transition-colors duration-200 ${
+          isOpen ? "bg-[#FFF9EF]" : "group-hover:bg-[#FFF9EF]"
+        }`}
       >
-        <span className="font-bold text-base sm:text-lg" style={{ fontFamily: "var(--font-nunito)", color: "var(--dark)" }}>
+        <span
+          className={`font-bold text-base sm:text-lg transition-colors duration-200 ${
+            isOpen ? "text-[#E8940A]" : "text-[#1C1008] group-hover:text-[#E8940A]"
+          }`}
+          style={{ fontFamily: "var(--font-nunito)" }}
+        >
           {item.q}
         </span>
-        <motion.span
-          animate={{ rotate: isOpen ? 45 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-white text-lg leading-none"
-          style={{ background: "var(--giraffe-yellow)" }}
-          aria-hidden
-        >
-          +
-        </motion.span>
+        {/* Wrapper (span simple) pour le scale au hover — le motion.span gère la rotation */}
+        <span className="flex-shrink-0 transition-transform duration-200 group-hover:scale-110">
+          <motion.span
+            animate={{ rotate: isOpen ? 45 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex w-8 h-8 rounded-full items-center justify-center text-white text-xl leading-none shadow-sm"
+            style={{ background: isOpen ? "#E8940A" : "var(--giraffe-yellow)" }}
+            aria-hidden
+          >
+            +
+          </motion.span>
+        </span>
       </button>
       {/* Toujours monté (indexable par les moteurs de recherche), collapsé via height. */}
       <motion.div
@@ -207,7 +221,7 @@ function FaqItem({ item, isOpen, onToggle }: { item: QA; isOpen: boolean; onTogg
 }
 
 export default function Faq() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 

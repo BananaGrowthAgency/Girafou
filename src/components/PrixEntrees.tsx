@@ -3,6 +3,7 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
+import ChaussettesNote from "./ChaussettesNote";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -13,10 +14,6 @@ const RED = "#C0392B";
 // enfants, confettis) sont détourées sur transparence, donc ce ton s'affiche
 // uniformément derrière elles, sans aucune bordure visible.
 const CREAM = "#FEF1D6";
-
-// Billetterie en ligne (Qweekle) — ouverture dans un nouvel onglet.
-const TICKETING_URL =
-  "https://girafou.qweekle.com/shop/girafou/ticketing?type=ticket&lang=fr&_gl=1*427gqt*_gcl_au*NDAwNzYxOTg1LjE3ODIzNDQwMDQ.*_ga*MTQ5MTU5NjY1MC4xNzgyMzQ0MDA0*_ga_W96LVS4H2M*czE3ODQwMjYyMDMkbzEzJGcxJHQxNzg0MDI2ODA5JGo1OSRsMCRoNTMwMzE3NDg.";
 
 type Tarif = { label: string; price: string };
 const tarifs: Tarif[] = [
@@ -111,7 +108,7 @@ export default function PrixEntrees() {
               <Image src="/images/prix-entrees/spots-tl.png" alt="" width={172} height={178} className="absolute top-0 left-0 w-16 sm:w-24 h-auto pointer-events-none select-none" />
               <Image src="/images/prix-entrees/spots-tr.png" alt="" width={234} height={132} className="absolute top-0 right-0 w-20 sm:w-28 h-auto pointer-events-none select-none" />
               {/* Girafe : relevée et centrée dans la zone des jetons, sans chevaucher le texte. Masquée sur mobile. */}
-              <Image src="/images/prix-entrees/giraffe.png" alt="" width={404} height={437} className="hidden sm:block absolute bottom-24 md:bottom-28 left-2 md:left-6 w-32 md:w-40 lg:w-48 h-auto pointer-events-none select-none" />
+              <Image src="/images/prix-entrees/giraffe-full.png" alt="" width={387} height={412} className="hidden sm:block absolute bottom-16 md:bottom-20 left-2 md:left-6 w-32 md:w-40 lg:w-48 h-auto pointer-events-none select-none" />
 
               <div className="relative px-6 sm:px-12 pt-12 sm:pt-14 pb-10 sm:pb-12">
                 {/* Prix des entrées */}
@@ -142,18 +139,6 @@ export default function PrixEntrees() {
                   Moyens de paiement acceptés : Espèces, Carte Bleue, Chèque vacances ANCV et ANCV Connect
                 </p>
               </div>
-            </div>
-
-            <div className="mt-8 flex justify-center">
-              <a
-                href={TICKETING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-10 py-3.5 rounded-2xl text-white text-lg font-extrabold shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200"
-                style={{ background: RED, fontFamily: BALOO }}
-              >
-                Réserver mes billets
-              </a>
             </div>
           </Reveal>
 
@@ -213,20 +198,7 @@ export default function PrixEntrees() {
           </Reveal>
 
           {/* ── Note chaussettes ── */}
-          <Reveal>
-            <div className="flex items-center gap-5 rounded-2xl p-5 sm:p-6 border-2 border-dashed" style={{ borderColor: "#F5A623", background: "#FFF8E7" }}>
-              <Image
-                src="/images/chaussettes-obligatoires.png"
-                alt="Chaussettes obligatoires"
-                width={90}
-                height={90}
-                className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 object-contain"
-              />
-              <p className="text-sm sm:text-base text-amber-900/75 leading-relaxed" style={{ fontFamily: NUNITO }}>
-                Pour accéder aux jeux, vos enfants doivent être obligatoirement en chaussette. L&rsquo;accès pied-nus sera refusé pour des raisons d&rsquo;hygiène et de bien-être de tous. Merci de votre compréhension.
-              </p>
-            </div>
-          </Reveal>
+          <ChaussettesNote />
 
         </div>
       </div>

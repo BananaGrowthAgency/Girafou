@@ -23,6 +23,17 @@ const infoLinks = [
   { label: "Conditions générales utilisateur", href: "/conditions-generales-utilisateur" },
 ];
 
+// Maillage interne : lien vers toutes les pages principales du site.
+const siteMap = [
+  { label: "Accueil", href: "/" },
+  { label: "Activités", href: "/activites" },
+  { label: "Restauration", href: "/restauration" },
+  { label: "Anniversaires", href: "/anniversaires" },
+  { label: "Nos offres", href: "/nos-offres" },
+  { label: "Infos pratiques", href: "/#infos" },
+  { label: "F.A.Q", href: "/faq" },
+];
+
 // Titulares del footer: amarillo con pequeño contorno negro para destacar sobre el rojo.
 const TITLE_YELLOW = "#FFD23F";
 const TITLE_OUTLINE =
@@ -86,7 +97,7 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
                 <li key={i} className="flex items-start gap-2 text-sm text-white/85 leading-snug min-w-0" style={{ fontFamily: "var(--font-nunito)" }}>
                   <span className="flex-shrink-0 text-[11px] mt-0.5">{item.icon}</span>
                   {item.href
-                    ? <a href={item.href} className="hover:text-white transition-colors break-words min-w-0">{item.text}</a>
+                    ? <a href={item.href} className="hover:text-[#FFD23F] transition-colors break-words min-w-0">{item.text}</a>
                     : <span>{item.text}</span>}
                 </li>
               ))}
@@ -104,7 +115,7 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
                 <li key={i} className="flex items-start gap-2 text-sm text-white/85 leading-snug min-w-0" style={{ fontFamily: "var(--font-nunito)" }}>
                   <span className="flex-shrink-0 text-[11px] mt-0.5">{item.icon}</span>
                   {item.href
-                    ? <a href={item.href} className="hover:text-white transition-colors break-words min-w-0">{item.text}</a>
+                    ? <a href={item.href} className="hover:text-[#FFD23F] transition-colors break-words min-w-0">{item.text}</a>
                     : <span>{item.text}</span>}
                 </li>
               ))}
@@ -115,12 +126,12 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
           <div>
             {/* mt+mb compensés : F.A.Q descend un peu (plus proche de la liste) sans déplacer la liste. */}
             <h4 className="mt-3 mb-1">
-              <Link href="/faq" className="text-white/85 hover:text-white text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>F.A.Q</Link>
+              <Link href="/faq" className="text-white/85 hover:text-[#FFD23F] text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>F.A.Q</Link>
             </h4>
             <ul className="space-y-2">
               {infoLinks.map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} className="text-white/85 hover:text-white text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
+                  <a href={item.href} className="text-white/85 hover:text-[#FFD23F] text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
                     {item.label}
                   </a>
                 </li>
@@ -144,6 +155,19 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
 
         </div>
 
+        {/* Plan du site — maillage interne */}
+        <nav aria-label="Plan du site" className="border-t border-white/8 pt-6 pb-5">
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            {siteMap.map((item) => (
+              <li key={item.label}>
+                <Link href={item.href} className="text-white/70 hover:text-[#FFD23F] text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         {/* Bottom bar */}
         <div className="border-t border-white/8 pt-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/60 text-xs" style={{ fontFamily: "var(--font-nunito)" }}>
@@ -160,7 +184,7 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
               { label: "Mentions légales", href: "/mentions-legales" },
               { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
             ].map((l) => (
-              <a key={l.href} href={l.href} className="text-white/70 hover:text-white text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{l.label}</a>
+              <a key={l.href} href={l.href} className="text-white/70 hover:text-[#FFD23F] text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{l.label}</a>
             ))}
           </div>
         </div>

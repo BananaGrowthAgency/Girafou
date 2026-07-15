@@ -17,10 +17,10 @@ const plage = [
 
 
 const infoLinks = [
-  { label: "Conditions générales de ventes", href: "#" },
-  { label: "Contactez-nous", href: "mailto:contact@girafou.com" },
-  { label: "Plan d'accès", href: "/#infos" },
-  { label: "Conditions générales utilisateur", href: "#" },
+  { label: "Conditions générales de ventes", href: "/conditions-generales-de-ventes" },
+  { label: "Contactez-nous", href: "/contactez-nous" },
+  { label: "Plan d'accès", href: "/plan-dacces" },
+  { label: "Conditions générales utilisateur", href: "/conditions-generales-utilisateur" },
 ];
 
 // Titulares del footer: amarillo con pequeño contorno negro para destacar sobre el rojo.
@@ -156,8 +156,11 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
             </a>
           </div>
           <div className="flex gap-4">
-            {["Mentions légales", "Politique de confidentialité"].map((l) => (
-              <a key={l} href="#" className="text-white/70 hover:text-white text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{l}</a>
+            {[
+              { label: "Mentions légales", href: "/mentions-legales" },
+              { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+            ].map((l) => (
+              <a key={l.href} href={l.href} className="text-white/70 hover:text-white text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{l.label}</a>
             ))}
           </div>
         </div>

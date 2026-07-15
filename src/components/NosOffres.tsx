@@ -119,12 +119,12 @@ export default function NosOffres() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/resto/carte-hero-trampoline.jpg"
-            alt="Enfant sautant sur le trampoline Girafou"
+            src="/images/nos-offres-hero/hero.png"
+            alt="Enfant sur une moto au parc Girafou"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-top"
+            className="object-cover object-center"
           />
           {/* Overlay pour la lisibilité du texte */}
           <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(28,16,8,0.72) 0%, rgba(28,16,8,0.5) 55%, rgba(192,57,43,0.55) 100%)" }} />

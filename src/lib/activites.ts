@@ -208,7 +208,7 @@ export const ACTIVITES: Activite[] = [
     ],
     rules: [
       "Bien attendre chacun son tour.",
-      "Pour la luge : pense à prendre ta luge avant de te lancer sur les rouleaux 😉",
+      "Pour la luge : pense à prendre ta luge avant de te lancer sur les rouleaux.",
     ],
     image: "/images/activites/toboggan.jpg",
     accent: "#00ACC1",

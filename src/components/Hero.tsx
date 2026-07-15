@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
-import Image from "next/image";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useMounted } from "@/hooks/useMounted";
+import YouTubeHeroBg from "./YouTubeHeroBg";
 
 function CountUp({ to, duration = 1800 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -27,6 +27,9 @@ function CountUp({ to, duration = 1800 }: { to: number; duration?: number }) {
   return <span ref={ref}>{count.toLocaleString("fr-FR")}</span>;
 }
 
+// Conservé pour un usage futur (autres sections) — plus utilisé dans le hero
+// depuis le passage à la vidéo de fond.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const slides: { src: string; flip?: boolean }[] = [
   { src: "/images/slider/slider-1.jpg" },
   { src: "/images/slider/slider-2.png" },
@@ -90,8 +93,6 @@ const stats = [
   },
 ];
 
-const INTERVAL = 5000;
-
 export default function Hero() {
   const mounted = useMounted();
   const ref = useRef<HTMLDivElement>(null);
@@ -103,47 +104,14 @@ export default function Hero() {
   const statsRef = useRef<HTMLDivElement>(null);
   const statsInView = useInView(statsRef, { once: true, margin: "-40px" });
 
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
-
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(next, INTERVAL);
-    return () => clearInterval(id);
-  }, [paused, next]);
-
   return (
     <section
       ref={ref}
       className="relative w-full overflow-visible"
       style={{ height: "100svh", minHeight: 560 }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
     >
-      {/* ── Slider images ── */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={current}
-          initial={mounted ? { opacity: 0, scale: 1.04 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.9, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={slides[current].src}
-            alt={`Girafou slide ${current + 1}`}
-            fill
-            priority={current === 0}
-            className="object-cover object-center"
-            sizes="100vw"
-            quality={85}
-            style={slides[current].flip ? { transform: "scaleX(-1)" } : undefined}
-          />
-        </motion.div>
-      </AnimatePresence>
+      {/* ── Fond vidéo YouTube (boucle 0:03 → 0:38) ── */}
+      <YouTubeHeroBg />
 
       {/* ── Dark gradient overlay ── */}
       <div
@@ -257,18 +225,6 @@ export default function Hero() {
           </a>
         </motion.div>
       </motion.div>
-
-      {/* ── Progress bar ── */}
-      {!paused && (
-        <motion.div
-          key={current}
-          className="absolute bottom-0 left-0 h-[3px] z-30 origin-left"
-          style={{ background: "linear-gradient(to right, #F5A623, #FF5722)" }}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: INTERVAL / 1000, ease: "linear" }}
-        />
-      )}
 
       {/* ── STAT CARDS — overlap bottom of hero ── */}
       <div className="absolute bottom-10 left-0 right-0 z-30 translate-y-1/2 px-6 lg:px-10 max-w-7xl mx-auto">

@@ -4,100 +4,69 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ACTIVITES,
-  RESERVATION_URL,
-  CHAUSSETTES,
-  type Activite,
-} from "@/lib/activites";
+import { ACTIVITES, RESERVATION_URL, type Activite } from "@/lib/activites";
+import ChaussettesNote from "./ChaussettesNote";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 
-/* ── Bloc « Bon à savoir » : consignes propres à l'attraction + chaussettes ── */
-function InfosPratiques({ a }: { a: Activite }) {
+/* ── Icônes SVG (pas d'emojis) ── */
+const IconChevron = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="m9 18 6-6-6-6" /></svg>
+);
+const IconArrowLeft = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
+);
+const IconUser = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6" /></svg>
+);
+const IconTicket = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 6 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-6Z" /><path d="M13 5v2M13 17v2M13 11v2" /></svg>
+);
+const IconInfo = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><circle cx="12" cy="12" r="9" /><path d="M12 16v-4M12 8h.01" /></svg>
+);
+const IconCheck = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="M20 6 9 17l-5-5" /></svg>
+);
+const IconClock = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+);
+
+// Horaires du parc — communs à toutes les attractions.
+const HORAIRES = [
+  { period: "Périodes scolaires", days: "Mercredi, Samedi, Dimanche & jours fériés", time: "10h00 – 19h00" },
+  { period: "Vacances scolaires (Zone B & C)", days: "Tous les jours", time: "10h00 – 19h00" },
+];
+
+/* ── Bandeau de faits clés (âge / accès / à savoir) ── */
+function QuickFacts({ a }: { a: Activite }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const rules = [...a.rules, CHAUSSETTES];
-
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const facts = [
+    { icon: <IconUser className="w-5 h-5" />, label: "Âge", value: a.age ?? "Tous les âges" },
+    { icon: <IconTicket className="w-5 h-5" />, label: "Accès", value: a.payant ? "Payant en supplément" : "Inclus dans l'entrée" },
+    a.ageDetail
+      ? { icon: <IconInfo className="w-5 h-5" />, label: "À savoir", value: a.ageDetail }
+      : { icon: <IconCheck className="w-5 h-5" />, label: "Sécurité", value: "Chaussettes obligatoires" },
+  ];
   return (
-    <div ref={ref} className="max-w-4xl mx-auto flex flex-col gap-6">
-      {/* Chaussettes — badge flottant + rappel */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        className="relative flex items-center gap-4 rounded-2xl bg-white border border-amber-100 shadow-md p-5 lg:pl-24"
-      >
+    <div ref={ref} className="grid sm:grid-cols-3 gap-3 sm:gap-4">
+      {facts.map((f, i) => (
         <motion.div
-          className="hidden lg:block absolute pointer-events-none select-none z-10"
-          style={{ left: "-1.9rem", top: "-2rem" }}
-        >
-          <motion.div
-            initial={{ opacity: 0, x: -30, scale: 0.9 }}
-            animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <motion.div
-              animate={{ y: [0, -10, -2, -8, 0], rotateZ: [0, 2, 0, -2, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              style={{ perspective: 900, transformStyle: "preserve-3d" }}
-            >
-              <motion.div
-                animate={{ rotateY: [0, 8, 0, -8, 0], rotateX: [0, 4, 6, 2, 0], scale: [1, 1.04, 1.01, 1.03, 1] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/chaussettes-obligatoires.png"
-                  alt="Chaussettes obligatoires"
-                  style={{ height: "clamp(66px, 7vw, 92px)", width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(0,0,0,0.18))" }}
-                />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        {/* Chaussettes — sticker flottant (mobile) */}
-        <motion.div
-          className="lg:hidden flex-shrink-0"
-          animate={{ y: [0, -8, 0], rotateZ: [0, 2, 0, -2, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/chaussettes-obligatoires.png"
-            alt="Chaussettes obligatoires"
-            style={{ height: 56, width: "auto", display: "block", filter: "drop-shadow(-2px 6px 10px rgba(0,0,0,0.18))" }}
-          />
-        </motion.div>
-        <div>
-          <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>Chaussettes obligatoires</p>
-          <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{CHAUSSETTES}</p>
-        </div>
-      </motion.div>
-
-      {/* Consignes de l'attraction */}
-      {a.rules.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          key={i}
+          initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="rounded-3xl px-7 py-7 text-white shadow-xl"
-          style={{ background: a.gradient }}
+          transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-start gap-3 rounded-2xl bg-white shadow-md border border-amber-100 p-4"
         >
-          <p className="font-extrabold text-lg mb-3" style={{ fontFamily: BALOO }}>Le règlement de l&apos;attraction</p>
-          <ul className="flex flex-col gap-2.5">
-            {a.rules.map((c, i) => (
-              <li key={i} className="flex items-start gap-2.5 text-sm leading-snug text-white/90" style={{ fontFamily: NUNITO }}>
-                <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-white/70" />
-                {c}
-              </li>
-            ))}
-          </ul>
+          <span className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: a.accentLight, color: a.accent }}>{f.icon}</span>
+          <div className="min-w-0">
+            <p className="text-[11px] font-extrabold uppercase tracking-wider" style={{ color: a.accent, fontFamily: NUNITO }}>{f.label}</p>
+            <p className="text-sm font-bold text-amber-900/85 leading-snug" style={{ fontFamily: NUNITO }}>{f.value}</p>
+          </div>
         </motion.div>
-      )}
+      ))}
     </div>
   );
 }
@@ -107,7 +76,6 @@ function AutresActivites({ current }: { current: Activite }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const others = ACTIVITES.filter((a) => a.slug !== current.slug);
-
   return (
     <div ref={ref}>
       <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-amber-900 mb-8" style={{ fontFamily: BALOO }}>
@@ -115,22 +83,13 @@ function AutresActivites({ current }: { current: Activite }) {
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {others.map((a, i) => (
-          <motion.div
-            key={a.slug}
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.45, delay: i * 0.04 }}
-          >
-            <Link
-              href={`/activites/${a.slug}`}
-              className="group block rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="relative h-24 sm:h-28 overflow-hidden" style={{ background: a.accentLight }}>
+          <motion.div key={a.slug} initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.45, delay: i * 0.04 }}>
+            <Link href={`/activites/${a.slug}`} className="group block rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="relative h-28 sm:h-32 overflow-hidden" style={{ background: a.accentLight }}>
                 <Image src={a.image} alt={a.name} fill sizes="(max-width: 768px) 45vw, 22vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                <span className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-white text-[10px] font-extrabold shadow" style={{ background: a.tagBg, fontFamily: NUNITO }}>{a.tag}</span>
               </div>
-              <p className="px-3 py-2.5 text-sm font-extrabold leading-tight" style={{ color: a.accent, fontFamily: BALOO }}>
-                {a.name}
-              </p>
+              <p className="px-3 py-2.5 text-sm font-extrabold leading-tight group-hover:translate-x-0.5 transition-transform" style={{ color: a.accent, fontFamily: BALOO }}>{a.name}</p>
             </Link>
           </motion.div>
         ))}
@@ -142,143 +101,151 @@ function AutresActivites({ current }: { current: Activite }) {
 export default function ActiviteDetail({ activite: a }: { activite: Activite }) {
   const descRef = useRef(null);
   const descInView = useInView(descRef, { once: true, margin: "-80px" });
+  const rulesRef = useRef(null);
+  const rulesInView = useInView(rulesRef, { once: true, margin: "-80px" });
 
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "58vh" }}>
-        <Image
-          src={a.image}
-          alt={`${a.name} — parc de jeux Girafou`}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0" style={{ background: a.gradient, opacity: 0.5, mixBlendMode: "multiply" }} />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(20,10,4,0.42) 0%, rgba(20,10,4,0.28) 45%, rgba(20,10,4,0.7) 100%)" }} />
-        <div className="absolute inset-0 spots-pattern opacity-[0.06] pointer-events-none" />
+      <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "62vh" }}>
+        <Image src={a.image} alt={`${a.name} — parc de jeux Girafou`} fill priority sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0" style={{ background: a.gradient, opacity: 0.45, mixBlendMode: "multiply" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(20,10,4,0.45) 0%, rgba(20,10,4,0.3) 45%, rgba(20,10,4,0.78) 100%)" }} />
 
-        <div className="relative py-16">
+        <div className="relative py-20 w-full">
           <div className="relative max-w-4xl mx-auto px-6 text-center">
             {/* Fil d'ariane */}
-            <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-white/75 text-xs sm:text-sm font-bold mb-5" style={{ fontFamily: NUNITO }}>
+            <div className="flex items-center justify-center gap-1.5 text-white/75 text-xs sm:text-sm font-bold mb-5" style={{ fontFamily: NUNITO }}>
               <Link href="/activites" className="hover:text-white transition-colors">Activités</Link>
-              <span>›</span>
+              <IconChevron className="w-3.5 h-3.5" />
               <span className="text-white">{a.name}</span>
             </div>
 
             {/* Pastilles */}
             <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
-              <span className="px-3 py-1 rounded-full text-white text-xs font-extrabold shadow-md" style={{ background: a.tagBg, fontFamily: NUNITO }}>
-                {a.tag}
-              </span>
-              {a.age && (
-                <span className="px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold backdrop-blur-sm" style={{ fontFamily: NUNITO }}>
-                  {a.age}
-                </span>
-              )}
-              {a.payant && (
-                <span className="px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold backdrop-blur-sm" style={{ fontFamily: NUNITO }}>
-                  Payant en supplément
-                </span>
-              )}
+              <span className="px-3 py-1 rounded-full text-white text-xs font-extrabold shadow-md" style={{ background: a.tagBg, fontFamily: NUNITO }}>{a.tag}</span>
+              {a.age && <span className="px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold backdrop-blur-sm border border-white/20" style={{ fontFamily: NUNITO }}>{a.age}</span>}
+              {a.payant && <span className="px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold backdrop-blur-sm border border-white/20" style={{ fontFamily: NUNITO }}>Payant en supplément</span>}
             </div>
 
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 leading-tight drop-shadow-md" style={{ fontFamily: BALOO }}>
               {a.name}
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow max-w-xl mx-auto" style={{ fontFamily: NUNITO }}>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow max-w-xl mx-auto mb-7" style={{ fontFamily: NUNITO }}>
               {a.tagline}
             </motion.p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Description ── */}
-      <section ref={descRef} className="relative py-16 px-6">
-        <div className="max-w-4xl mx-auto grid md:grid-cols-[1.6fr_1fr] gap-6 items-start">
-          {/* Texte */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={descInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55 }}
-            className="rounded-3xl p-7 sm:p-9 shadow-xl"
-            style={{ background: a.accentLight }}
-          >
-            <p className="text-xs font-extrabold uppercase tracking-widest mb-4" style={{ color: a.accent, fontFamily: NUNITO }}>
-              L&apos;attraction
-            </p>
-            <div className="flex flex-col gap-4">
-              {a.description.map((p, i) => (
-                <p key={i} className="text-[17px] sm:text-lg leading-relaxed text-amber-900/80 font-semibold" style={{ fontFamily: NUNITO }}>
-                  {p}
-                </p>
-              ))}
-            </div>
-            <a
+            <motion.a
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.22 }}
               href={RESERVATION_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-shine mt-7 inline-block px-10 py-3.5 rounded-full text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
+              className="btn-shine inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl text-white font-extrabold shadow-2xl shadow-black/30 hover:-translate-y-0.5 transition-transform duration-200"
               style={{ background: a.gradient, fontFamily: NUNITO }}
             >
-              Je réserve
-            </a>
-          </motion.div>
+              <IconTicket className="w-5 h-5" /> Je réserve
+            </motion.a>
+          </div>
+        </div>
 
-          {/* Carte infos */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={descInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.1 }}
-            className="rounded-3xl bg-white border-2 shadow-lg p-6 flex flex-col gap-4"
-            style={{ borderColor: a.accent + "33" }}
-          >
-            <p className="text-sm font-extrabold" style={{ color: a.accent, fontFamily: BALOO }}>Bon à savoir</p>
-            <ul className="flex flex-col gap-3.5">
-              {(a.age || a.ageDetail) && (
-                <li className="flex items-start gap-3">
-                  <span className="flex-shrink-0 text-lg">👶</span>
-                  <span className="text-sm text-amber-900/75 leading-snug" style={{ fontFamily: NUNITO }}>
-                    {a.age && <span className="font-extrabold text-amber-900">{a.age}. </span>}
-                    {a.ageDetail}
-                  </span>
-                </li>
-              )}
-              <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 text-lg">🎟️</span>
-                <span className="text-sm text-amber-900/75 leading-snug" style={{ fontFamily: NUNITO }}>
-                  {a.payant
-                    ? <><span className="font-extrabold text-amber-900">Payant en supplément</span> (hors entrée au parc).</>
-                    : <><span className="font-extrabold text-amber-900">Inclus</span> dans l&apos;entrée au parc.</>}
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 text-lg">🧦</span>
-                <span className="text-sm text-amber-900/75 leading-snug" style={{ fontFamily: NUNITO }}>
-                  <span className="font-extrabold text-amber-900">Chaussettes obligatoires</span> pour accéder aux jeux.
-                </span>
-              </li>
-            </ul>
-          </motion.div>
+        {/* Wave divider */}
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none leading-[0]">
+          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[56px]">
+            <path d="M0,50 C360,90 720,10 1080,40 C1260,55 1380,45 1440,40 L1440,80 L0,80 Z" fill="#FFFDF5" />
+          </svg>
         </div>
       </section>
 
-      {/* ── Bon à savoir / règlement ── */}
-      <section className="relative pb-16 px-6">
-        <InfosPratiques a={a} />
-      </section>
+      <div style={{ background: "#FFFDF5" }}>
+        <div className="max-w-4xl mx-auto px-6 py-14 space-y-12">
+
+          {/* ── Faits clés ── */}
+          <QuickFacts a={a} />
+
+          {/* ── Description ── */}
+          <motion.div
+            ref={descRef}
+            initial={{ opacity: 0, y: 24 }}
+            animate={descInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55 }}
+            className="relative rounded-3xl bg-white shadow-lg border border-amber-100 overflow-hidden"
+          >
+            <div className="h-1.5 w-full" style={{ background: a.gradient }} />
+            <div className="p-7 sm:p-10">
+              <p className="text-xs font-extrabold uppercase tracking-widest mb-4" style={{ color: a.accent, fontFamily: NUNITO }}>L&apos;attraction</p>
+              <div className="flex flex-col gap-4">
+                {a.description.map((p, i) => (
+                  <p key={i} className="text-[17px] sm:text-lg leading-relaxed text-amber-900/80 font-medium" style={{ fontFamily: NUNITO }}>{p}</p>
+                ))}
+              </div>
+              <a
+                href={RESERVATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-shine mt-8 inline-flex items-center gap-2 px-9 py-3.5 rounded-2xl text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
+                style={{ background: a.gradient, fontFamily: NUNITO }}
+              >
+                <IconTicket className="w-5 h-5" /> Je réserve
+              </a>
+            </div>
+          </motion.div>
+
+          {/* ── Règlement de l'attraction (checklist) ── */}
+          {a.rules.length > 0 && (
+            <motion.div
+              ref={rulesRef}
+              initial={{ opacity: 0, y: 24 }}
+              animate={rulesInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+              className="rounded-3xl px-7 py-8 text-white shadow-xl"
+              style={{ background: a.gradient }}
+            >
+              <p className="font-extrabold text-lg sm:text-xl mb-5" style={{ fontFamily: BALOO }}>Le règlement de l&apos;attraction</p>
+              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-3.5">
+                {a.rules.map((c, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm sm:text-[15px] leading-snug text-white/95" style={{ fontFamily: NUNITO }}>
+                    <span className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center"><IconCheck className="w-3.5 h-3.5" /></span>
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
+          {/* ── Horaires d'ouverture ── */}
+          <div className="rounded-3xl bg-white shadow-lg border border-amber-100 p-6 sm:p-8">
+            <h3 className="flex items-center gap-2.5 text-lg sm:text-xl font-extrabold mb-5" style={{ fontFamily: BALOO, color: a.accent }}>
+              <IconClock className="w-5 h-5" /> Horaires d&rsquo;ouverture
+            </h3>
+            <ul className="divide-y divide-amber-900/10">
+              {HORAIRES.map((h, i) => (
+                <li key={i} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+                  <div className="min-w-0">
+                    <p className="font-bold text-sm sm:text-base text-amber-900/85" style={{ fontFamily: NUNITO }}>{h.period}</p>
+                    <p className="text-xs sm:text-sm text-amber-900/55" style={{ fontFamily: NUNITO }}>{h.days}</p>
+                  </div>
+                  <span className="flex-shrink-0 font-extrabold text-sm sm:text-base whitespace-nowrap" style={{ color: a.accent, fontFamily: BALOO }}>{h.time}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ── Chaussettes (composant partagé) ── */}
+          <ChaussettesNote />
+
+        </div>
+      </div>
 
       {/* ── Autres activités ── */}
-      <section className="relative pb-20 max-w-5xl mx-auto px-6">
+      <section className="relative pb-8 max-w-5xl mx-auto px-6" style={{ background: "#FFFDF5" }}>
         <AutresActivites current={a} />
       </section>
 
       {/* ── Retour au hub ── */}
-      <section className="relative pb-20 max-w-3xl mx-auto px-6 text-center">
+      <section className="relative pb-20 pt-10 max-w-3xl mx-auto px-6 text-center" style={{ background: "#FFFDF5" }}>
         <Link href="/activites" className="inline-flex items-center gap-2 text-sm font-extrabold text-amber-700 hover:text-amber-900 transition-colors" style={{ fontFamily: NUNITO }}>
-          ← Voir toutes les activités
+          <IconArrowLeft className="w-4 h-4" /> Voir toutes les activités
         </Link>
       </section>
     </>

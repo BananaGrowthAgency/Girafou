@@ -29,8 +29,8 @@ const links: NavLink[] = [
     href: "/#infos",
     children: [
       { label: "F.A.Q", href: "/faq" },
-      { label: "Plan d'accès", href: "/#infos" },
-      { label: "Contactez-nous", href: "mailto:contact@girafou.com" },
+      { label: "Plan d'accès", href: "/plan-dacces" },
+      { label: "Contactez-nous", href: "/contactez-nous" },
     ],
   },
 ];

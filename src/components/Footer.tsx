@@ -149,7 +149,9 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
           <div>
             <h4 className="font-extrabold text-xs uppercase tracking-wider mb-4" style={{ fontFamily: "var(--font-nunito)", ...titleStyle }}>Partenaires</h4>
             <div className="flex flex-col gap-4 items-start">
-              <Image src="/images/partenaires/space.png" alt="Space" width={110} height={22} className="h-5 w-auto opacity-65 hover:opacity-100 transition-opacity" />
+              <a href="https://space-association.fr/" target="_blank" rel="noopener noreferrer">
+                <Image src="/images/partenaires/space.png" alt="Space" width={110} height={22} className="h-5 w-auto opacity-65 hover:opacity-100 transition-opacity" />
+              </a>
               <a href="https://www.normandie-qualite-tourisme.com/" target="_blank" rel="noopener noreferrer">
                 <Image src="/images/partenaires/normandie-qualite-tourisme.png" alt="Normandie Qualité Tourisme" width={130} height={44} className="h-11 w-auto opacity-65 hover:opacity-100 transition-opacity" />
               </a>

@@ -29,6 +29,28 @@ const COLUMN_EMOJI: Record<string, string> = {
 const columnEmoji = (title: string): string | undefined =>
   COLUMN_EMOJI[title.trim().toLowerCase()];
 
+// Photos par défaut de certaines colonnes (fichiers statiques du repo), utilisées
+// quand la donnée (Blob) n'a pas de photo — même principe que COLUMN_EMOJI.
+// Si le manager téléverse une photo via le CMS, elle prend le dessus.
+const COLUMN_IMAGE: Record<string, string> = {
+  "goûter": "/images/resto/gouter/gouter.jpg",
+  gouter: "/images/resto/gouter/gouter.jpg",
+  confiseries: "/images/resto/gouter/confiseries.jpg",
+  "crêpes": "/images/resto/sucre/crepes.jpg",
+  crepes: "/images/resto/sucre/crepes.jpg",
+  gaufres: "/images/resto/sucre/gaufres.jpg",
+};
+const columnImage = (title: string): string | undefined =>
+  COLUMN_IMAGE[title.trim().toLowerCase()];
+
+// Photo par défaut du bandeau promo (highlight) de la catégorie Goûter.
+const highlightImage = (label: string): string | undefined => {
+  const l = label.trim().toLowerCase();
+  return l.startsWith("goûter") || l.startsWith("gouter")
+    ? "/images/resto/gouter/formule-gouter.jpg"
+    : undefined;
+};
+
 /* ─────────────── mutation helpers (operate on a cloned draft) ─────────────── */
 const findCat = (m: Menu, id: string) => m.categories.find((c) => c.id === id);
 function listOf(cat: Category, colId?: string): MenuItem[] {
@@ -396,7 +418,7 @@ function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPho
           className="bg-white rounded-3xl overflow-hidden shadow-md shadow-amber-50 border border-amber-100"
         >
           <PhotoSlot
-            image={col.image}
+            image={col.image ?? columnImage(col.title)}
             label={col.title}
             emoji={col.emoji ?? columnEmoji(col.title) ?? cat.emoji}
             accent={chrome.accent}
@@ -708,7 +730,7 @@ function HighlightSection({
       style={{ background: chrome.highlightGradient ?? DEFAULT_HIGHLIGHT_GRADIENT }}
     >
       <PhotoSlot
-        image={h.image} label={h.badge || "Offre"} emoji={cat.emoji} accent="#ffffff"
+        image={h.image ?? highlightImage(cat.label)} label={h.badge || "Offre"} emoji={cat.emoji} accent="#ffffff"
         editing={editing}
         uploading={uploading[`${cat.id}|highlight`]}
         onPick={(f) => pickHighlightPhoto(cat.id, f, h.image)}

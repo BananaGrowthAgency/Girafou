@@ -117,6 +117,7 @@ export const girafouSeed: Menu = {
         {
           id: "crepes",
           title: "Crêpes",
+          image: "/images/resto/sucre/crepes.jpg",
           items: [
             { id: "cr-sucre", name: "Crêpe sucre", price: "2,50 €" },
             { id: "cr-cbs", name: "Crêpe caramel beurre salé", price: "3,00 €" },
@@ -128,6 +129,7 @@ export const girafouSeed: Menu = {
         {
           id: "gaufres",
           title: "Gaufres",
+          image: "/images/resto/sucre/gaufres.jpg",
           items: [
             { id: "ga-sucre", name: "Gaufre sucre", price: "3,00 €" },
             { id: "ga-cbs", name: "Gaufre caramel beurre salé", price: "3,50 €" },

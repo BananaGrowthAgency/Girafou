@@ -365,6 +365,7 @@ function GridLayout({ category: cat, editing, uploading, patch, pickPhoto, remov
             uploading={uploading[`${cat.id}||${item.id}`]}
             onPick={(f) => pickPhoto(cat.id, undefined, item.id, f, item.image)}
             onRemove={() => removePhoto(cat.id, undefined, item.id, item.image)}
+            heightClass={cat.label.trim().toLowerCase().startsWith("glace") ? "h-36" : "h-36 md:h-52"}
           />
           <div className="p-4 flex flex-col gap-1 flex-1">
             <EdText
@@ -426,7 +427,7 @@ function ColumnsLayout({ category: cat, editing, uploading, patch, pickColumnPho
             uploading={uploading[`${cat.id}|col|${col.id}`]}
             onPick={(f) => pickColumnPhoto(cat.id, col.id, f, col.image)}
             onRemove={() => removeColumnPhoto(cat.id, col.id, col.image)}
-            heightClass="h-32"
+            heightClass="h-32 md:h-52"
           />
           <div className="p-6">
             {editing && (
@@ -735,7 +736,7 @@ function HighlightSection({
         uploading={uploading[`${cat.id}|highlight`]}
         onPick={(f) => pickHighlightPhoto(cat.id, f, h.image)}
         onRemove={() => removeHighlightPhoto(cat.id, h.image)}
-        heightClass="h-32"
+        heightClass="h-32 md:h-52"
       />
       <div className="p-6 md:p-7">
         {editing && (

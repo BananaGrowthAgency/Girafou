@@ -1,4 +1,4 @@
-const announcementText = "–20% sur toutes les entrées à partir du 2ème enfant, mercredis et dimanches ⚡️🥰";
+const announcementText = "🍦 OFFRE ÉTÉ : Glace enfant offerte pour toute entrée entre 10h et 12h !";
 const repeated = Array(10).fill(announcementText);
 
 export default function AnnouncementBar() {

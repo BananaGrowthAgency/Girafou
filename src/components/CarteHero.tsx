@@ -3,6 +3,11 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
+import { NOURRITURE_EXCEPTIONS, NOURRITURE_TITLE } from "@/lib/regles";
+import { GRADIENT_TEXT_NO_OUTLINE, TEXT_OUTLINE, TEXT_OUTLINE_SOFT, TITLE_YELLOW } from "@/lib/text";
+
+const BALOO = "var(--font-baloo)";
+const NUNITO = "var(--font-nunito)";
 
 export default function CarteHero() {
   const ref = useRef(null);
@@ -51,9 +56,15 @@ export default function CarteHero() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-5xl md:text-7xl font-extrabold text-white mb-4 leading-tight"
-          style={{ fontFamily: "var(--font-baloo)" }}
+          style={{ fontFamily: "var(--font-baloo)", textShadow: TEXT_OUTLINE }}
         >
-          La <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">carte</span>
+          La{" "}
+          <span
+            className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent"
+            style={GRADIENT_TEXT_NO_OUTLINE}
+          >
+            carte
+          </span>
         </motion.h1>
 
         <motion.p
@@ -61,10 +72,38 @@ export default function CarteHero() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg text-white/80 max-w-xl mx-auto"
-          style={{ fontFamily: "var(--font-nunito)" }}
+          style={{ fontFamily: "var(--font-nunito)", textShadow: TEXT_OUTLINE_SOFT }}
         >
           Pizzas maison, crêpes, gaufres, glaces et boissons — tout ce qu&rsquo;il faut pour recharger les batteries entre deux parties.
         </motion.p>
+
+        {/* Règle « nourriture extérieure » — dans le hero plutôt qu'en bandeau
+            séparé : le message arrive avant la carte sans couper la vague qui
+            relie le hero à la section boissons. */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-7 flex items-start gap-4 text-left px-6 py-4 rounded-2xl backdrop-blur-md"
+          style={{
+            background: "rgba(192,57,43,0.82)",
+            border: "1px solid rgba(255,255,255,0.35)",
+            boxShadow: "0 10px 34px rgba(28,16,8,0.35)",
+          }}
+        >
+          <span className="text-3xl leading-none mt-0.5 flex-shrink-0" aria-hidden="true">🚫</span>
+          <div>
+            <p className="font-extrabold text-lg sm:text-xl leading-snug" style={{ fontFamily: BALOO, color: TITLE_YELLOW, textShadow: TEXT_OUTLINE }}>
+              {NOURRITURE_TITLE}
+            </p>
+            <p className="text-white font-bold text-sm sm:text-base leading-snug" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE }}>
+              Normes sanitaires — tout est disponible sur place.
+            </p>
+            <p className="text-white/85 font-semibold text-xs sm:text-sm leading-snug mt-1" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
+              {NOURRITURE_EXCEPTIONS}
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

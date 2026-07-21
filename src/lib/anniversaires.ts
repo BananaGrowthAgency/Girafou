@@ -39,12 +39,13 @@ export const OPTION_PIZZA = {
 export const CONDITIONS = [
   "Un minimum de 8 enfants est requis pour l'organisation d'un anniversaire.",
   "Nous vous conseillons de réserver au moins 15 jours avant la date. Un acompte de 30 € vous sera demandé à la réservation.",
-  "Les cartons d'invitations sont à retirer sur place au moment de la réservation, ou sont envoyés par mail en cas de réservation internet.",
+  "Les cartons d'invitations sont à télécharger directement depuis votre compte client.",
   "L'apport de bonbons, boissons ou gâteaux supplémentaires est interdit.",
 ];
 
-export const CHAUSSETTES =
-  "Pour accéder aux jeux, vos enfants doivent être obligatoirement en chaussettes. L'accès pieds-nus sera refusé pour des raisons d'hygiène et de bien-être de tous. Merci de votre compréhension.";
+// La règle vit désormais dans lib/regles.ts (partagée avec tout le site) ;
+// on la ré-exporte ici pour ne rien casser côté pages Anniversaires.
+export { CHAUSSETTES } from "./regles";
 
 export type Formule = {
   slug: string;
@@ -76,24 +77,9 @@ export type Formule = {
   fondBadge?: string;
 };
 
+// Ordre volontaire : P'tits Gourmands au centre, car c'est la formule la plus
+// vendue — elle porte la pastille « Plus populaire ».
 export const FORMULES: Formule[] = [
-  {
-    slug: "ptits-gourmands",
-    name: "Formule P'tits Gourmands",
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
-    price: "14,90 €",
-    tagline: "L'anniversaire tout compris",
-    optionPizza: true,
-    accent: "#FF5722",
-    gradient: "linear-gradient(135deg, #FF5722, #F5A623)",
-    soft: "#FFF3EE",
-    emoji: "🎂",
-    illustration: "/images/birthday/formula-pizza.png",
-    heroImage: "/images/anniversaires/parc-hero.jpg",
-    heroFocus: "center 42%",
-    fondImage: "/images/anniversaires/ptits-gourmands-fond-v2.png",
-    fondBadge: "/images/anniversaires/ptits-badge.png",
-  },
   {
     slug: "formule-du-lion",
     name: "Formule du Lion",
@@ -107,12 +93,29 @@ export const FORMULES: Formule[] = [
     soft: "#FFF7E6",
     emoji: "🦁",
     illustration: "/images/birthday/formula-lion.png",
-    highlight: true,
     heroImage: "/images/anniversaires/parc-hero.jpg",
     heroFocus: "center 42%",
     fondImage: "/images/anniversaires/lion-fond-2025.png",
     fondBadge: "/images/anniversaires/lion-badge.png",
     fondExtra: "Coca, IceTea, Oasis tropical AU CHOIX",
+  },
+  {
+    slug: "ptits-gourmands",
+    name: "Formule P'tits Gourmands",
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
+    price: "14,90 €",
+    tagline: "L'anniversaire tout compris",
+    optionPizza: true,
+    accent: "#FF5722",
+    gradient: "linear-gradient(135deg, #FF5722, #F5A623)",
+    soft: "#FFF3EE",
+    emoji: "🎂",
+    illustration: "/images/birthday/formula-pizza.png",
+    highlight: true,
+    heroImage: "/images/anniversaires/parc-hero.jpg",
+    heroFocus: "center 42%",
+    fondImage: "/images/anniversaires/ptits-gourmands-fond-v2.png",
+    fondBadge: "/images/anniversaires/ptits-badge.png",
   },
   {
     slug: "gira-fun-karaoke",

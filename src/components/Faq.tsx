@@ -7,10 +7,31 @@ import { motion, useInView } from "framer-motion";
 type Seg = { t: string; u?: boolean; href?: string };
 // Une ligne = suite de segments. `null` = ligne vide (espacement).
 type Line = Seg[] | null;
-type QA = { q: string; a: Line[] };
+// `important` = règle du parc, remontée en tête de liste et badgée « À savoir
+// avant de venir » : ce sont les deux sujets qui génèrent des réclamations à
+// l'accueil quand le visiteur les découvre sur place.
+type QA = { q: string; a: Line[]; important?: boolean };
 
 // Contenu repris à l'identique de https://girafou.com/f-a-q/
 const faqs: QA[] = [
+  {
+    q: "Les chaussettes sont-elles indispensables ?",
+    important: true,
+    a: [
+      [{ t: "Les chaussettes pour vos enfants sont OBLIGATOIRES, pour des questions d’hygiène et de sécurité." }],
+      [{ t: "Girafou propose ses chaussettes antidérapantes en VENTE à 2,50 € la paire. Elles sont également indispensables pour les adultes souhaitant accompagner les enfants dans les jeux." }],
+    ],
+  },
+  {
+    q: "Peut-on venir avec son goûter ou son pique nique ?",
+    important: true,
+    a: [
+      [{ t: "Non, compte-tenu des normes sanitaires, il n’est pas possible de venir avec de la nourriture ou des boissons de l’extérieur." }],
+      [{ t: "Notre restaurant vous accueille sur place : pizzas maison, crêpes, gaufres, glaces et boissons." }, { t: " → Voir la carte", href: "/restauration", u: true }],
+      null,
+      [{ t: "Sont tolérés les aliments pour bébés, ou régime pour enfants présentant des allergies alimentaires." }],
+    ],
+  },
   {
     q: "Quand Girafou est-il ouvert ?",
     a: [
@@ -41,7 +62,7 @@ const faqs: QA[] = [
     a: [
       [{ t: "Girafou propose un seul tarif pour un temps « illimité »." }],
       [{ t: "L’entrée est payante pour les adultes accompagnateurs (2€ par adulte avec 1 boisson offerte)." }],
-      [{ t: "→ Cliquez ici pour consulter nos tarifs", href: "/anniversaires", u: true }],
+      [{ t: "→ Cliquez ici pour consulter nos tarifs", href: "/prix-des-entrees", u: true }],
     ],
   },
   {
@@ -57,13 +78,6 @@ const faqs: QA[] = [
     a: [
       [{ t: "Non, toute sortie est définitive." }],
       [{ t: "Notre SNACK vous propose des formules pour déjeuner sur place." }],
-    ],
-  },
-  {
-    q: "Les chaussettes sont-elles indispensables ?",
-    a: [
-      [{ t: "Les chaussettes pour vos enfants sont OBLIGATOIRES, pour des questions d’hygiène et de sécurité." }],
-      [{ t: "Girafou propose des paires de chaussettes en VENTE à 1 € la paire. Elles sont également indispensables pour les adultes souhaitant accompagner les enfants dans les jeux." }],
     ],
   },
   {
@@ -90,7 +104,7 @@ const faqs: QA[] = [
     q: "A quel âge les enfants peuvent-ils venir chez Girafou ?",
     a: [
       [{ t: "Les jeux chez Girafou sont accessibles aux enfants âgés de 1 à 12 ans. Un espace de jeux clos et sécurisé est aménagé spécifiquement pour les enfants de 1 à 5 ans." }],
-      [{ t: "Les jeux gonflables sont accessibles aux enfants de 3 à 12 ans. Le Grand Labyrinthe est réservé aux enfants de 3 à 12 ans." }],
+      [{ t: "Les jeux gonflables sont accessibles aux enfants de 4 à 12 ans. Le Grand Labyrinthe est réservé aux enfants de 4 à 12 ans." }],
     ],
   },
   {
@@ -101,9 +115,14 @@ const faqs: QA[] = [
     ],
   },
   {
-    q: "Peut-on venir avec son goûter ou son pique nique ?",
+    // Aucune information d'accessibilité n'est publiée par le parc : on ne
+    // promet donc rien ici, on renvoie vers l'accueil qui pourra répondre
+    // précisément selon le besoin de chaque visiteur.
+    q: "Le parc est-il accessible aux personnes à mobilité réduite (PMR) ?",
     a: [
-      [{ t: "Non, compte-tenu des normes sanitaires, il n’est pas possible de venir avec de la nourriture de l’extérieur. Sont tolérés les aliments pour bébés, ou régime pour enfants présentant des allergies alimentaires." }],
+      [{ t: "Pour toute question sur les conditions d’accès et d’accueil des personnes à mobilité réduite, contactez-nous avant votre venue : nous vous renseignerons sur ce qu’il est possible de faire selon votre situation." }],
+      [{ t: "→ 02 31 53 72 68", href: "tel:0231537268", u: true }],
+      [{ t: "→ contact@girafou.com", href: "mailto:contact@girafou.com", u: true }],
     ],
   },
   {
@@ -173,13 +192,23 @@ function FaqItem({ item, isOpen, onToggle }: { item: QA; isOpen: boolean; onTogg
           isOpen ? "bg-[#FFF9EF]" : "group-hover:bg-[#FFF9EF]"
         }`}
       >
-        <span
-          className={`font-bold text-base sm:text-lg transition-colors duration-200 ${
-            isOpen ? "text-[#E8940A]" : "text-[#1C1008] group-hover:text-[#E8940A]"
-          }`}
-          style={{ fontFamily: "var(--font-nunito)" }}
-        >
-          {item.q}
+        <span className="min-w-0">
+          {item.important && (
+            <span
+              className="inline-block mb-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wide text-white"
+              style={{ background: "#C0392B", fontFamily: "var(--font-nunito)" }}
+            >
+              À savoir avant de venir
+            </span>
+          )}
+          <span
+            className={`block font-bold text-base sm:text-lg transition-colors duration-200 ${
+              isOpen ? "text-[#E8940A]" : "text-[#1C1008] group-hover:text-[#E8940A]"
+            }`}
+            style={{ fontFamily: "var(--font-nunito)" }}
+          >
+            {item.q}
+          </span>
         </span>
         {/* Wrapper (span simple) pour le scale au hover — le motion.span gère la rotation */}
         <span className="flex-shrink-0 transition-transform duration-200 group-hover:scale-110">

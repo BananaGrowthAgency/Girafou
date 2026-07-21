@@ -76,6 +76,9 @@ export async function saveMenu(menu: Menu): Promise<void> {
   });
   revalidateTag(MENU_TAG, "max");
   revalidatePath("/restauration");
+  // La home affiche un résumé de la carte (pizzas + prix) tiré du même menu :
+  // sans ça, elle resterait figée sur l'ancienne version après une édition.
+  revalidatePath("/");
   revalidatePath("/admin", "layout");
 }
 

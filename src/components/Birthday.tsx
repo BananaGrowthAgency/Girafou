@@ -6,19 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 // slug -> page /anniversaires/{slug} ; reserveUrl -> lien Qweekle propre à la formule.
+// Ordre volontaire : P'tits Gourmands au centre — formule la plus vendue, elle
+// porte la pastille « Plus populaire » (même ordre que lib/anniversaires.ts).
 const formulas = [
-  {
-    name: "P'tits Gourmands",
-    slug: "ptits-gourmands",
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
-    sub: "Pizza en famille",
-    horaire: "Matin uniquement · 10h–13h",
-    color: "#FF5722",
-    bg: "#FFF3EE",
-    border: "#FFCCBC",
-    image: "/images/birthday/formula-pizza.png",
-    highlight: false,
-  },
   {
     name: "Formule du Lion",
     slug: "formule-du-lion",
@@ -29,6 +19,18 @@ const formulas = [
     bg: "#FFFBEE",
     border: "#FFE082",
     image: "/images/birthday/formula-lion.png",
+    highlight: false,
+  },
+  {
+    name: "P'tits Gourmands",
+    slug: "ptits-gourmands",
+    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
+    sub: "Pizza en famille",
+    horaire: "Matin uniquement · 10h–13h",
+    color: "#FF5722",
+    bg: "#FFF3EE",
+    border: "#FFCCBC",
+    image: "/images/birthday/formula-pizza.png",
     highlight: true,
   },
   {
@@ -232,7 +234,7 @@ export default function Birthday() {
           <p className="text-base leading-relaxed" style={{ fontFamily: "var(--font-nunito)" }}>
             Un minimum de 8 enfants est requis pour l&rsquo;organisation d&rsquo;un anniversaire.<br />
             Nous vous conseillons de réserver au moins 15 jours avant la date. Un acompte de 30 € vous sera demandé à la réservation.<br />
-            Les cartons d&rsquo;invitations sont à retirer sur place au moment de la réservation ou sont envoyés par mail en cas de réservation internet.<br />
+            Les cartons d&rsquo;invitations sont à télécharger directement depuis votre compte client.<br />
             <strong>L&rsquo;apport de bonbons, boissons ou gâteaux supplémentaires est interdit.</strong>
           </p>
         </motion.div>

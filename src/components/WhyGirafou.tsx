@@ -35,7 +35,7 @@ const reasons = [
   {
     icon: "👨‍👩‍👧",
     title: "Toute la famille",
-    desc: "Des zones adaptées à chaque âge (2–12 ans) et un espace confort pour les parents.",
+    desc: "Des zones adaptées à chaque âge (1–12 ans) et un espace confort pour les parents.",
     color: "#00897B",
     bg: "rgba(0,137,123,0.10)",
   },

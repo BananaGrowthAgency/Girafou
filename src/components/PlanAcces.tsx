@@ -4,6 +4,8 @@ import { useRef, useState, type ReactNode } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 
+import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
+
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 const BROWN = "#5A3520";
@@ -119,10 +121,10 @@ export default function PlanAcces() {
           >
             <IconRoute className="w-4 h-4" /> Comment venir&nbsp;?
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO }}>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
             Plan d&rsquo;<span style={{ color: "#FFD23F" }}>accès</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO }}>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
             Le Girafou vous accueille à Bénouville, près de Caen. Choisissez votre point de départ et suivez le guide&nbsp;!
           </motion.p>
         </div>
@@ -239,6 +241,39 @@ export default function PlanAcces() {
                   </ol>
                 </motion.div>
               </AnimatePresence>
+            </div>
+          </Reveal>
+
+          {/* ── Accessibilité PMR ──
+              Le parc ne publie aucune information sur ses conditions d'accès :
+              on n'affirme donc rien ici (ni accessible, ni non accessible) et
+              on renvoie vers l'accueil, seul à pouvoir répondre au cas par cas. */}
+          <Reveal>
+            <div className="max-w-2xl mx-auto mt-14 rounded-3xl bg-white shadow-lg border border-amber-100 p-6 sm:p-7">
+              <h2 className="text-xl sm:text-2xl font-extrabold mb-2" style={{ fontFamily: BALOO, color: BROWN }}>
+                Accessibilité — personnes à mobilité réduite
+              </h2>
+              <p className="text-sm sm:text-base text-amber-900/75 leading-snug mb-5" style={{ fontFamily: NUNITO }}>
+                Vous venez avec une personne à mobilité réduite&nbsp;? Contactez-nous avant votre visite&nbsp;:
+                nous vous renseignerons sur les conditions d&rsquo;accès et d&rsquo;accueil, et sur ce qu&rsquo;il est
+                possible d&rsquo;organiser selon votre situation.
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                <a
+                  href="tel:0231537268"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-extrabold shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                  style={{ background: RED, fontFamily: NUNITO }}
+                >
+                  <IconPhone className="w-4 h-4" /> 02 31 53 72 68
+                </a>
+                <a
+                  href="mailto:contact@girafou.com"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-extrabold border-2 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                  style={{ borderColor: RED, color: RED, fontFamily: NUNITO }}
+                >
+                  contact@girafou.com
+                </a>
+              </div>
             </div>
           </Reveal>
 

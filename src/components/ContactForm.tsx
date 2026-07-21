@@ -4,6 +4,8 @@ import { useRef, useState, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 
+import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
+
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 const BROWN = "#5A3520";
@@ -122,10 +124,10 @@ export default function ContactForm() {
           >
             <IconMail className="w-4 h-4" /> Une question&nbsp;?
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO }}>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
             Contactez-<span style={{ color: "#FFD23F" }}>nous</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO }}>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
             Une question, un projet d&rsquo;anniversaire ou de groupe&nbsp;? Écrivez-nous, on vous répond au plus vite&nbsp;!
           </motion.p>
         </div>

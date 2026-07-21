@@ -41,7 +41,7 @@ export const ACTIVITES: Activite[] = [
       "Viens voler au-dessus du parc ! Quelques coups de pédales et c'est parti pour un petit tour à 5 mètres de haut. Une attraction réservée aux plus courageux !",
       "Et si le cœur t'en dit, papa ou maman peut même monter à bord pour faire un tour avec toi.",
     ],
-    ageDetail: "Enfant de moins de 5 ans accompagné d'un adulte.",
+    ageDetail: "Enfant de moins de 5 ans accompagné d'un adulte obligatoirement.",
     payant: true,
     rules: [
       "2 personnes maximum par cabine.",
@@ -128,6 +128,8 @@ export const ACTIVITES: Activite[] = [
       "Plusieurs jeux gonflables pour s'amuser à tout âge : sauter, glisser, rebondir…",
       "Le Kilimandjaro et l'impressionnant Serengeti n'attendent que toi !",
     ],
+    // Source : girafou.com/jeux-gonflables/ — « À partir de 4 ans pour le
+    // Kilimandjaro et de 6 ans pour le Serengeti et toujours jusqu'à 12 ans. »
     age: "De 4 à 12 ans",
     ageDetail: "Kilimandjaro dès 4 ans · Serengeti dès 6 ans.",
     rules: ["L'accès aux jeux gonflables est interdit aux adultes."],
@@ -167,7 +169,8 @@ export const ACTIVITES: Activite[] = [
       "Fais le grand saut ! Notre structure de jeux dispose d'espaces dédiés aux sensations, avec des zones sécurisées pour sauter en toute confiance.",
       "Pour les petits comme pour les plus grands : viens défier les lois de la gravité !",
     ],
-    age: "À partir de 7 ans",
+    // 6 ans confirmé par le client (girafou.com/saut/ affiche encore 7 ans).
+    age: "À partir de 6 ans",
     rules: [],
     image: "/images/activites/zones-saut.jpg",
     accent: "#E91E63",
@@ -186,6 +189,8 @@ export const ACTIVITES: Activite[] = [
       "200 m² d'obstacles, de grimpe, de glisse et de cachettes…",
       "Et plein d'autres jeux et activités pour les enfants, le tout sur 5 mètres de hauteur !",
     ],
+    // Source : girafou.com/labyrinthe/ — « De 4 à 12 ans, accès également
+    // autorisé aux petits de 2 à 4 ans mais accompagnés de papa ou maman. »
     age: "De 4 à 12 ans",
     ageDetail: "Accès autorisé aux 2–4 ans accompagnés de papa ou maman, pour profiter en famille.",
     rules: [],

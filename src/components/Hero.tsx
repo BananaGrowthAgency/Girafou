@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useMounted } from "@/hooks/useMounted";
 import YouTubeHeroBg from "./YouTubeHeroBg";
+import { GRADIENT_TEXT_NO_OUTLINE, TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
 function CountUp({ to, duration = 1800 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -184,10 +185,10 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.35 }}
           className="text-[1.9rem] sm:text-5xl xl:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.12] mb-3 sm:mb-5 max-w-2xl"
-          style={{ fontFamily: "var(--font-baloo)" }}
+          style={{ fontFamily: "var(--font-baloo)", textShadow: TEXT_OUTLINE }}
         >
           La plaine de jeux{" "}
-          <span style={{ background: "linear-gradient(135deg, #F5A623 0%, #FF5722 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <span style={{ background: "linear-gradient(135deg, #F5A623 0%, #FF5722 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", ...GRADIENT_TEXT_NO_OUTLINE }}>
             préférée des enfants
           </span>{" "}
           <span className="text-white">près de Caen</span>
@@ -198,9 +199,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.5 }}
           className="text-sm sm:text-lg text-white/90 max-w-lg mb-5 sm:mb-8 leading-relaxed"
-          style={{ fontFamily: "var(--font-nunito)", textShadow: "0 1px 4px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)" }}
+          style={{ fontFamily: "var(--font-nunito)", textShadow: `${TEXT_OUTLINE_SOFT}, 0 1px 4px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)` }}
         >
-          <strong className="text-white">1 300 m²</strong> de jeux couverts — hélicoptère exclusif, trampolines, karting, NeoXperience et bien plus. Pour les <strong className="text-white">2 à 12 ans</strong>, ouvert toute l&rsquo;année.
+          <strong className="text-white">1 300 m²</strong> de jeux couverts — hélicoptère exclusif, trampolines, karting, NeoXperience et bien plus. Pour les <strong className="text-white">1 à 12 ans</strong>, ouvert toute l&rsquo;année.
         </motion.p>
 
         <motion.div

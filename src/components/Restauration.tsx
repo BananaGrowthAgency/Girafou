@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
+import { NOURRITURE_SHORT, NOURRITURE_TITLE } from "@/lib/regles";
+import type { SummaryCard } from "@/lib/menu/summary";
 
 const pizzaSlides = [
   "/images/resto/option-pizza-1.jpg",
@@ -10,39 +12,7 @@ const pizzaSlides = [
   "/images/resto/option-pizza-3.jpg",
 ];
 
-const menuItems = [
-  {
-    label: "Pizzas maison",
-    badge: "Sur place ou à emporter",
-    image: "/images/resto/pizza.jpg",
-    sections: [
-      { title: "Reine", items: "Tomate, Mozzarella, Jambon, Champignons, Origan" },
-      { title: "Poulette", items: "Tomate, Mozzarella, Poulet, Champignons, Origan" },
-      { title: "Bolognaise", items: "Tomate, Mozzarella, Viande hachée, Origan" },
-      { title: "3 Fromages", items: "Tomate, Mozzarella, Chèvre, Bleu" },
-    ],
-  },
-  {
-    label: "Gourmandises",
-    badge: null,
-    image: "/images/resto/glaces-douceurs.jpg",
-    sections: [
-      { title: "Crêpes", items: "Sucre, Nutella, Confiture de fraise, Caramel beurre salé" },
-      { title: "Gaufres", items: "Sucre, Nutella, Caramel beurre salé" },
-    ],
-  },
-  {
-    label: "Boissons",
-    badge: null,
-    image: "/images/resto/boissons.jpg",
-    sections: [
-      { title: "Boissons fraîches", items: "Sodas, sirops à l’eau, Bouteilles d’eau, Caprisun…" },
-      { title: "Boissons chaudes", items: "Petit Café, Café Allongé, Grand Café, Décaféiné, Petit Crème, Grand Crème, Café Viennois, Cappuccino, Chocolat, Choco Viennois, Thé" },
-    ],
-  },
-];
-
-function MenuCard({ item, index, inView }: { item: typeof menuItems[0]; index: number; inView: boolean }) {
+function MenuCard({ item, index, inView }: { item: SummaryCard; index: number; inView: boolean }) {
   const [err, setErr] = useState(false);
   return (
     <motion.div
@@ -72,12 +42,22 @@ function MenuCard({ item, index, inView }: { item: typeof menuItems[0]; index: n
 
       {/* Content */}
       <div className="p-5 flex flex-col gap-3 flex-1">
-        <h4
-          className="font-extrabold text-amber-900 text-xl"
-          style={{ fontFamily: "var(--font-baloo)" }}
-        >
-          {item.label}
-        </h4>
+        <div className="flex items-baseline justify-between gap-3">
+          <h4
+            className="font-extrabold text-amber-900 text-xl"
+            style={{ fontFamily: "var(--font-baloo)" }}
+          >
+            {item.label}
+          </h4>
+          {item.price && (
+            <span
+              className="flex-shrink-0 font-extrabold text-lg"
+              style={{ color: "#E8400C", fontFamily: "var(--font-baloo)" }}
+            >
+              {item.price}
+            </span>
+          )}
+        </div>
 
         <div className="flex flex-col gap-2.5">
           {item.sections.map((s, j) => (
@@ -98,14 +78,47 @@ function MenuCard({ item, index, inView }: { item: typeof menuItems[0]; index: n
           ))}
         </div>
 
-        {item.badge && (
-          <div className="mt-auto pt-2">
-            <span
-              className="inline-block px-4 py-1.5 rounded-full text-white text-sm font-extrabold shadow-sm"
-              style={{ background: "#C0392B", fontFamily: "var(--font-nunito)" }}
-            >
-              {item.badge}
-            </span>
+        {/* Pied de carte : collé en bas (mt-auto) pour que la Formule du midi et
+            la pastille s'alignent d'une carte à l'autre, quelle que soit la
+            longueur de la liste au-dessus. */}
+        {(item.highlight || item.badge) && (
+          <div className="mt-auto flex flex-col items-start gap-3 pt-2">
+            {item.highlight && (
+              <div
+                className="w-full rounded-2xl px-4 py-3 border-2"
+                style={{ background: "#FFF4E0", borderColor: "#F5A62360" }}
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <span
+                    className="font-extrabold text-sm text-amber-900"
+                    style={{ fontFamily: "var(--font-baloo)" }}
+                  >
+                    {item.highlight.badge}
+                  </span>
+                  <span
+                    className="flex-shrink-0 font-extrabold text-base"
+                    style={{ color: "#E8400C", fontFamily: "var(--font-baloo)" }}
+                  >
+                    {item.highlight.price}
+                  </span>
+                </div>
+                <p
+                  className="text-xs text-amber-800/70 leading-snug mt-0.5"
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                >
+                  {item.highlight.text}
+                </p>
+              </div>
+            )}
+
+            {item.badge && (
+              <span
+                className="inline-block px-4 py-1.5 rounded-full text-white text-sm font-extrabold shadow-sm"
+                style={{ background: "#C0392B", fontFamily: "var(--font-nunito)" }}
+              >
+                {item.badge}
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -113,7 +126,7 @@ function MenuCard({ item, index, inView }: { item: typeof menuItems[0]; index: n
   );
 }
 
-export default function Restauration() {
+export default function Restauration({ cards }: { cards: SummaryCard[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -161,6 +174,23 @@ export default function Restauration() {
           >
             Après tant d&rsquo;aventures, rechargez les batteries ! Pizzas fraîches, gourmandises et boissons — sans quitter le parc.
           </p>
+
+          {/* Règle « nourriture extérieure » — carte blanche pour rester lisible
+              sur la photo de fond, dans le même langage que les cartes du bas. */}
+          <div
+            className="inline-flex items-start gap-3 text-left mt-6 px-5 py-3.5 rounded-2xl bg-white shadow-lg"
+            style={{ border: "2px solid rgba(192,57,43,0.35)" }}
+          >
+            <span className="text-xl leading-none mt-0.5" aria-hidden="true">🚫</span>
+            <div>
+              <p className="font-extrabold text-sm sm:text-base leading-snug" style={{ fontFamily: "var(--font-baloo)", color: "#C0392B" }}>
+                {NOURRITURE_TITLE}
+              </p>
+              <p className="text-xs sm:text-sm text-amber-900/60 leading-snug" style={{ fontFamily: "var(--font-nunito)" }}>
+                {NOURRITURE_SHORT}
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* ── Option Pizza banner — full width, short ── */}
@@ -212,8 +242,10 @@ export default function Restauration() {
               >
                 Option Pizza
               </h3>
+              {/* max-w : force le texte sur deux lignes au lieu d'une seule très
+                  longue, ce qui rend la largeur gagnée aux trois photos. */}
               <p
-                className="text-white/85 text-sm leading-snug"
+                className="text-white/85 text-sm leading-snug sm:max-w-[25rem]"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
                 Réservée aux anniversaires du matin. Les enfants réalisent eux-mêmes leur pizza et la mangent ensemble.
@@ -239,7 +271,7 @@ export default function Restauration() {
 
         {/* ── 3 food cards ── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {menuItems.map((item, i) => (
+          {cards.map((item, i) => (
             <MenuCard key={i} item={item} index={i} inView={inView} />
           ))}
         </div>

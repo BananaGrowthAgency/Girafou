@@ -2,6 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import {
+  CHAUSSETTES_SHORT,
+  CHAUSSETTES_TITLE,
+  NOURRITURE_SHORT,
+  NOURRITURE_TITLE,
+} from "@/lib/regles";
+import { TITLE_YELLOW } from "@/lib/text";
 
 const parc = [
   { icon: "📍", text: "ZA Clos de la Hogue, 14970 Bénouville" },
@@ -23,6 +30,12 @@ const infoLinks = [
   { label: "Conditions générales utilisateur", href: "/conditions-generales-utilisateur" },
 ];
 
+// Les deux règles rappelées en bas de chaque page (cf. lib/regles.ts).
+const regles = [
+  { icon: "🧦", label: CHAUSSETTES_TITLE, sub: CHAUSSETTES_SHORT },
+  { icon: "🚫", label: NOURRITURE_TITLE, sub: NOURRITURE_SHORT },
+];
+
 // Maillage interne : lien vers toutes les pages principales du site.
 const siteMap = [
   { label: "Accueil", href: "/" },
@@ -35,7 +48,6 @@ const siteMap = [
 ];
 
 // Titulares del footer: amarillo con pequeño contorno negro para destacar sobre el rojo.
-const TITLE_YELLOW = "#FFD23F";
 const TITLE_OUTLINE =
   "-1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7)";
 const titleStyle = { color: TITLE_YELLOW, textShadow: TITLE_OUTLINE } as const;
@@ -163,8 +175,28 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
 
         </div>
 
+        {/* Règles du parc — rappelées sur toutes les pages via le footer */}
+        <div className="border-t border-white/8 pt-6 pb-1 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+          {regles.map((r) => (
+            <div
+              key={r.label}
+              className="flex items-start gap-3 rounded-2xl bg-white/10 border border-white/15 px-4 py-3 sm:max-w-xs"
+            >
+              <span className="text-xl leading-none flex-shrink-0" aria-hidden="true">{r.icon}</span>
+              <div>
+                <p className="text-sm font-extrabold" style={{ ...titleStyle, fontFamily: "var(--font-baloo)" }}>
+                  {r.label}
+                </p>
+                <p className="text-xs text-white/70 leading-snug" style={{ fontFamily: "var(--font-nunito)" }}>
+                  {r.sub}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* Plan du site — maillage interne */}
-        <nav aria-label="Plan du site" className="border-t border-white/8 pt-6 pb-5">
+        <nav aria-label="Plan du site" className="border-t border-white/8 mt-6 pt-6 pb-5">
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {siteMap.map((item) => (
               <li key={item.label}>

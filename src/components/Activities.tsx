@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ACTIVITES, type Activite } from "@/lib/activites";
+import JeudiToutPetits from "./JeudiToutPetits";
 
 function ActivityCard({ act, index }: { act: Activite; index: number }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -102,7 +103,12 @@ export default function Activities() {
   const socksOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
-    <section ref={sectionRef} id="activites" className="relative pt-28 pb-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(160deg, #FFF8E1 0%, #FFF3C4 50%, #FFE8A0 100%)" }}>
+    // Dégradé vertical (et non 160deg) : le bord supérieur est ainsi uniformément
+    // #FFF8E1, la couleur sur laquelle se termine le hero — plus de ligne de raccord.
+    <section ref={sectionRef} id="activites" className="relative pt-12 pb-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(to bottom, #FFF8E1 0%, #FFF3C4 50%, #FFE8A0 100%)" }}>
+      {/* Bandeau « Jeudi des tout-petits » — dans cette section pour partager son fond */}
+      <JeudiToutPetits />
+
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
         {/* Header */}

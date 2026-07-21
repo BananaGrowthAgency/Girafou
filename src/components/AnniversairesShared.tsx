@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { OPTION_PIZZA, CONDITIONS, CHAUSSETTES } from "@/lib/anniversaires";
+import { InterditSticker } from "./ReglesParc";
+import { NOURRITURE, NOURRITURE_EXCEPTIONS, NOURRITURE_TITLE } from "@/lib/regles";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -123,6 +125,27 @@ export function ConditionsBlock() {
         <div>
           <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>Chaussettes obligatoires</p>
           <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{CHAUSSETTES}</p>
+        </div>
+      </motion.div>
+
+      {/* Nourriture extérieure — même poids visuel que le bloc chaussettes */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.05 }}
+        className="relative flex items-center gap-4 rounded-2xl bg-white border border-amber-100 shadow-md p-5"
+      >
+        <motion.div
+          className="flex-shrink-0"
+          animate={{ y: [0, -8, 0], rotateZ: [0, -2, 0, 2, 0] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <InterditSticker size={56} />
+        </motion.div>
+        <div>
+          <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>{NOURRITURE_TITLE}</p>
+          <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{NOURRITURE}</p>
+          <p className="text-xs text-amber-800/40 leading-snug mt-1.5" style={{ fontFamily: NUNITO }}>{NOURRITURE_EXCEPTIONS}</p>
         </div>
       </motion.div>
 

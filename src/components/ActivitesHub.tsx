@@ -5,6 +5,9 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ACTIVITES, type Activite } from "@/lib/activites";
+import ReglesParc from "./ReglesParc";
+
+import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -86,10 +89,10 @@ export default function ActivitesHub() {
           >
             9 activités sous un même toit
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO }}>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
             Des aventures pour <span style={{ color: "#FFD23F" }}>tous les âges</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO }}>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
             1 300 m² de jeux couverts à Bénouville, près de Caen. Survole, saute, glisse, pilote… il y en a pour toute la famille !
           </motion.p>
         </div>
@@ -104,6 +107,11 @@ export default function ActivitesHub() {
 
       {/* ── Grille ── */}
       <section ref={gridRef} className="relative py-16 max-w-7xl mx-auto px-6">
+        {/* ── Règles du parc — au-dessus des activités pour être vues d'abord ── */}
+        <div className="mb-12">
+          <ReglesParc />
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {ACTIVITES.map((a, i) => (
             <ActiviteCard key={a.slug} a={a} i={i} inView={gridInView} />

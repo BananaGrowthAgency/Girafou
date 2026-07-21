@@ -5,7 +5,9 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ACTIVITES, RESERVATION_URL, type Activite } from "@/lib/activites";
-import ChaussettesNote from "./ChaussettesNote";
+import ReglesParc from "./ReglesParc";
+
+import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -128,10 +130,10 @@ export default function ActiviteDetail({ activite: a }: { activite: Activite }) 
               {a.payant && <span className="px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold backdrop-blur-sm border border-white/20" style={{ fontFamily: NUNITO }}>Payant en supplément</span>}
             </div>
 
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 leading-tight drop-shadow-md" style={{ fontFamily: BALOO }}>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 leading-tight drop-shadow-md" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
               {a.name}
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow max-w-xl mx-auto mb-7" style={{ fontFamily: NUNITO }}>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow max-w-xl mx-auto mb-7" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
               {a.tagline}
             </motion.p>
             <motion.a
@@ -231,8 +233,8 @@ export default function ActiviteDetail({ activite: a }: { activite: Activite }) 
             </ul>
           </div>
 
-          {/* ── Chaussettes (composant partagé) ── */}
-          <ChaussettesNote />
+          {/* ── Règles du parc (composant partagé) ── */}
+          <ReglesParc />
 
         </div>
       </div>

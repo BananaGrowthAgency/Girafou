@@ -4,7 +4,9 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import ChaussettesNote from "./ChaussettesNote";
+import ReglesParc from "./ReglesParc";
+
+import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -143,10 +145,10 @@ export default function NosOffres() {
           >
             Groupes · CSE · Privatisation
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO }}>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
             Nos <span style={{ color: "#FFD23F" }}>offres</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO }}>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
             Des tarifs et des formules adaptés à chacun : visite libre, groupes, comités d&rsquo;entreprise ou privatisation complète du parc.
           </motion.p>
         </div>
@@ -187,7 +189,7 @@ export default function NosOffres() {
 
       {/* ── Note chaussettes ── */}
       <section className="relative pb-20 max-w-5xl mx-auto px-6" style={{ background: "#FFFDF5" }}>
-        <ChaussettesNote />
+        <ReglesParc />
       </section>
     </>
   );

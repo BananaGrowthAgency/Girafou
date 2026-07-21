@@ -3,7 +3,7 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import ChaussettesNote from "./ChaussettesNote";
+import ReglesParc from "./ReglesParc";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -15,14 +15,18 @@ const RED = "#C0392B";
 // uniformément derrière elles, sans aucune bordure visible.
 const CREAM = "#FEF1D6";
 
+// Tranches d'âge exprimées en intervalles fermés : la grille d'origine
+// enchaînait des « moins de X » qui se chevauchaient (les 12–18 mois y
+// apparaissaient à la fois à « Gratuit » et à « 6,00€ », sans qu'on voie que le
+// gratuit était conditionné à une autre entrée payante).
 type Tarif = { label: string; price: string };
 const tarifs: Tarif[] = [
   { label: "Moins de 12 mois", price: "Gratuit" },
-  { label: "Moins de 18 mois (accompagné d'une entrée enfant -12 ans payante)", price: "Gratuit" },
-  { label: "Moins de 18 mois", price: "6,00€" },
-  { label: "Moins de 3 ans", price: "8,50€ + 1 jeton offert" },
-  { label: "Moins de 12 ans", price: "11,50€ + 1 jeton offert" },
-  { label: "Adulte", price: "2,00€ + 1 boisson chaude offerte" },
+  { label: "De 12 à 18 mois, accompagné d'une entrée enfant (–12 ans) payante", price: "Gratuit" },
+  { label: "De 12 à 18 mois, sans autre entrée payante", price: "6,00€" },
+  { label: "De 18 mois à 3 ans", price: "8,50€ + 1 jeton offert" },
+  { label: "De 3 à 12 ans", price: "11,50€ + 1 jeton offert" },
+  { label: "Adulte accompagnateur", price: "2,00€ + 1 boisson chaude offerte" },
 ];
 
 const jetons = [
@@ -197,8 +201,8 @@ export default function PrixEntrees() {
             </div>
           </Reveal>
 
-          {/* ── Note chaussettes ── */}
-          <ChaussettesNote />
+          {/* ── Règles du parc ── */}
+          <ReglesParc />
 
         </div>
       </div>

@@ -10,6 +10,8 @@ import {
 } from "@/lib/anniversaires";
 import { OptionPizzaBanner, ConditionsBlock } from "./AnniversairesShared";
 
+import { GRADIENT_TEXT_NO_OUTLINE, TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
+
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 const BROWN = "#5A3520";
@@ -147,12 +149,12 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
         <span className="text-white">{f.name}</span>
       </div>
 
-      <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3 leading-tight drop-shadow-md" style={{ fontFamily: BALOO }}>
+      <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3 leading-tight drop-shadow-md" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
         Viens{" "}
-        <span className="bg-gradient-to-r from-[#FFCF4D] to-[#FF7A3D] bg-clip-text text-transparent">fêter ton anniversaire</span>{" "}
+        <span className="bg-gradient-to-r from-[#FFCF4D] to-[#FF7A3D] bg-clip-text text-transparent" style={GRADIENT_TEXT_NO_OUTLINE}>fêter ton anniversaire</span>{" "}
         avec tous tes amis
       </motion.h1>
-      <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow" style={{ fontFamily: NUNITO }}>
+      <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
         De 10h à 13h ou de 14h à 18h, 3 formules au choix
       </motion.p>
     </div>

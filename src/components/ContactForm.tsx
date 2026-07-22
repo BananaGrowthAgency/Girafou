@@ -5,6 +5,12 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 
 import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
+// Valeurs postées à Web3Forms : elles restent en français quelle que soit
+// la langue affichée, pour que le parc reçoive toujours les mêmes intitulés.
+const CIVILITE_VALUES = ["M", "Mme", "Un comité d'entreprise", "Une école", "Un centre aéré", "Une association", "Autre"];
+const SUJET_VALUES = ["Question", "Anniversaire", "Le parc", "Services", "Restauration", "Activités"];
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -15,8 +21,6 @@ const RED = "#C0392B";
 // NEXT_PUBLIC_WEB3FORMS_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "";
 
-const CIVILITES = ["M", "Mme", "Un comité d'entreprise", "Une école", "Un centre aéré", "Une association", "Autre"];
-const SUJETS = ["Question", "Anniversaire", "Le parc", "Services", "Restauration", "Activités"];
 
 const inputCls =
   "w-full rounded-xl border-2 border-amber-200/70 bg-white px-4 py-3 text-amber-900 placeholder:text-amber-900/35 outline-none transition-colors duration-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-200";
@@ -64,7 +68,7 @@ function InfoRow({ icon, children }: { icon: ReactNode; children: ReactNode }) {
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export default function ContactForm() {
+export default function ContactForm({ t }: { t: Dictionary["pages"]["contact"] }) {
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
   const bodyRef = useRef(null);
@@ -89,11 +93,11 @@ export default function ContactForm() {
         form.reset();
       } else {
         setStatus("error");
-        setErrorMsg(json.message || "Une erreur est survenue. Merci de réessayer.");
+        setErrorMsg(json.message || t.errorGeneric);
       }
     } catch {
       setStatus("error");
-      setErrorMsg("Impossible d'envoyer le message. Vérifiez votre connexion et réessayez.");
+      setErrorMsg(t.errorNetwork);
     }
   }
 
@@ -122,13 +126,13 @@ export default function ContactForm() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold mb-4"
             style={{ fontFamily: NUNITO }}
           >
-            <IconMail className="w-4 h-4" /> Une question&nbsp;?
+            <IconMail className="w-4 h-4" /> {t.badge}
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
-            Contactez-<span style={{ color: "#FFD23F" }}>nous</span>
+            {t.titleStart}<span style={{ color: "#FFD23F" }}>{t.titleAccent}</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
-            Une question, un projet d&rsquo;anniversaire ou de groupe&nbsp;? Écrivez-nous, on vous répond au plus vite&nbsp;!
+            {t.subtitle}
           </motion.p>
         </div>
 
@@ -151,8 +155,8 @@ export default function ContactForm() {
             className="rounded-3xl p-6 sm:p-7 text-white shadow-xl lg:sticky lg:top-24"
             style={{ background: "linear-gradient(160deg, #C0392B 0%, #E8552D 100%)" }}
           >
-            <h2 className="text-2xl font-extrabold mb-1" style={{ fontFamily: BALOO }}>Le Girafou</h2>
-            <p className="text-white/85 text-sm mb-5" style={{ fontFamily: NUNITO }}>On adore avoir de vos nouvelles.</p>
+            <h2 className="text-2xl font-extrabold mb-1" style={{ fontFamily: BALOO }}>{t.infoTitle}</h2>
+            <p className="text-white/85 text-sm mb-5" style={{ fontFamily: NUNITO }}>{t.infoSub}</p>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center bg-white/15"><IconPin className="w-5 h-5" /></span>
@@ -181,15 +185,15 @@ export default function ContactForm() {
                 <span className="inline-flex items-center justify-center w-16 h-16 rounded-full text-white mb-4" style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)" }}>
                   <IconCheck className="w-8 h-8" />
                 </span>
-                <h2 className="text-2xl font-extrabold mb-2" style={{ fontFamily: BALOO, color: BROWN }}>Message envoyé&nbsp;!</h2>
-                <p className="text-amber-900/70 mb-6" style={{ fontFamily: NUNITO }}>Merci de nous avoir écrit. Nous vous répondrons au plus vite.</p>
+                <h2 className="text-2xl font-extrabold mb-2" style={{ fontFamily: BALOO, color: BROWN }}>{t.successTitle}</h2>
+                <p className="text-amber-900/70 mb-6" style={{ fontFamily: NUNITO }}>{t.successText}</p>
                 <button
                   type="button"
                   onClick={() => setStatus("idle")}
                   className="px-6 py-3 rounded-xl text-white font-extrabold shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
                   style={{ background: RED, fontFamily: NUNITO }}
                 >
-                  Envoyer un autre message
+                  {t.successAgain}
                 </button>
               </div>
             ) : (
@@ -202,35 +206,35 @@ export default function ContactForm() {
                 <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
                 <div className="grid sm:grid-cols-3 gap-4">
-                  <Field label="Vous êtes" htmlFor="civilite">
+                  <Field label={t.fieldCivilite} htmlFor="civilite">
                     <select id="civilite" name="Vous êtes" required defaultValue="M" className={`${inputCls} cursor-pointer`} style={{ fontFamily: NUNITO }}>
-                      {CIVILITES.map((c) => <option key={c} value={c}>{c}</option>)}
+                      {CIVILITE_VALUES.map((v, i) => <option key={v} value={v}>{t.civilites[i]}</option>)}
                     </select>
                   </Field>
-                  <Field label="Nom" htmlFor="nom">
-                    <input id="nom" name="Nom" type="text" required placeholder="Nom" className={inputCls} style={{ fontFamily: NUNITO }} />
+                  <Field label={t.fieldNom} htmlFor="nom">
+                    <input id="nom" name="Nom" type="text" required placeholder={t.fieldNom} className={inputCls} style={{ fontFamily: NUNITO }} />
                   </Field>
-                  <Field label="Prénom" htmlFor="prenom">
-                    <input id="prenom" name="Prénom" type="text" required placeholder="Prénom" className={inputCls} style={{ fontFamily: NUNITO }} />
+                  <Field label={t.fieldPrenom} htmlFor="prenom">
+                    <input id="prenom" name="Prénom" type="text" required placeholder={t.fieldPrenom} className={inputCls} style={{ fontFamily: NUNITO }} />
                   </Field>
                 </div>
 
-                <Field label="Email" htmlFor="email">
-                  <input id="email" name="Email" type="email" required placeholder="votre@email.com" className={inputCls} style={{ fontFamily: NUNITO }} />
+                <Field label={t.fieldEmail} htmlFor="email">
+                  <input id="email" name="Email" type="email" required placeholder={t.placeholderEmail} className={inputCls} style={{ fontFamily: NUNITO }} />
                 </Field>
 
-                <Field label="Téléphone" htmlFor="telephone">
-                  <input id="telephone" name="Téléphone" type="tel" required placeholder="06 12 34 56 78" className={inputCls} style={{ fontFamily: NUNITO }} />
+                <Field label={t.fieldTelephone} htmlFor="telephone">
+                  <input id="telephone" name="Téléphone" type="tel" required placeholder={t.placeholderTelephone} className={inputCls} style={{ fontFamily: NUNITO }} />
                 </Field>
 
-                <Field label="Sujet" htmlFor="sujet">
+                <Field label={t.fieldSujet} htmlFor="sujet">
                   <select id="sujet" name="Sujet" required defaultValue="Question" className={`${inputCls} cursor-pointer`} style={{ fontFamily: NUNITO }}>
-                    {SUJETS.map((s) => <option key={s} value={s}>{s}</option>)}
+                    {SUJET_VALUES.map((v, i) => <option key={v} value={v}>{t.sujets[i]}</option>)}
                   </select>
                 </Field>
 
-                <Field label="Message" htmlFor="message">
-                  <textarea id="message" name="Message" required rows={5} placeholder="Votre message…" className={`${inputCls} resize-y`} style={{ fontFamily: NUNITO }} />
+                <Field label={t.fieldMessage} htmlFor="message">
+                  <textarea id="message" name="Message" required rows={5} placeholder={t.placeholderMessage} className={`${inputCls} resize-y`} style={{ fontFamily: NUNITO }} />
                 </Field>
 
                 {status === "error" && (
@@ -238,7 +242,7 @@ export default function ContactForm() {
                 )}
                 {!ACCESS_KEY && (
                   <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" style={{ fontFamily: NUNITO }}>
-                    ⚠️ Clé Web3Forms non configurée (NEXT_PUBLIC_WEB3FORMS_KEY). Le formulaire est prêt, il ne manque que la clé.
+                    {t.missingKey}
                   </p>
                 )}
 
@@ -248,7 +252,7 @@ export default function ContactForm() {
                   className="btn-shine w-full py-4 rounded-2xl text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
                   style={{ background: RED, fontFamily: NUNITO }}
                 >
-                  {status === "loading" ? "Envoi en cours…" : "Valider"}
+                  {status === "loading" ? t.submitting : t.submit}
                 </button>
               </form>
             )}

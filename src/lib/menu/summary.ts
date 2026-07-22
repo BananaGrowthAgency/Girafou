@@ -4,6 +4,11 @@
 // navigateur que ce qui est réellement affiché, pas tout le menu.
 
 import type { Category, Menu, MenuItem } from "./types";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
+// Seuls les titres de rubrique sont traduits : les plats et leurs descriptions
+// viennent du CMS et restent en français (décision du parc).
+type CarteStrings = Dictionary["carte"];
 
 export type SummarySection = { title: string; items: string };
 
@@ -30,9 +35,9 @@ function format(n: number): string {
 }
 
 // « dès X € » à partir du plat le moins cher de la sélection.
-function fromPrice(items: MenuItem[]): string | undefined {
+function fromPrice(items: MenuItem[], from: string): string | undefined {
   const values = items.map((i) => parsePrice(i.price)).filter((n): n is number => n !== null);
-  return values.length ? `dès ${format(Math.min(...values))}` : undefined;
+  return values.length ? `${from} ${format(Math.min(...values))}` : undefined;
 }
 
 // Tous les plats d'une catégorie, y compris ceux rangés en sous-colonnes.
@@ -41,18 +46,18 @@ function allItems(cat?: Category): MenuItem[] {
   return [...(cat.items ?? []), ...(cat.columns ?? []).flatMap((c) => c.items)];
 }
 
-export function buildRestaurationSummary(menu: Menu): SummaryCard[] {
+export function buildRestaurationSummary(menu: Menu, t: CarteStrings): SummaryCard[] {
   const by = (id: string) => menu.categories.find((c) => c.id === id);
   const pizzas = by("pizzas");
 
   return [
     {
-      label: "Pizzas maison",
-      badge: "Sur place ou à emporter",
+      label: t.pizzas.label,
+      badge: t.pizzas.badge,
       image: "/images/resto/pizza.jpg",
       // Seulement `items` : les sous-colonnes de cette catégorie sont des
       // accompagnements (chips, fruits), leur prix ne représente pas une pizza.
-      price: fromPrice(pizzas?.items ?? []),
+      price: fromPrice(pizzas?.items ?? [], t.from),
       sections: (pizzas?.items ?? []).map((i) => ({ title: i.name, items: i.desc ?? "" })),
       highlight: pizzas?.highlight
         ? {
@@ -63,24 +68,24 @@ export function buildRestaurationSummary(menu: Menu): SummaryCard[] {
         : undefined,
     },
     {
-      label: "Gourmandises",
+      label: t.gourmandises.label,
       badge: null,
       image: "/images/resto/glaces-douceurs.jpg",
-      price: fromPrice(allItems(by("sucre"))),
+      price: fromPrice(allItems(by("sucre")), t.from),
       sections: [
-        { title: "Crêpes", items: "Sucre, Nutella, Confiture de fraise, Caramel beurre salé" },
-        { title: "Gaufres", items: "Sucre, Nutella, Caramel beurre salé" },
+        { title: t.gourmandises.crepes, items: "Sucre, Nutella, Confiture de fraise, Caramel beurre salé" },
+        { title: t.gourmandises.gaufres, items: "Sucre, Nutella, Caramel beurre salé" },
       ],
     },
     {
-      label: "Boissons",
+      label: t.boissons.label,
       badge: null,
       image: "/images/resto/boissons.jpg",
-      price: fromPrice(allItems(by("boissons"))),
+      price: fromPrice(allItems(by("boissons")), t.from),
       sections: [
-        { title: "Boissons fraîches", items: "Sodas, sirops à l’eau, Bouteilles d’eau, Caprisun…" },
+        { title: t.boissons.cold, items: "Sodas, sirops à l’eau, Bouteilles d’eau, Caprisun…" },
         {
-          title: "Boissons chaudes",
+          title: t.boissons.hot,
           items:
             "Petit Café, Café Allongé, Grand Café, Décaféiné, Petit Crème, Grand Crème, Café Viennois, Cappuccino, Chocolat, Choco Viennois, Thé",
         },

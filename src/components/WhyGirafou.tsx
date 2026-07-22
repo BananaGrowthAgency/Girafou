@@ -2,53 +2,18 @@
 
 import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-/* Horizontal marquee ticker of park keywords */
-const ticker = [
-  "Hélicoptère exclusif",
-  "Trampolines XXL",
-  "Karting & Motos",
-  "NeoXperience",
-  "Piscine à balles",
-  "Structures gonflables",
-  "Anniversaires",
-  "Restauration",
-  "Beach Club été",
-  "Ouvert 365 jours",
+// Icônes et couleurs des 4 raisons — la présentation reste en code, les textes
+// viennent du dictionnaire (même ordre).
+const reasonStyles = [
+  { icon: "🏆", color: "#F5A623", bg: "rgba(245,166,35,0.10)" },
+  { icon: "☁️", color: "#0288D1", bg: "rgba(2,136,209,0.10)" },
+  { icon: "👨‍👩‍👧", color: "#00897B", bg: "rgba(0,137,123,0.10)" },
+  { icon: "🛡️", color: "#7C3AED", bg: "rgba(124,58,237,0.10)" },
 ];
 
-const reasons = [
-  {
-    icon: "🏆",
-    title: "Exclusif en Normandie",
-    desc: "L'hélicoptère et la NeoXperience sont des attractions introuvables ailleurs dans la région.",
-    color: "#F5A623",
-    bg: "rgba(245,166,35,0.10)",
-  },
-  {
-    icon: "☁️",
-    title: "Par tous les temps",
-    desc: "1 300 m² couverts — pluie, vent ou soleil, chez Girafou il fait toujours beau !",
-    color: "#0288D1",
-    bg: "rgba(2,136,209,0.10)",
-  },
-  {
-    icon: "👨‍👩‍👧",
-    title: "Toute la famille",
-    desc: "Des zones adaptées à chaque âge (1–12 ans) et un espace confort pour les parents.",
-    color: "#00897B",
-    bg: "rgba(0,137,123,0.10)",
-  },
-  {
-    icon: "🛡️",
-    title: "Sécurité & hygiène",
-    desc: "Équipements certifiés, personnel formé, chaussettes obligatoires — vos enfants sont entre de bonnes mains.",
-    color: "#7C3AED",
-    bg: "rgba(124,58,237,0.10)",
-  },
-];
-
-export default function WhyGirafou() {
+export default function WhyGirafou({ t }: { t: Dictionary["home"]["why"] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const sectionRef = useRef<HTMLElement>(null);
@@ -69,13 +34,13 @@ export default function WhyGirafou() {
       {/* ── Marquee ticker ── */}
       <div className="relative overflow-hidden py-5 border-b border-amber-900/10">
         <div className="flex gap-0 w-max animate-marquee">
-          {[...ticker, ...ticker].map((t, i) => (
+          {[...t.ticker, ...t.ticker].map((word, i) => (
             <span
               key={i}
               className="flex items-center gap-4 px-6 text-amber-600 font-bold text-sm uppercase tracking-widest whitespace-nowrap"
               style={{ fontFamily: "var(--font-nunito)" }}
             >
-              {t}
+              {word}
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
             </span>
           ))}
@@ -132,42 +97,42 @@ export default function WhyGirafou() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Pourquoi choisir Girafou ?
+            {t.badge}
           </motion.span>
           <h2
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
-            Bien plus qu&rsquo;un{" "}
+            {t.titleStart}{" "}
             <span style={{
               background: "linear-gradient(135deg, #F5A623 0%, #FF5722 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              simple parc
+              {t.titleAccent}
             </span>
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {reasons.map((r, i) => (
+          {t.reasons.map((r, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.1 + i * 0.12 }}
               className="group relative rounded-3xl p-7 border border-amber-100 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300"
-              style={{ background: r.bg }}
+              style={{ background: reasonStyles[i].bg }}
             >
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg"
-                style={{ background: "#FFFFFF", border: `1.5px solid ${r.color}40` }}
+                style={{ background: "#FFFFFF", border: `1.5px solid ${reasonStyles[i].color}40` }}
               >
-                {r.icon}
+                {reasonStyles[i].icon}
               </div>
               <h3
                 className="text-xl font-extrabold mb-2"
-                style={{ color: r.color, fontFamily: "var(--font-baloo)" }}
+                style={{ color: reasonStyles[i].color, fontFamily: "var(--font-baloo)" }}
               >
                 {r.title}
               </h3>
@@ -197,14 +162,14 @@ export default function WhyGirafou() {
               fontFamily: "var(--font-nunito)",
             }}
           >
-            Préparer notre visite
+            {t.ctaVisit}
           </a>
           <a
             href="#anniversaires"
             className="px-10 py-5 rounded-2xl font-extrabold text-lg text-amber-700 border-2 border-amber-300 hover:border-amber-500 hover:text-amber-900 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Organiser un anniversaire
+            {t.ctaBirthday}
           </a>
         </motion.div>
       </div>

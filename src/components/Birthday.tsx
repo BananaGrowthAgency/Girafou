@@ -4,51 +4,46 @@ import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { FORMULES } from "@/lib/anniversaires";
 
-// slug -> page /anniversaires/{slug} ; reserveUrl -> lien Qweekle propre à la formule.
-// Ordre volontaire : P'tits Gourmands au centre — formule la plus vendue, elle
-// porte la pastille « Plus populaire » (même ordre que lib/anniversaires.ts).
-const formulas = [
-  {
-    name: "Formule du Lion",
-    slug: "formule-du-lion",
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-lion?lang=fr",
-    sub: "L'anniversaire complet",
-    horaire: "10h–13h ou 14h–18h",
-    color: "#F5A623",
-    bg: "#FFFBEE",
-    border: "#FFE082",
-    image: "/images/birthday/formula-lion.png",
-    highlight: false,
-  },
-  {
-    name: "P'tits Gourmands",
-    slug: "ptits-gourmands",
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
-    sub: "Pizza en famille",
-    horaire: "Matin uniquement · 10h–13h",
-    color: "#FF5722",
-    bg: "#FFF3EE",
-    border: "#FFCCBC",
-    image: "/images/birthday/formula-pizza.png",
-    highlight: true,
-  },
-  {
-    name: "Gira Fun Karaoké",
-    slug: "gira-fun-karaoke",
-    // 2 packs Qweekle (matin / après-midi) sans page commune -> catalogue anniversaires.
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires?lang=fr",
-    sub: "Musique & fête",
-    horaire: "10h–13h ou 14h–18h",
-    color: "#7C3AED",
-    bg: "#F5F0FF",
-    border: "#DDD6FE",
-    image: "/images/birthday/formula-karaoke.png",
-    highlight: false,
-  },
-];
+// Les formules (slug, lien Qweekle, illustration, couleurs) viennent de
+// `lib/anniversaires.ts` : les dupliquer ici avait déjà fait diverger un lien
+// de réservation. Seule la teinte de bordure, propre à cette carte, reste ici.
+const CARD_BORDER: Record<string, string> = {
+  "formule-du-lion": "#FFE082",
+  "ptits-gourmands": "#FFCCBC",
+  "gira-fun-karaoke": "#DDD6FE",
+};
 
-function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inView: boolean }) {
+const formulas = FORMULES.map((f) => ({
+  slug: f.slug,
+  reserveUrl: f.reserveUrl,
+  color: f.accent,
+  bg: f.soft,
+  border: CARD_BORDER[f.slug] ?? `${f.accent}40`,
+  image: f.illustration,
+  highlight: Boolean(f.highlight),
+}));
+
+function FormulaCard({
+  f,
+  i,
+  inView,
+  t,
+  prix,
+}: {
+  f: typeof formulas[0];
+  i: number;
+  inView: boolean;
+  t: Dictionary["home"]["birthday"];
+  prix: string;
+}) {
+  const lp = useLocalePath();
+  const texte = t.formulas[f.slug];
+  const name = ui(useLocale()).names.formules[f.slug];
   const [err, setErr] = useState(false);
   return (
     <motion.div
@@ -64,7 +59,7 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
             className="px-4 py-1.5 rounded-full text-white text-xs font-extrabold shadow-lg"
             style={{ background: f.color, fontFamily: "var(--font-nunito)" }}
           >
-            ⭐ Plus populaire
+            {t.popular}
           </span>
         </div>
       )}
@@ -74,7 +69,7 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
         {!err ? (
           <Image
             src={f.image}
-            alt={f.name}
+            alt={name}
             width={420}
             height={420}
             className="w-full h-auto"
@@ -84,7 +79,7 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
         ) : (
           <div className="h-56 img-placeholder" style={{ background: f.bg }}>
             <span className="text-4xl opacity-30">🎂</span>
-            <span className="text-xs opacity-50">{f.name}</span>
+            <span className="text-xs opacity-50">{name}</span>
           </div>
         )}
       </div>
@@ -95,10 +90,19 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
           className="text-2xl font-extrabold leading-tight"
           style={{ color: f.color, fontFamily: "var(--font-baloo)" }}
         >
-          {f.name}
+          {name}
         </h3>
-        <p className="text-sm font-semibold text-amber-800/60" style={{ fontFamily: "var(--font-nunito)" }}>{f.sub}</p>
-        <p className="text-xs text-amber-800/45 mb-4" style={{ fontFamily: "var(--font-nunito)" }}>⏰ {f.horaire}</p>
+        <p className="text-sm font-semibold text-amber-800/60" style={{ fontFamily: "var(--font-nunito)" }}>{texte.sub}</p>
+        <p className="text-xs text-amber-800/45" style={{ fontFamily: "var(--font-nunito)" }}>⏰ {texte.horaire}</p>
+
+        {/* Le prix est aussi dans l'illustration, mais en pixels : le doubler en
+            texte le rend lisible par les lecteurs d'écran et indexable. */}
+        <p className="mb-4 mt-2 flex items-baseline gap-1.5" style={{ fontFamily: "var(--font-nunito)" }}>
+          <span className="text-2xl font-extrabold" style={{ color: f.color, fontFamily: "var(--font-baloo)" }}>
+            {prix}
+          </span>
+          <span className="text-xs font-semibold text-amber-800/55">{t.perChild}</span>
+        </p>
 
         <div className="flex gap-3 mt-auto">
           <a
@@ -108,14 +112,14 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
             className="btn-shine flex-1 py-3 rounded-2xl text-center text-white font-extrabold text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
             style={{ background: f.color, fontFamily: "var(--font-nunito)" }}
           >
-            Je réserve
+            {t.book}
           </a>
           <Link
-            href={`/anniversaires/${f.slug}`}
+            href={lp(`/anniversaires/${f.slug}`)}
             className="flex-1 py-3 rounded-2xl text-center font-extrabold text-sm border-2 hover:scale-[1.02] transition-all duration-200"
             style={{ borderColor: f.color, color: f.color, fontFamily: "var(--font-nunito)" }}
           >
-            En savoir +
+            {t.more}
           </Link>
         </div>
       </div>
@@ -123,7 +127,13 @@ function FormulaCard({ f, i, inView }: { f: typeof formulas[0]; i: number; inVie
   );
 }
 
-export default function Birthday() {
+export default function Birthday({
+  t,
+  formules,
+}: {
+  t: Dictionary["home"]["birthday"];
+  formules: Dictionary["anniversaires"]["formules"];
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const sectionRef = useRef<HTMLElement>(null);
@@ -199,27 +209,27 @@ export default function Birthday() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 border border-pink-100 text-pink-600 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Des fêtes inoubliables
+            {t.badge}
           </motion.span>
           <h2
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight break-words"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
-            Anniversaires{" "}
-            <span className="text-pop">magiques</span>
+            {t.titleStart}{" "}
+            <span className="text-pop">{t.titleAccent}</span>
           </h2>
           <p
             className="text-xl font-semibold text-amber-900/70 mb-6"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            De 10h à 13h ou de 14h à 18h, 3 formules au choix
+            {t.subtitle}
           </p>
         </motion.div>
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {formulas.map((f, i) => (
-            <FormulaCard key={i} f={f} i={i} inView={inView} />
+            <FormulaCard key={i} f={f} i={i} inView={inView} t={t} prix={formules[f.slug].price} />
           ))}
         </div>
 
@@ -232,10 +242,13 @@ export default function Birthday() {
           style={{ background: "#C0392B" }}
         >
           <p className="text-base leading-relaxed" style={{ fontFamily: "var(--font-nunito)" }}>
-            Un minimum de 8 enfants est requis pour l&rsquo;organisation d&rsquo;un anniversaire.<br />
-            Nous vous conseillons de réserver au moins 15 jours avant la date. Un acompte de 30 € vous sera demandé à la réservation.<br />
-            Les cartons d&rsquo;invitations sont à télécharger directement depuis votre compte client.<br />
-            <strong>L&rsquo;apport de bonbons, boissons ou gâteaux supplémentaires est interdit.</strong>
+            {t.info.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
+              </span>
+            ))}
+            <strong>{t.infoStrong}</strong>
           </p>
         </motion.div>
       </div>

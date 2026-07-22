@@ -6,6 +6,8 @@ import Image from "next/image";
 
 import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 const BROWN = "#5A3520";
@@ -15,41 +17,6 @@ const AMBER = "#F5A623";
 const GPS = "+49° 14′ 59.77″, -0° 16′ 50.32″";
 const MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=49.24994,-0.28064";
 const MAPS_EMBED = "https://maps.google.com/maps?q=49.24994,-0.28064&z=12&output=embed";
-
-type Itineraire = { from: string; short: string; steps: string[] };
-const itineraires: Itineraire[] = [
-  {
-    from: "En venant de Ouistreham",
-    short: "Ouistreham",
-    steps: [
-      "Prendre la voie rapide en direction de Caen.",
-      "Puis prendre la première sortie que vous rencontrez (sortie « Zone d'activité de Bénouville »).",
-      "Le Girafou est juste à votre gauche.",
-    ],
-  },
-  {
-    from: "En venant de Caen",
-    short: "Caen",
-    steps: [
-      "Prendre le périphérique en direction de Ouistreham.",
-      "Une fois sur la voie rapide menant à Ouistreham, rouler environ 8 km jusqu'à la sortie « Zone d'activité de Bénouville ».",
-      "Suivre cette direction jusqu'au Girafou.",
-    ],
-  },
-  {
-    from: "En venant de Cabourg",
-    short: "Cabourg",
-    steps: [
-      "Suivre la direction Ouistreham.",
-      "En arrivant sur Bénouville, passer le Pont (Pegasus Bridge).",
-      "Aller jusqu'au rond-point et prendre la première sortie à droite direction « St Aubin d'Arquenay ».",
-      "Continuer tout droit, passer l'église.",
-      "Puis au STOP prendre à gauche toujours direction « St Aubin d'Arquenay ».",
-      "Prendre la première à gauche direction « Zone d'activité de Bénouville ».",
-      "Le Girafou est juste sur votre droite !",
-    ],
-  },
-];
 
 /* ── Icônes SVG (pas d'emojis) ── */
 const IconRoute = (p: { className?: string }) => (
@@ -88,11 +55,11 @@ function Reveal({ children, delay = 0, className }: { children: ReactNode; delay
   );
 }
 
-export default function PlanAcces() {
+export default function PlanAcces({ t }: { t: Dictionary["pages"]["planAcces"] }) {
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
   const [active, setActive] = useState(0);
-  const it = itineraires[active];
+  const it = t.itineraires[active];
 
   return (
     <>
@@ -119,13 +86,13 @@ export default function PlanAcces() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold mb-4"
             style={{ fontFamily: NUNITO }}
           >
-            <IconRoute className="w-4 h-4" /> Comment venir&nbsp;?
+            <IconRoute className="w-4 h-4" /> {t.badge}
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
-            Plan d&rsquo;<span style={{ color: "#FFD23F" }}>accès</span>
+            {t.titleStart}<span style={{ color: "#FFD23F" }}>{t.titleAccent}</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
-            Le Girafou vous accueille à Bénouville, près de Caen. Choisissez votre point de départ et suivez le guide&nbsp;!
+            {t.subtitle}
           </motion.p>
         </div>
 
@@ -145,7 +112,7 @@ export default function PlanAcces() {
             <div className="rounded-[2rem] overflow-hidden shadow-xl border border-amber-100">
               <iframe
                 src={MAPS_EMBED}
-                title="Carte d'accès au parc Girafou"
+                title={t.mapTitle}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="w-full h-[340px] sm:h-[440px] lg:h-[520px] border-0 block"
@@ -154,7 +121,7 @@ export default function PlanAcces() {
 
             {/* Carte adresse — flotte sur la carte en desktop, empilée en mobile */}
             <div className="mt-5 lg:mt-0 lg:absolute lg:bottom-6 lg:left-6 lg:w-[380px] rounded-3xl bg-white/95 backdrop-blur-sm shadow-2xl border border-amber-100 p-6">
-              <h2 className="text-2xl font-extrabold mb-4" style={{ fontFamily: BALOO, color: BROWN }}>Adresse du parc</h2>
+              <h2 className="text-2xl font-extrabold mb-4" style={{ fontFamily: BALOO, color: BROWN }}>{t.addressTitle}</h2>
               <ul className="space-y-3.5" style={{ fontFamily: NUNITO }}>
                 <li className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#FFF3D0", color: RED }}><IconPin className="w-5 h-5" /></span>
@@ -165,7 +132,7 @@ export default function PlanAcces() {
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#FFF3D0", color: RED }}><IconCrosshair className="w-5 h-5" /></span>
-                  <span className="text-xs sm:text-sm text-amber-900/70 font-semibold">GPS&nbsp;: {GPS}</span>
+                  <span className="text-xs sm:text-sm text-amber-900/70 font-semibold">{t.gps}&nbsp;: {GPS}</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#FFF3D0", color: RED }}><IconPhone className="w-5 h-5" /></span>
@@ -174,10 +141,10 @@ export default function PlanAcces() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-2.5">
                 <a href={MAPS_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-extrabold shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" style={{ background: RED, fontFamily: NUNITO }}>
-                  <IconExternal className="w-4 h-4" /> Itinéraire
+                  <IconExternal className="w-4 h-4" /> {t.route}
                 </a>
                 <a href="tel:0231537268" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-extrabold border-2 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" style={{ borderColor: RED, color: RED, fontFamily: NUNITO }}>
-                  <IconPhone className="w-4 h-4" /> Appeler
+                  <IconPhone className="w-4 h-4" /> {t.call}
                 </a>
               </div>
             </div>
@@ -186,17 +153,17 @@ export default function PlanAcces() {
           {/* ── Itinéraires : onglets + timeline ── */}
           <Reveal>
             <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ fontFamily: BALOO, color: BROWN }}>Comment nous rejoindre&nbsp;?</h2>
+              <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ fontFamily: BALOO, color: BROWN }}>{t.howToTitle}</h2>
               <span className="block w-14 h-1 rounded-full mx-auto mt-3" style={{ background: RED }} />
             </div>
 
             {/* Onglets (pills) */}
             <div className="flex flex-wrap justify-center gap-3 mb-10">
-              {itineraires.map((t, i) => {
+              {t.itineraires.map((route, i) => {
                 const on = i === active;
                 return (
                   <button
-                    key={t.short}
+                    key={route.short}
                     type="button"
                     onClick={() => setActive(i)}
                     aria-pressed={on}
@@ -205,7 +172,7 @@ export default function PlanAcces() {
                       ? { background: RED, color: "#fff", boxShadow: "0 8px 20px rgba(192,57,43,0.28)", fontFamily: NUNITO }
                       : { background: "#fff", color: BROWN, border: `2px solid ${AMBER}55`, fontFamily: NUNITO }}
                   >
-                    <IconPin className="w-4 h-4" /> {t.short}
+                    <IconPin className="w-4 h-4" /> {route.short}
                   </button>
                 );
               })}
@@ -251,12 +218,10 @@ export default function PlanAcces() {
           <Reveal>
             <div className="max-w-2xl mx-auto mt-14 rounded-3xl bg-white shadow-lg border border-amber-100 p-6 sm:p-7">
               <h2 className="text-xl sm:text-2xl font-extrabold mb-2" style={{ fontFamily: BALOO, color: BROWN }}>
-                Accessibilité — personnes à mobilité réduite
+                {t.pmrTitle}
               </h2>
               <p className="text-sm sm:text-base text-amber-900/75 leading-snug mb-5" style={{ fontFamily: NUNITO }}>
-                Vous venez avec une personne à mobilité réduite&nbsp;? Contactez-nous avant votre visite&nbsp;:
-                nous vous renseignerons sur les conditions d&rsquo;accès et d&rsquo;accueil, et sur ce qu&rsquo;il est
-                possible d&rsquo;organiser selon votre situation.
+                {t.pmrText}
               </p>
               <div className="flex flex-wrap gap-2.5">
                 <a

@@ -1,0 +1,1168 @@
+{
+  "site": {
+    "title": "Girafou — Children's favourite indoor playground near Caen",
+    "description": "1,300 m² of indoor play near Caen: slides, trampolines, helicopters, karting, NeoXperience and much more! Open all year round in Bénouville.",
+    "keywords": [
+      "indoor playground",
+      "kids",
+      "Caen",
+      "Normandy",
+      "soft play",
+      "birthday party",
+      "family activities"
+    ]
+  },
+  "home": {
+    "announcement": "🍦 SUMMER OFFER: free ice cream for every child entering between 10am and 12pm!",
+    "hero": {
+      "titleStart": "The indoor playground",
+      "titleAccent": "children love best",
+      "titleEnd": "near Caen",
+      "descStrong1": "1,300 m²",
+      "descMid": " of indoor play — exclusive helicopter, trampolines, karting, NeoXperience and much more. For ages ",
+      "descStrong2": "1 to 12",
+      "descEnd": ", open all year round.",
+      "ctaActivities": "Explore the activities",
+      "ctaBirthday": "Plan a birthday party",
+      "stats": [
+        "of indoor play",
+        "unique activities",
+        "reviews · Rated 4.8/5 ⭐",
+        "sites near Caen"
+      ]
+    },
+    "toddler": {
+      "badge": "New · Every Thursday",
+      "title": "Toddler Thursdays",
+      "text": "A morning just for the littlest ones: the park quiet and calm, with no big kids around, so they can explore and play at their own pace.",
+      "points": [
+        {
+          "label": "10.00am – 12.30pm",
+          "sub": "Every Thursday morning"
+        },
+        {
+          "label": "€5 per child",
+          "sub": "Unlimited play time"
+        },
+        {
+          "label": "Adults go free",
+          "sub": "Parents, grandparents, nannies…"
+        }
+      ],
+      "cta": "Book our morning"
+    },
+    "activities": {
+      "badge": "9 activities for non-stop fun",
+      "titleStart": "Adventures for",
+      "titleAccent": "every age",
+      "subtitle": "Every visit to Girafou is a brand-new adventure. Fly, jump, play, slide…",
+      "more": "Find out more",
+      "cta": "Prices & opening times →"
+    },
+    "why": {
+      "ticker": [
+        "Exclusive helicopter",
+        "XXL trampolines",
+        "Karting & bikes",
+        "NeoXperience",
+        "Ball pit",
+        "Bouncy castles",
+        "Birthday parties",
+        "Café",
+        "Summer Beach Club",
+        "Open 365 days"
+      ],
+      "badge": "Why choose Girafou?",
+      "titleStart": "Much more than",
+      "titleAccent": "just a playground",
+      "reasons": [
+        {
+          "title": "Exclusive in Normandy",
+          "desc": "The helicopter and the NeoXperience are attractions you won't find anywhere else in the region."
+        },
+        {
+          "title": "Whatever the weather",
+          "desc": "1,300 m² fully indoors — rain, wind or sunshine, the weather is always perfect at Girafou!"
+        },
+        {
+          "title": "The whole family",
+          "desc": "Zones suited to every age (1–12 years) and a comfortable area for parents."
+        },
+        {
+          "title": "Safety & hygiene",
+          "desc": "Certified equipment, trained staff, socks compulsory — your children are in good hands."
+        }
+      ],
+      "ctaVisit": "Plan your visit",
+      "ctaBirthday": "Plan a birthday party"
+    },
+    "restauration": {
+      "badge": "Eat at the park",
+      "titleStart": "A",
+      "titleAccent": "café",
+      "titleEnd": "for the whole family",
+      "text": "After all those adventures, time to refuel! Fresh pizzas, sweet treats and drinks — without leaving the park.",
+      "pizzaTitle": "Pizza Option",
+      "pizzaText": "Available for morning birthday parties only. The children make their own pizza and eat it together."
+    },
+    "birthday": {
+      "badge": "Parties to remember",
+      "titleStart": "Magical",
+      "titleAccent": "birthdays",
+      "subtitle": "From 10am to 1pm or 2pm to 6pm, 3 packages to choose from",
+      "popular": "⭐ Most popular",
+      "book": "Book now",
+      "more": "Find out more",
+      "formulas": {
+        "formule-du-lion": {
+          "sub": "The complete birthday",
+          "horaire": "10am–1pm or 2pm–6pm"
+        },
+        "ptits-gourmands": {
+          "sub": "Pizza with the family",
+          "horaire": "Mornings only · 10am–1pm"
+        },
+        "gira-fun-karaoke": {
+          "sub": "Music & party",
+          "horaire": "10am–1pm or 2pm–6pm"
+        }
+      },
+      "info": [
+        "A minimum of 8 children is required to book a birthday party.",
+        "We recommend booking at least 15 days in advance. A €30 deposit is payable at the time of booking.",
+        "Invitation cards can be downloaded directly from your customer account."
+      ],
+      "infoStrong": "Bringing extra sweets, drinks or cakes is not permitted.",
+      "perChild": "per child"
+    },
+    "practical": {
+      "badge": "How to find us",
+      "titleStart": "Visitor",
+      "titleAccent": "information",
+      "tips": [
+        {
+          "label": "Socks compulsory",
+          "sub": "Children and adults — €2.50 a pair on site"
+        },
+        {
+          "label": "No food from outside",
+          "sub": "No drinks either — café on site"
+        },
+        {
+          "label": "Free parking",
+          "sub": "Large car park in front of the park"
+        },
+        {
+          "label": "1 to 12 years",
+          "sub": "Zones suited to every age"
+        }
+      ],
+      "hoursTitle": "Opening times",
+      "new": "New",
+      "hours": [
+        {
+          "day": "Monday · Tuesday · Friday",
+          "time": "Closed",
+          "note": "Outside school holidays"
+        },
+        {
+          "day": "Wednesday · Saturday · Sunday",
+          "time": "10am ~ 7pm"
+        },
+        {
+          "day": "Toddler Thursdays",
+          "time": "10am ~ 12.30pm",
+          "note": "€5 per child · free for accompanying adults"
+        },
+        {
+          "day": "Public holidays",
+          "time": "10am ~ 7pm"
+        },
+        {
+          "day": "School holidays Zone B (Normandy)",
+          "time": "Every day · 10am ~ 7pm"
+        },
+        {
+          "day": "School holidays Zone C (Paris)",
+          "time": "Every day · 10am ~ 7pm"
+        }
+      ],
+      "pricesTitle": "Admission prices",
+      "prices": [
+        {
+          "label": "Under 12 months",
+          "price": "Free"
+        },
+        {
+          "label": "18 months to 3 years",
+          "price": "€8.50"
+        },
+        {
+          "label": "3 to 12 years",
+          "price": "€11.50"
+        },
+        {
+          "label": "Accompanying adult",
+          "price": "€2.00"
+        }
+      ],
+      "pricesNote": "Child admission includes 1 free token, adult admission includes 1 free hot drink. Unlimited play time. A specific rate applies for 12–18 months.",
+      "allPrices": "See all prices & tokens →",
+      "findUs": "Find us",
+      "parkName": "Girafou le parc — All year round!",
+      "parkAddress": "ZA Clos de la Hogue, 14970 Bénouville",
+      "beachName": "Girafou Plage Club — June to September!",
+      "beachAddress": "Plage de Ouistreham - Riva Bella, 14150 Ouistreham"
+    },
+    "reviews": {
+      "label": "Families trust us",
+      "accent": "+500",
+      "rest": "reviews · Rated 4.8/5 ⭐",
+      "subtitle": "What families say after their visit to the park.",
+      "cta": "Leave us a Google review"
+    }
+  },
+  "carte": {
+    "from": "from",
+    "pizzas": {
+      "label": "Homemade pizzas",
+      "badge": "Eat in or takeaway"
+    },
+    "gourmandises": {
+      "label": "Sweet treats",
+      "crepes": "Crêpes",
+      "gaufres": "Waffles"
+    },
+    "boissons": {
+      "label": "Drinks",
+      "cold": "Cold drinks",
+      "hot": "Hot drinks"
+    },
+    "categories": {
+      "boissons": {
+        "label": "Drinks",
+        "heading": "Drinks"
+      },
+      "pizzas": {
+        "label": "Pizzas",
+        "heading": "Our Pizzas",
+        "subtitle": "At Girafou, quality comes first! Our dishes are prepared on site with love. Our chicken can be halal on request, respecting our customers' dietary choices and preferences.",
+        "highlightBadge": "⭐ Lunch deal",
+        "highlightText": "Pizza of your choice + a jug of squash of your choice"
+      },
+      "sucre": {
+        "label": "Crêpes & Waffles",
+        "heading": "Crêpes & Waffles"
+      },
+      "glaces": {
+        "label": "Ice creams",
+        "heading": "Ice creams"
+      },
+      "gouter": {
+        "label": "Teatime",
+        "heading": "Teatime & Sweets",
+        "highlightBadge": "⭐ Teatime deal",
+        "highlightText": "1 crêpe of your choice + 1 Capri-Sun"
+      }
+    },
+    "columns": {
+      "boissons-froides": "Cold drinks",
+      "boissons-chaudes": "Hot drinks",
+      "eaux-sirops": "Water & squash",
+      "chips": "Crisps",
+      "fruits": "Fruit",
+      "crepes": "Crêpes",
+      "gaufres": "Waffles",
+      "gouter-col": "Teatime",
+      "confiseries": "Sweets"
+    },
+    "eventsLabel": "Parties"
+  },
+  "activites": {
+    "helicoptere": {
+      "cardDesc": "Exclusive in Normandy — climb aboard a real helicopter and fly over the park.",
+      "tag": "Exclusive",
+      "tagline": "Take off above the park",
+      "description": [
+        "Come and fly above the park! A few turns of the pedals and you're off on a ride 5 metres up. An attraction for the bravest only!",
+        "And if you fancy it, mum or dad can even climb aboard for a ride with you."
+      ],
+      "ageDetail": "Children under 5 must be accompanied by an adult.",
+      "rules": [
+        "Maximum 2 people per cabin.",
+        "Children under 5 must be accompanied by an adult.",
+        "Keep your arms inside the cabin during the ride.",
+        "Not permitted for pregnant women."
+      ]
+    },
+    "neoxperience": {
+      "cardDesc": "The ground-breaking interactive wall that mixes video games and sport for a whole new thrill.",
+      "tag": "New",
+      "tagline": "A life-size games console",
+      "description": [
+        "A real life-size games console! A play area unlike any other in the region, built around its interactive wall.",
+        "Come and take on your friends, or even your parents… We'll soon see who's best. See you very soon!"
+      ],
+      "age": "Ages 1 to 99",
+      "ageDetail": "From 1 to 8 players.",
+      "rules": [
+        "Open all day, except during Girafou's big party."
+      ]
+    },
+    "karting": {
+      "cardDesc": "Drive your own kart or bike around the track — for budding little racers!",
+      "tag": "Popular",
+      "tagline": "Off on an adventure",
+      "description": [
+        "A taste of freedom and thrills: come and ride like an American biker on our bikes and karts!",
+        "You don't have to be big to dream and get away… Off on an adventure!"
+      ],
+      "age": "From age 3 on your own",
+      "ageDetail": "Adults can ride along with the little ones on a bike or a kart.",
+      "rules": [
+        "Follow the direction of the arrows around the track.",
+        "Do not push the vehicles."
+      ]
+    },
+    "trampolines": {
+      "cardDesc": "XXL trampolines for spectacular jumps and hours of airborne fun.",
+      "tag": "Fun",
+      "tagline": "Jump higher than Girafou!",
+      "description": [
+        "Trampolines for jumping higher and higher! Take on the challenge and try to bounce higher than Girafou's head."
+      ],
+      "age": "Ages 4 to 12",
+      "rules": [
+        "To avoid bumps: 1 child per trampoline."
+      ]
+    },
+    "gonflables": {
+      "cardDesc": "Giant mazes, bouncy castles and slides — adventure with a soft landing.",
+      "tag": "Classic",
+      "tagline": "Kilimanjaro & the Serengeti await",
+      "description": [
+        "Several inflatable games to enjoy at any age: jump, slide, bounce…",
+        "Kilimanjaro and the mighty Serengeti are waiting just for you!"
+      ],
+      "age": "Ages 4 to 12",
+      "ageDetail": "Kilimanjaro from age 4 · Serengeti from age 6.",
+      "rules": [
+        "Adults are not allowed on the inflatable games."
+      ]
+    },
+    "piscine-balles": {
+      "cardDesc": "Dive into an ocean of colourful balls — heaven for little explorers (2–6 years).",
+      "tag": "Must-do",
+      "tagline": "The park's star attraction",
+      "description": [
+        "The star attraction, a favourite with every child! Come and roll, jump and play in our ball pits.",
+        "Hours of playful, joyful fun for everyone!"
+      ],
+      "ageDetail": "Two pits: one for under-5s, one for over-4s.",
+      "rules": []
+    },
+    "zones-saut": {
+      "cardDesc": "Areas dedicated to jumping, with foam blocks, obstacles and climbing spaces.",
+      "tag": "Adrenaline",
+      "tagline": "Defy the laws of gravity",
+      "description": [
+        "Take the big jump! Our play structure has areas built for thrills, with safe zones so you can jump with complete confidence.",
+        "For little ones and big ones alike: come and defy the laws of gravity!"
+      ],
+      "age": "From age 6",
+      "rules": []
+    },
+    "labyrinthes": {
+      "cardDesc": "Multi-level structures with secret tunnels, mystery passages and climbing spaces.",
+      "tag": "Adventure",
+      "tagline": "200 m² of adventure, 5 metres high",
+      "description": [
+        "200 m² of obstacles, climbing, sliding and hiding places…",
+        "Plus plenty of other games and activities for children, all of it 5 metres high!"
+      ],
+      "age": "Ages 4 to 12",
+      "ageDetail": "Children aged 2–4 are welcome too, accompanied by mum or dad, so the whole family can join in.",
+      "rules": []
+    },
+    "toboggan": {
+      "cardDesc": "Giant slides and indoor toboggans for full-speed descents!",
+      "tag": "Thrills",
+      "tagline": "Great slides guaranteed",
+      "description": [
+        "For some brilliant sliding! Take your pick: our straight wave slide or the spiral slide…",
+        "And if you're still after a thrill, there's the roller toboggan!"
+      ],
+      "rules": [
+        "Wait your turn.",
+        "For the toboggan: remember to pick up your sledge before setting off down the rollers."
+      ]
+    }
+  },
+  "pages": {
+    "activites": {
+      "hub": {
+        "badge": "9 activities under one roof",
+        "titleStart": "Adventures for",
+        "titleAccent": "every age",
+        "subtitle": "1,300 m² of indoor play in Bénouville, near Caen. Fly, jump, slide, drive… there's something for the whole family!",
+        "more": "Find out more"
+      },
+      "detail": {
+        "breadcrumb": "Activities",
+        "paid": "Extra charge applies",
+        "included": "Included with admission",
+        "book": "Book now",
+        "factAge": "Age",
+        "factAccess": "Access",
+        "factInfo": "Good to know",
+        "factSafety": "Safety",
+        "allAges": "All ages",
+        "socksRequired": "Socks compulsory",
+        "attraction": "The attraction",
+        "rulesTitle": "Attraction rules",
+        "hoursTitle": "Opening times",
+        "hours": [
+          {
+            "period": "Term time",
+            "days": "Wednesday, Saturday, Sunday & public holidays",
+            "time": "10.00am – 7.00pm"
+          },
+          {
+            "period": "School holidays (Zones B & C)",
+            "days": "Every day",
+            "time": "10.00am – 7.00pm"
+          }
+        ],
+        "continueAdventure": "Keep exploring",
+        "backToAll": "See all activities"
+      }
+    },
+    "anniversaires": {
+      "hub": {
+        "badge": "🎉 Parties to remember",
+        "titleStart": "Magical",
+        "titleAccent": "birthdays",
+        "subtitleSuffix": "· 3 all-inclusive packages to choose from. We take care of everything, you just enjoy!",
+        "popular": "⭐ Most popular",
+        "book": "Book now",
+        "more": "Find out more",
+        "perChild": "per child"
+      },
+      "detail": {
+        "breadcrumb": "Birthdays",
+        "titleStart": "Come and",
+        "titleAccent": "celebrate your birthday",
+        "titleEnd": "with all your friends",
+        "subtitleSuffix": ", 3 packages to choose from",
+        "entryBefore": "Entry",
+        "entryUnderlined": "to the",
+        "entryAfter": "Girafou park",
+        "book": "Book now",
+        "includesTitle": "What the package includes",
+        "bookThis": "Book this package",
+        "backToAll": "← See all packages",
+        "perChild": "per child"
+      },
+      "reviews": {
+        "label": "Families trust us",
+        "accent": "Birthdays",
+        "rest": "they remember ⭐",
+        "subtitle": "What families say after their child's party.",
+        "cta": "Leave us a Google review"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Everything you need to know before your visit to Girafou, near Caen.",
+      "importantBadge": "Before you visit",
+      "items": [
+        {
+          "q": "Are socks essential?",
+          "important": true,
+          "a": [
+            [
+              {
+                "t": "Socks are COMPULSORY for your children, for reasons of hygiene and safety."
+              }
+            ],
+            [
+              {
+                "t": "Girafou sells its own non-slip socks at €2.50 a pair. They are equally essential for adults who want to join the children on the equipment."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Can we bring our own snack or picnic?",
+          "important": true,
+          "a": [
+            [
+              {
+                "t": "No. Because of food safety regulations, you may not bring in food or drink from outside."
+              }
+            ],
+            [
+              {
+                "t": "Our café is here for you on site: homemade pizzas, crêpes, waffles, ice creams and drinks."
+              },
+              {
+                "t": " → See the menu",
+                "href": "/restauration",
+                "u": true
+              }
+            ],
+            null,
+            [
+              {
+                "t": "Baby food is permitted, as are special diets for children with food allergies."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "When is Girafou open?",
+          "a": [
+            [
+              {
+                "t": "Term time:",
+                "u": true
+              }
+            ],
+            [
+              {
+                "t": "Wednesday, Saturday, Sunday and public holidays, 10.00am to 7.00pm."
+              }
+            ],
+            null,
+            [
+              {
+                "t": "School holidays:",
+                "u": true
+              }
+            ],
+            [
+              {
+                "t": "Every day and public holidays, 10.00am to 7.00pm."
+              }
+            ],
+            null,
+            [
+              {
+                "t": "Summer holidays (July/August):",
+                "u": true
+              }
+            ],
+            [
+              {
+                "t": "Every day and public holidays, 10.00am to 7.00pm."
+              }
+            ],
+            null,
+            [
+              {
+                "t": "Exceptional closing days:",
+                "u": true
+              }
+            ],
+            [
+              {
+                "t": "Closed on 25 December and 1 January."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Do we need to book to visit Girafou?",
+          "a": [
+            [
+              {
+                "t": "No, except for birthday parties (see below) and groups (holiday clubs, associations, etc.)."
+              }
+            ],
+            [
+              {
+                "t": "Because of safety regulations, entry may be delayed during busy periods."
+              }
+            ],
+            [
+              {
+                "t": "The busiest times are the afternoons during the October half-term, February, Easter and July/August school holidays."
+              }
+            ],
+            [
+              {
+                "t": "As a rule, bad weather makes the park much busier."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Who pays what? And how long can we play for?",
+          "a": [
+            [
+              {
+                "t": "Girafou has a single price for “unlimited” play time."
+              }
+            ],
+            [
+              {
+                "t": "Admission is charged for accompanying adults (€2 per adult, including 1 free drink)."
+              }
+            ],
+            [
+              {
+                "t": "→ Click here to see our prices",
+                "href": "/prix-des-entrees",
+                "u": true
+              }
+            ]
+          ]
+        },
+        {
+          "q": "What do parents do while the children play?",
+          "a": [
+            [
+              {
+                "t": "Girafou is a FAMILY play park: parents are welcome (depending on how busy it is) to enjoy playtime alongside their children."
+              }
+            ],
+            [
+              {
+                "t": "Free WiFi and magazines are available for parents."
+              }
+            ],
+            [
+              {
+                "t": "The cafeteria is of course open to parents."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Can we come in the morning, leave for lunch and come back afterwards?",
+          "a": [
+            [
+              {
+                "t": "No, once you leave you cannot come back in."
+              }
+            ],
+            [
+              {
+                "t": "Our SNACK BAR offers lunch deals so you can eat on site."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Birthday parties: how far in advance should we book?",
+          "a": [
+            [
+              {
+                "t": "You can book your birthday party on www.girafou.com."
+              }
+            ],
+            [
+              {
+                "t": "You can also book your party at the Girafou reception desk."
+              }
+            ],
+            [
+              {
+                "t": "We recommend booking at least "
+              },
+              {
+                "t": "2 weeks in advance.",
+                "u": true
+              }
+            ]
+          ]
+        },
+        {
+          "q": "When is Girafou Plage open?",
+          "a": [
+            [
+              {
+                "t": "From mid-June to mid-September, 11.00am to 7.00pm. The Ouistreham site may close in the event of strong wind or rain."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Can we leave the children at Girafou and go shopping?",
+          "a": [
+            [
+              {
+                "t": "At Girafou, children must ALWAYS be accompanied by an adult."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "What age can children come to Girafou?",
+          "a": [
+            [
+              {
+                "t": "The equipment at Girafou is for children aged 1 to 12. There is a separate, enclosed and secure play area designed specifically for children aged 1 to 5."
+              }
+            ],
+            [
+              {
+                "t": "The inflatable games are for children aged 4 to 12. The Grand Labyrinthe is reserved for children aged 4 to 12."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Can we go on the equipment with the children?",
+          "a": [
+            [
+              {
+                "t": "Yes, depending on how busy it is, and provided you are wearing socks — except on the inflatable structures, which adults may not use."
+              }
+            ],
+            [
+              {
+                "t": "Access to the equipment remains possible at any time in an emergency."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Is the park accessible for visitors with reduced mobility?",
+          "a": [
+            [
+              {
+                "t": "For any question about access and facilities for visitors with reduced mobility, please contact us before your visit: we will tell you what is possible for your particular situation."
+              }
+            ],
+            [
+              {
+                "t": "→ 02 31 53 72 68",
+                "href": "tel:0231537268",
+                "u": true
+              }
+            ],
+            [
+              {
+                "t": "→ contact@girafou.com",
+                "href": "mailto:contact@girafou.com",
+                "u": true
+              }
+            ]
+          ]
+        },
+        {
+          "q": "What payment methods do you accept?",
+          "a": [
+            [
+              {
+                "t": "You "
+              },
+              {
+                "t": "can pay",
+                "u": true
+              },
+              {
+                "t": " by cash, card or chèques vacances."
+              }
+            ],
+            [
+              {
+                "t": "Cheques "
+              },
+              {
+                "t": "are no longer accepted",
+                "u": true
+              },
+              {
+                "t": " at Girafou."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Birthday parties: what is included?",
+          "a": [
+            [
+              {
+                "t": "→ See the “Birthdays” page",
+                "href": "/anniversaires",
+                "u": true
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Holiday clubs, works councils, associations, companies: what tailor-made packages do you offer?",
+          "a": [
+            [
+              {
+                "t": "For “holiday club visits”, special rates are available on Wednesdays and throughout the school holidays. For “works councils”, Girafou offers ticket books as well as bespoke packages for Christmas parties and other events."
+              }
+            ]
+          ]
+        },
+        {
+          "q": "Another question?",
+          "a": [
+            [
+              {
+                "t": "Do you have a request or a question about something in particular?"
+              }
+            ],
+            [
+              {
+                "t": "Ask us and we will get back to you as soon as we can."
+              }
+            ],
+            null,
+            [
+              {
+                "t": "Ask us a question:"
+              }
+            ],
+            [
+              {
+                "t": "→ Contact us here",
+                "href": "mailto:contact@girafou.com",
+                "u": true
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "nosOffres": {
+      "badge": "Groups · Works councils · Private hire",
+      "titleStart": "Our",
+      "titleAccent": "offers",
+      "subtitle": "Prices and packages to suit everyone: general admission, groups, works councils or exclusive hire of the whole park.",
+      "book": "BOOK NOW",
+      "offres": [
+        {
+          "title": "Admission prices and opening times",
+          "desc": "See our admission prices for the park. Rates for under-2s and 2 to 12 year-olds, accompanying adult admission, and opening times for our play equipment!",
+          "cta": "Find out more"
+        },
+        {
+          "title": "Group offers",
+          "desc": "Coming with more than 10 people, running a holiday club or a works council, or looking after a group of young children… get in touch for preferential rates!",
+          "cta": "Contact us"
+        },
+        {
+          "title": "Works council offers",
+          "desc": "If you run your company's works council and your colleagues have children aged 0 to 12… order books of tickets at a very friendly price.",
+          "cta": "Contact us"
+        },
+        {
+          "title": "Private hire",
+          "desc": "An event, a Christmas party, a huge celebration… you can hire Girafou park exclusively for unforgettable moments.",
+          "cta": "Contact us"
+        }
+      ]
+    },
+    "prix": {
+      "badge": "Prices & opening times",
+      "titleStart": "Admission",
+      "titleAccent": "prices",
+      "subtitle": "A single price for unlimited play time. Here are our prices, the tokens for the paid activities and our opening times.",
+      "pricesTitle": "Individual admission prices",
+      "prices": [
+        {
+          "label": "Under 12 months",
+          "price": "Free"
+        },
+        {
+          "label": "12 to 18 months, with a paid child admission (under 12s)",
+          "price": "Free"
+        },
+        {
+          "label": "12 to 18 months, without another paid admission",
+          "price": "€6.00"
+        },
+        {
+          "label": "18 months to 3 years",
+          "price": "€8.50 + 1 free token"
+        },
+        {
+          "label": "3 to 12 years",
+          "price": "€11.50 + 1 free token"
+        },
+        {
+          "label": "Accompanying adult",
+          "price": "€2.00 + 1 free hot drink"
+        }
+      ],
+      "tokensTitle": "Tokens for our paid activities",
+      "tokens": [
+        {
+          "n": "1 token",
+          "price": "€2.00"
+        },
+        {
+          "n": "3 tokens",
+          "price": "€5.00"
+        },
+        {
+          "n": "6 tokens",
+          "price": "€10.00"
+        },
+        {
+          "n": "14 tokens",
+          "price": "€20.00"
+        }
+      ],
+      "payment": "Payment methods accepted: cash, bank card, ANCV holiday vouchers and ANCV Connect",
+      "hoursTitle": "Girafou play area opening times",
+      "allYear": "ALL YEAR ROUND",
+      "colDays": "Opening days",
+      "colHours": "Times",
+      "hours": [
+        {
+          "day": "Wednesday",
+          "time": "10.00am to 7.00pm"
+        },
+        {
+          "day": "Toddler Thursdays",
+          "note": "€5 per child · free for accompanying adults",
+          "time": "10.00am to 12.30pm"
+        },
+        {
+          "day": "Saturday & Sunday",
+          "time": "10.00am to 7.00pm"
+        },
+        {
+          "day": "Public holidays",
+          "time": "10.00am to 7.00pm"
+        }
+      ],
+      "holidayZones": [
+        "DURING THE SCHOOL HOLIDAYS — Normandy (Zone B)",
+        "DURING THE SCHOOL HOLIDAYS — Paris (Zone C)"
+      ],
+      "everyDay": "Every day",
+      "holidayHours": "10.00am to 7.00pm"
+    },
+    "planAcces": {
+      "badge": "How to get here?",
+      "titleStart": "Getting",
+      "titleAccent": "here",
+      "subtitle": "Girafou welcomes you in Bénouville, near Caen. Choose your starting point and follow the directions!",
+      "mapTitle": "Map showing the way to Girafou park",
+      "addressTitle": "Park address",
+      "gps": "GPS",
+      "route": "Directions",
+      "call": "Call us",
+      "howToTitle": "How to reach us",
+      "itineraires": [
+        {
+          "from": "Coming from Ouistreham",
+          "short": "Ouistreham",
+          "steps": [
+            "Take the dual carriageway towards Caen.",
+            "Then take the first exit you come to (exit “Zone d'activité de Bénouville”).",
+            "Girafou is immediately on your left."
+          ]
+        },
+        {
+          "from": "Coming from Caen",
+          "short": "Caen",
+          "steps": [
+            "Take the ring road towards Ouistreham.",
+            "Once on the dual carriageway to Ouistreham, drive about 8 km to the “Zone d'activité de Bénouville” exit.",
+            "Follow that road until you reach Girafou."
+          ]
+        },
+        {
+          "from": "Coming from Cabourg",
+          "short": "Cabourg",
+          "steps": [
+            "Follow signs for Ouistreham.",
+            "As you arrive in Bénouville, cross the bridge (Pegasus Bridge).",
+            "Carry on to the roundabout and take the first exit on the right towards “St Aubin d'Arquenay”.",
+            "Continue straight on, past the church.",
+            "Then at the STOP sign turn left, still towards “St Aubin d'Arquenay”.",
+            "Take the first left towards “Zone d'activité de Bénouville”.",
+            "Girafou is right there on your right!"
+          ]
+        }
+      ],
+      "pmrTitle": "Accessibility — visitors with reduced mobility",
+      "pmrText": "Are you visiting with someone with reduced mobility? Please contact us before your visit: we will tell you about access and facilities, and what can be arranged for your particular situation."
+    },
+    "contact": {
+      "badge": "A question?",
+      "titleStart": "Contact ",
+      "titleAccent": "us",
+      "subtitle": "A question, a birthday party or a group visit in mind? Drop us a line and we'll get back to you as soon as we can!",
+      "infoTitle": "Girafou",
+      "infoSub": "We love hearing from you.",
+      "successTitle": "Message sent!",
+      "successText": "Thank you for writing to us. We'll get back to you as soon as we can.",
+      "successAgain": "Send another message",
+      "fieldCivilite": "You are",
+      "fieldNom": "Surname",
+      "fieldPrenom": "First name",
+      "fieldEmail": "Email",
+      "fieldTelephone": "Phone",
+      "fieldSujet": "Subject",
+      "fieldMessage": "Message",
+      "placeholderEmail": "your@email.com",
+      "placeholderTelephone": "06 12 34 56 78",
+      "placeholderMessage": "Your message…",
+      "submit": "Send",
+      "submitting": "Sending…",
+      "errorGeneric": "Something went wrong. Please try again.",
+      "errorNetwork": "The message could not be sent. Check your connection and try again.",
+      "missingKey": "⚠️ Web3Forms key not configured (NEXT_PUBLIC_WEB3FORMS_KEY). The form is ready, only the key is missing.",
+      "civilites": [
+        "Mr",
+        "Mrs",
+        "A works council",
+        "A school",
+        "A holiday club",
+        "An association",
+        "Other"
+      ],
+      "sujets": [
+        "Question",
+        "Birthday party",
+        "The park",
+        "Services",
+        "Food & drinks",
+        "Activities"
+      ]
+    },
+    "restauration": {
+      "titleStart": "The",
+      "titleAccent": "menu",
+      "subtitle": "Homemade pizzas, crêpes, waffles, ice creams and drinks — everything you need to refuel between games.",
+      "sanitary": "Food safety rules — everything is available on site.",
+      "birthdayTitle": "Come and celebrate your birthday at Girafou!",
+      "birthdayText": "Here we take care of every detail to make your child's birthday a one-of-a-kind moment! Parents, relax: our all-inclusive packages guarantee a memorable party, where everything from the fun to the treats is handled by our team. Let us create magical memories while you simply enjoy the moment!",
+      "birthdayCta": "See the packages",
+      "privatisationTitle": "Private hire",
+      "privatisationText": "Girafou also offers private hire for your professional or personal events. We provide tailor-made solutions for every request.",
+      "privatisationCta": "Quote on request ✉️"
+    }
+  },
+  "meta": {
+    "activites": {
+      "title": "Activities — indoor playground near Caen | Girafou",
+      "description": "Discover the 9 activities at Girafou, a 1,300 m² indoor playground in Bénouville, near Caen: helicopter, karting, trampolines, ball pit, maze, slides and much more."
+    },
+    "activiteDetail": {
+      "title": "{name} — Girafou activities, near Caen",
+      "description": "{name}: {tagline}. {desc} Discover it at the Girafou indoor playground, in Bénouville near Caen.",
+      "fallback": "Activity — Girafou"
+    },
+    "anniversaires": {
+      "title": "Children's birthday parties near Caen — Girafou",
+      "description": "Celebrate your child's birthday at Girafou, near Caen: 3 all-inclusive packages (cake, present, games, big party). From €14.90 per child."
+    },
+    "formuleDetail": {
+      "title": "{name} — Birthday party at Girafou",
+      "description": "{name}: an all-inclusive birthday at {price} per child at Girafou, near Caen. {tagline}.",
+      "fallback": "Birthday — Girafou"
+    },
+    "faq": {
+      "title": "FAQ — your questions about the park | Girafou",
+      "description": "Opening times, prices, ages, socks, parking, birthday parties, food: find the answers to all your questions about the Girafou indoor playground, near Caen."
+    },
+    "nosOffres": {
+      "title": "Our offers — groups, works councils, private hire | Girafou",
+      "description": "Girafou prices and packages near Caen: admission prices, group and holiday-club offers, works-council tickets and exclusive hire of the park."
+    },
+    "prix": {
+      "title": "Admission prices & opening times — Girafou near Caen",
+      "description": "Prices for the Girafou indoor playground in Bénouville: child and adult admission, tokens for the paid activities and opening times all year round."
+    },
+    "planAcces": {
+      "title": "Getting here — how to reach Girafou in Bénouville",
+      "description": "How to reach Girafou, in Bénouville near Caen: address, GPS, directions from Ouistreham, Caen and Cabourg, free parking."
+    },
+    "contact": {
+      "title": "Contact us — Girafou indoor playground near Caen",
+      "description": "A question about the park, a birthday party or a group visit? Write to us or call 02 31 53 72 68. Girafou, Bénouville near Caen."
+    },
+    "restauration": {
+      "title": "The Menu — Girafou",
+      "description": "Homemade pizzas, crêpes, waffles, ice creams and drinks to enjoy on site at Girafou park, near Caen."
+    }
+  },
+  "anniversaires": {
+    "creneaux": "From 10am to 1pm or 2pm to 6pm",
+    "baseInclusions": [
+      {
+        "b": "Entry to Girafou park"
+      },
+      {
+        "b": "A reserved table",
+        "t": "just for you, for the whole of your child's party"
+      },
+      {
+        "b": "A chocolate cake",
+        "t": "personalised with your child's name"
+      },
+      {
+        "b": "Squash",
+        "t": "as much as you like"
+      },
+      {
+        "b": "A present",
+        "t": "for your child"
+      },
+      {
+        "b": "A group photo"
+      },
+      {
+        "b": "A brilliant party"
+      },
+      {
+        "b": "Invitation cards"
+      },
+      {
+        "b": "A free standard admission",
+        "t": "for the birthday child, valid for one year"
+      },
+      {
+        "b": "A portion of Haribo sweets",
+        "t": "per child"
+      },
+      {
+        "b": "1 token per child",
+        "t": "to use on our karts or our helicopters"
+      }
+    ],
+    "optionPizza": {
+      "price": "€2.50 / child",
+      "title": "Pizza Option",
+      "text": "Available for morning birthday parties only. The children make their own pizza and eat it together."
+    },
+    "conditionsTitle": "Good to know",
+    "conditions": [
+      "A minimum of 8 children is required to book a birthday party.",
+      "We recommend booking at least 15 days in advance. A €30 deposit is payable at the time of booking.",
+      "Invitation cards can be downloaded directly from your customer account.",
+      "Bringing extra sweets, drinks or cakes is not permitted."
+    ],
+    "formules": {
+      "formule-du-lion": {
+        "tagline": "The most complete one",
+        "price": "€16.50",
+        "extra": "A drink of your choice: Coca-Cola, Ice Tea or Oasis Tropical",
+        "fondExtra": "Coca-Cola, Ice Tea, Oasis Tropical YOUR CHOICE"
+      },
+      "ptits-gourmands": {
+        "tagline": "The all-inclusive birthday",
+        "price": "€14.90"
+      },
+      "gira-fun-karaoke": {
+        "tagline": "Music & party",
+        "price": "€16.90",
+        "extra": "A 30-minute session in our KARAFUN BOX — come and sing your favourite songs with your friends!",
+        "fondExtra": "Plus a 30-minute session in our KARAFUN BOX\nCome and sing your favourite songs with all your friends"
+      }
+    }
+  }
+}

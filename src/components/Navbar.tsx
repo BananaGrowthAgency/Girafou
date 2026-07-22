@@ -7,33 +7,40 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FORMULES } from "@/lib/anniversaires";
 import { ACTIVITES } from "@/lib/activites";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import { ui, type UIStrings } from "@/lib/i18n/ui";
+import LangSwitch from "@/components/LangSwitch";
 
 type NavLink = { label: string; href: string; children?: { label: string; href: string }[] };
 
-const links: NavLink[] = [
-  { label: "Accueil", href: "/" },
-  {
-    label: "Activités",
-    href: "/activites",
-    children: ACTIVITES.map((a) => ({ label: a.name, href: `/activites/${a.slug}` })),
-  },
-  { label: "Restauration", href: "/restauration" },
-  { label: "Nos offres", href: "/nos-offres" },
-  {
-    label: "Anniversaires",
-    href: "/anniversaires",
-    children: FORMULES.map((f) => ({ label: f.name, href: `/anniversaires/${f.slug}` })),
-  },
-  {
-    label: "Infos pratiques",
-    href: "/#infos",
-    children: [
-      { label: "F.A.Q", href: "/faq" },
-      { label: "Plan d'accès", href: "/plan-dacces" },
-      { label: "Contactez-nous", href: "/contactez-nous" },
-    ],
-  },
-];
+// Les `href` sont donnés sans préfixe de langue ; `useLocalePath()` les préfixe
+// au rendu (`/activites` en français, `/en/activites` en anglais).
+function buildLinks(t: UIStrings["nav"], names: UIStrings["names"]): NavLink[] {
+  return [
+    { label: t.home, href: "/" },
+    {
+      label: t.activities,
+      href: "/activites",
+      children: ACTIVITES.map((a) => ({ label: names.activites[a.slug], href: `/activites/${a.slug}` })),
+    },
+    { label: t.restaurant, href: "/restauration" },
+    { label: t.offers, href: "/nos-offres" },
+    {
+      label: t.birthdays,
+      href: "/anniversaires",
+      children: FORMULES.map((f) => ({ label: names.formules[f.slug], href: `/anniversaires/${f.slug}` })),
+    },
+    {
+      label: t.practical,
+      href: "/#infos",
+      children: [
+        { label: t.faq, href: "/faq" },
+        { label: t.access, href: "/plan-dacces" },
+        { label: t.contact, href: "/contactez-nous" },
+      ],
+    },
+  ];
+}
 
 // Boutique / réservation en ligne (Qweekle) — ouverture dans un nouvel onglet.
 const SHOP_URL =
@@ -41,12 +48,14 @@ const SHOP_URL =
 
 // Bouton téléphone : icône dans une pastille ronde + numéro optionnel (desktop).
 // Au survol, l'icône « sonne » (vibration) — l'effet est propagé depuis le lien via variants.
-function PhoneButton({ showNumber = false }: { showNumber?: boolean }) {
+const PHONE = "02 31 53 72 68";
+
+function PhoneButton({ showNumber = false, label }: { showNumber?: boolean; label: string }) {
   return (
     <motion.a
       href="tel:0231537268"
-      aria-label="Appeler le 02 31 53 72 68"
-      title="02 31 53 72 68"
+      aria-label={label}
+      title={PHONE}
       initial="rest"
       animate="rest"
       whileHover="ring"
@@ -66,7 +75,7 @@ function PhoneButton({ showNumber = false }: { showNumber?: boolean }) {
       </span>
       {showNumber && (
         <span className="text-sm font-bold whitespace-nowrap" style={{ fontFamily: "var(--font-nunito)" }}>
-          02 31 53 72 68
+          {PHONE}
         </span>
       )}
     </motion.a>
@@ -78,6 +87,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSub, setOpenSub] = useState<string | null>(null);
   const pathname = usePathname();
+  const locale = useLocale();
+  const lp = useLocalePath();
+  const strings = ui(locale);
+  const t = strings.nav;
+  const links = buildLinks(t, strings.names);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -120,7 +134,7 @@ export default function Navbar() {
             style={{ height: 72 }}
           >
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0 group">
+            <Link href={lp("/")} className="flex-shrink-0 group">
               <Image
                 src="/images/logo-girafou.png"
                 alt="Girafou"
@@ -134,11 +148,12 @@ export default function Navbar() {
             {/* Desktop links */}
             <ul className="hidden md:flex items-center gap-4 lg:gap-6">
               {links.map((l) => {
-                const active = !l.href.includes("#") && (l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(l.href + "/"));
+                const href = lp(l.href);
+                const active = !l.href.includes("#") && (l.href === "/" ? pathname === href : pathname === href || pathname.startsWith(href + "/"));
                 return (
                   <li key={l.label} className="relative flex-shrink-0 group/nav">
                     <Link
-                      href={l.href}
+                      href={href}
                       className={`relative inline-flex items-center gap-1 text-[13px] lg:text-[14px] font-bold transition-colors duration-200 group whitespace-nowrap ${active ? "text-orange-500" : "text-amber-900/75 hover:text-orange-500"}`}
                       style={{ fontFamily: "var(--font-nunito)" }}
                     >
@@ -158,11 +173,12 @@ export default function Navbar() {
                           style={{ background: "#FFFFFF", border: "1px solid rgba(90,53,32,0.12)", boxShadow: "0 12px 40px rgba(90,53,32,0.18)" }}
                         >
                           {l.children.map((c) => {
-                            const cActive = pathname === c.href;
+                            const cHref = lp(c.href);
+                            const cActive = pathname === cHref;
                             return (
                               <Link
                                 key={c.href}
-                                href={c.href}
+                                href={cHref}
                                 className={`block px-5 py-2.5 text-[13px] font-bold transition-colors hover:bg-black/[0.03] ${cActive ? "text-orange-500" : "text-amber-900/70 hover:text-orange-500"}`}
                                 style={{ fontFamily: "var(--font-nunito)" }}
                               >
@@ -180,7 +196,8 @@ export default function Navbar() {
 
             {/* CTA */}
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-              <PhoneButton showNumber={!scrolled} />
+              <LangSwitch />
+              <PhoneButton showNumber={!scrolled} label={t.call(PHONE)} />
               <a
                 href={SHOP_URL}
                 target="_blank"
@@ -188,17 +205,18 @@ export default function Navbar() {
                 className="btn-shine px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-white text-sm font-extrabold shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
-                Réserver
+                {t.book}
               </a>
             </div>
 
-            {/* Mobile: téléphone (icône seule) + burger */}
+            {/* Mobile: langue + téléphone (icône seule) + burger */}
             <div className="md:hidden flex items-center gap-1">
-              <PhoneButton />
+              <LangSwitch compact />
+              <PhoneButton label={t.call(PHONE)} />
               <button
                 className="w-10 h-10 flex flex-col items-center justify-center gap-[5px]"
                 onClick={() => { setMenuOpen(!menuOpen); setOpenSub(null); }}
-                aria-label="Menu"
+                aria-label={t.menu}
               >
               <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7.5px]" : ""}`} />
               <span className={`w-6 h-[2.5px] bg-amber-900/80 rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
@@ -231,13 +249,14 @@ export default function Navbar() {
             >
               <div className="px-6 py-6 flex flex-col gap-5 border-t border-amber-900/10">
                 {links.map((l) => {
-                  const active = !l.href.includes("#") && (l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(l.href + "/"));
+                  const href = lp(l.href);
+                  const active = !l.href.includes("#") && (l.href === "/" ? pathname === href : pathname === href || pathname.startsWith(href + "/"));
                   const open = openSub === l.label;
                   return (
                     <div key={l.label} className="flex flex-col gap-3">
                       <div className="flex items-center justify-between gap-2">
                         <Link
-                          href={l.href}
+                          href={href}
                           onClick={() => setMenuOpen(false)}
                           className={`flex items-center gap-2 text-lg font-extrabold transition-colors ${active ? "text-orange-500" : "text-amber-900/80 hover:text-orange-500"}`}
                           style={{ fontFamily: "var(--font-nunito)" }}
@@ -249,7 +268,7 @@ export default function Navbar() {
                           <button
                             type="button"
                             onClick={() => setOpenSub(open ? null : l.label)}
-                            aria-label={`${open ? "Masquer" : "Afficher"} ${l.label}`}
+                            aria-label={`${open ? t.hide : t.show} ${l.label}`}
                             aria-expanded={open}
                             className="flex-shrink-0 p-2 -mr-2 text-amber-900/55 hover:text-orange-500 transition-colors"
                           >
@@ -271,11 +290,12 @@ export default function Navbar() {
                             >
                               <div className="flex flex-col gap-2.5 pl-4 border-l border-amber-900/15 pt-0.5">
                                 {l.children.map((c) => {
-                                  const cActive = pathname === c.href;
+                                  const cHref = lp(c.href);
+                                  const cActive = pathname === cHref;
                                   return (
                                     <Link
                                       key={c.href}
-                                      href={c.href}
+                                      href={cHref}
                                       onClick={() => setMenuOpen(false)}
                                       className={`text-sm font-bold transition-colors ${cActive ? "text-orange-500" : "text-amber-900/55 hover:text-orange-500"}`}
                                       style={{ fontFamily: "var(--font-nunito)" }}
@@ -300,7 +320,7 @@ export default function Navbar() {
                   className="btn-shine mt-1 px-6 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-white text-center font-extrabold shadow-lg"
                   style={{ fontFamily: "var(--font-nunito)" }}
                 >
-                  Réserver maintenant
+                  {t.bookLong}
                 </a>
               </div>
             </motion.div>

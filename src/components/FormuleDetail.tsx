@@ -4,36 +4,50 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  BASE_INCLUSIONS,
-  type Formule,
-} from "@/lib/anniversaires";
+import { type Formule } from "@/lib/anniversaires";
 import { OptionPizzaBanner, ConditionsBlock } from "./AnniversairesShared";
 
 import { GRADIENT_TEXT_NO_OUTLINE, TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Dictionary, FormuleTexte } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 const BROWN = "#5A3520";
 
+type Detail = Dictionary["pages"]["anniversaires"]["detail"];
+type Anniv = Dictionary["anniversaires"];
+
 /** Contenu de marque (titre + sous-titre + liste « + » + CTA) posé sur le fond illustré. */
-function FondBranded({ f }: { f: Formule }) {
+function FondBranded({
+  f,
+  texte,
+  t,
+  anniversaires,
+}: {
+  f: Formule;
+  texte: FormuleTexte;
+  t: Detail;
+  anniversaires: Anniv;
+}) {
+  const name = ui(useLocale()).names.formules[f.slug];
   // Le 1er élément sert de sous-titre ; le reste forme la liste.
   // L'« extra » (ex. la boisson du Lion) est mis en avant à part, sous la liste.
-  const [, ...items] = BASE_INCLUSIONS;
-  const extraText = f.fondExtra ?? f.extra;
+  const [, ...items] = anniversaires.baseInclusions;
+  const extraText = texte.fondExtra ?? texte.extra;
 
   const content = (
     <div className="text-center" style={{ color: BROWN }}>
       <h3 className="text-[1.7rem] sm:text-[2.1rem] font-extrabold leading-none" style={{ fontFamily: BALOO }}>
-        {f.name}
+        {name}
       </h3>
       <p className="mt-2.5 text-sm sm:text-[15px] font-bold uppercase tracking-wide">
-        L&apos;entrée{" "}
+        {t.entryBefore}{" "}
         <span className="underline decoration-2 underline-offset-[3px]" style={{ textDecorationColor: f.accent }}>
-          au parc
+          {t.entryUnderlined}
         </span>{" "}
-        Girafou
+        {t.entryAfter}
       </p>
 
       <ul className="mt-4 sm:mt-5 space-y-2">
@@ -63,7 +77,7 @@ function FondBranded({ f }: { f: Formule }) {
       className="btn-shine inline-block px-12 py-3.5 rounded-full text-white font-extrabold text-base sm:text-lg shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
       style={{ background: f.gradient, fontFamily: NUNITO }}
     >
-      Je réserve
+      {t.book}
     </a>
   );
 
@@ -88,7 +102,7 @@ function FondBranded({ f }: { f: Formule }) {
         <span className="absolute top-8 right-10 w-1.5 h-1.5 rounded-full" style={{ background: "#4FC3E8", opacity: 0.55 }} />
         {content}
         {f.fondBadge && (
-          <Image src={f.fondBadge} alt={`${f.price} par enfant`} width={214} height={222} className="mx-auto mt-5 w-32 h-auto" />
+          <Image src={f.fondBadge} alt={`${texte.price} ${t.perChild}`} width={214} height={222} className="mx-auto mt-5 w-32 h-auto" />
         )}
         <div className="text-center mt-5">{cta}</div>
       </div>
@@ -97,9 +111,20 @@ function FondBranded({ f }: { f: Formule }) {
 }
 
 /** Liste « carte blanche » (formules sans fond illustré). */
-function InclusionsList({ f, inView }: { f: Formule; inView: boolean }) {
-  const inclusions = f.extra ? [...BASE_INCLUSIONS, { b: f.extra }] : BASE_INCLUSIONS;
-  const extraIndex = f.extra ? inclusions.length - 1 : -1;
+function InclusionsList({
+  f,
+  inView,
+  texte,
+  anniversaires,
+}: {
+  f: Formule;
+  inView: boolean;
+  texte: FormuleTexte;
+  anniversaires: Anniv;
+}) {
+  const base = anniversaires.baseInclusions;
+  const inclusions = texte.extra ? [...base, { b: texte.extra }] : base;
+  const extraIndex = texte.extra ? inclusions.length - 1 : -1;
 
   return (
     <ul className="flex flex-col">
@@ -123,7 +148,7 @@ function InclusionsList({ f, inView }: { f: Formule; inView: boolean }) {
             <span className="text-[15px] leading-snug text-amber-900/85" style={{ fontFamily: NUNITO }}>
               {isExtra && <span className="mr-1">{f.emoji}</span>}
               <span className="font-extrabold text-amber-900">{item.b}</span>
-              {item.t ? ` ${item.t}` : ""}
+              {"t" in item && item.t ? ` ${item.t}` : ""}
             </span>
           </motion.li>
         );
@@ -132,7 +157,18 @@ function InclusionsList({ f, inView }: { f: Formule; inView: boolean }) {
   );
 }
 
-export default function FormuleDetail({ formule: f }: { formule: Formule }) {
+export default function FormuleDetail({
+  formule: f,
+  t,
+  anniversaires,
+}: {
+  formule: Formule;
+  t: Detail;
+  anniversaires: Anniv;
+}) {
+  const texte = anniversaires.formules[f.slug];
+  const lp = useLocalePath();
+  const name = ui(useLocale()).names.formules[f.slug];
   const listRef = useRef(null);
   const listInView = useInView(listRef, { once: true, margin: "-80px" });
   const pizzaRef = useRef(null);
@@ -144,18 +180,38 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
     <div className="relative max-w-4xl mx-auto px-6 text-center">
       {/* Fil d'ariane */}
       <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-white/75 text-xs sm:text-sm font-bold mb-5" style={{ fontFamily: NUNITO }}>
-        <Link href="/anniversaires" className="hover:text-white transition-colors">Anniversaires</Link>
+        <Link href={lp("/anniversaires")} className="hover:text-white transition-colors">{t.breadcrumb}</Link>
         <span>›</span>
-        <span className="text-white">{f.name}</span>
+        <span className="text-white">{name}</span>
       </div>
 
       <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3 leading-tight drop-shadow-md" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
-        Viens{" "}
-        <span className="bg-gradient-to-r from-[#FFCF4D] to-[#FF7A3D] bg-clip-text text-transparent" style={GRADIENT_TEXT_NO_OUTLINE}>fêter ton anniversaire</span>{" "}
-        avec tous tes amis
+        {t.titleStart}{" "}
+        <span className="bg-gradient-to-r from-[#FFCF4D] to-[#FF7A3D] bg-clip-text text-transparent" style={GRADIENT_TEXT_NO_OUTLINE}>{t.titleAccent}</span>{" "}
+        {t.titleEnd}
       </motion.h1>
       <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="text-white/90 text-lg font-semibold drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
-        De 10h à 13h ou de 14h à 18h, 3 formules au choix
+        {anniversaires.creneaux}{t.subtitleSuffix}
+      </motion.p>
+
+      {/* Nom + prix en TEXTE : ils n'existaient qu'incrustés dans le fond
+          illustré et la pastille, donc invisibles pour les lecteurs d'écran
+          comme pour Google. */}
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mt-5 inline-flex items-baseline gap-2 rounded-2xl bg-white/12 backdrop-blur-sm border border-white/25 px-5 py-2.5"
+        style={{ fontFamily: NUNITO }}
+      >
+        <span className="text-white font-extrabold text-lg sm:text-xl" style={{ fontFamily: BALOO }}>
+          {name}
+        </span>
+        <span className="text-white/70">·</span>
+        <span className="text-white font-extrabold text-lg sm:text-xl" style={{ fontFamily: BALOO }}>
+          {texte.price}
+        </span>
+        <span className="text-white/75 text-sm font-semibold">{t.perChild}</span>
       </motion.p>
     </div>
   );
@@ -167,7 +223,7 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
         <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "60vh" }}>
           <Image
             src={f.heroImage!}
-            alt={`Le parc Girafou, décor de la ${f.name}`}
+            alt={name}
             fill
             priority
             sizes="100vw"
@@ -220,7 +276,7 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
           </motion.div>
 
           <div className="relative z-10 max-w-5xl mx-auto px-6">
-            <OptionPizzaBanner />
+            <OptionPizzaBanner t={anniversaires.optionPizza} />
           </div>
         </section>
       )}
@@ -228,14 +284,14 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
       {/* ── Inclusions ── */}
       <section ref={listRef} className={`relative py-16 mx-auto px-6 ${f.fondImage ? "max-w-4xl" : "max-w-3xl"}`}>
         {f.fondImage ? (
-          <FondBranded f={f} />
+          <FondBranded f={f} texte={texte} t={t} anniversaires={anniversaires} />
         ) : (
           <>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={listInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }} className="text-center text-sm font-extrabold uppercase tracking-widest mb-8" style={{ color: f.accent, fontFamily: NUNITO }}>
-              Ce que comprend la formule
+              {t.includesTitle}
             </motion.p>
             <div className="rounded-3xl bg-white shadow-xl border border-amber-100 p-6 sm:p-8">
-              <InclusionsList f={f} inView={listInView} />
+              <InclusionsList f={f} inView={listInView} texte={texte} anniversaires={anniversaires} />
               <a
                 href={f.reserveUrl}
                 target="_blank"
@@ -243,7 +299,7 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
                 className="btn-shine mt-7 w-full py-4 rounded-2xl text-center text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-all duration-200 block"
                 style={{ background: f.gradient, fontFamily: NUNITO }}
               >
-                Je réserve cette formule
+                {t.bookThis}
               </a>
             </div>
           </>
@@ -252,13 +308,13 @@ export default function FormuleDetail({ formule: f }: { formule: Formule }) {
 
       {/* ── Conditions ── */}
       <section className="relative pb-20 px-6">
-        <ConditionsBlock />
+        <ConditionsBlock t={anniversaires} />
       </section>
 
       {/* ── Autres formules ── */}
       <section className="relative pb-20 max-w-3xl mx-auto px-6 text-center">
-        <Link href="/anniversaires" className="inline-flex items-center gap-2 text-sm font-extrabold text-amber-700 hover:text-amber-900 transition-colors" style={{ fontFamily: NUNITO }}>
-          ← Voir toutes les formules
+        <Link href={lp("/anniversaires")} className="inline-flex items-center gap-2 text-sm font-extrabold text-amber-700 hover:text-amber-900 transition-colors" style={{ fontFamily: NUNITO }}>
+          {t.backToAll}
         </Link>
       </section>
     </>

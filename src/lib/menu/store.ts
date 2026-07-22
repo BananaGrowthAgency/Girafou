@@ -75,10 +75,14 @@ export async function saveMenu(menu: Menu): Promise<void> {
     cacheControlMaxAge: 60,
   });
   revalidateTag(MENU_TAG, "max");
-  revalidatePath("/restauration");
+  // Chemins *de fichiers*, pas d'URL publiques : le français est réécrit par le
+  // proxy de `/restauration` vers `/fr/restauration` (cf. src/proxy.ts), et
+  // revalidatePath raisonne sur l'arborescence des routes. Le motif dynamique
+  // couvre les deux langues d'un coup.
+  revalidatePath("/[lang]/restauration", "page");
   // La home affiche un résumé de la carte (pizzas + prix) tiré du même menu :
   // sans ça, elle resterait figée sur l'ancienne version après une édition.
-  revalidatePath("/");
+  revalidatePath("/[lang]", "page");
   revalidatePath("/admin", "layout");
 }
 

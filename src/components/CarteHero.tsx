@@ -3,13 +3,16 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { NOURRITURE_EXCEPTIONS, NOURRITURE_TITLE } from "@/lib/regles";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { GRADIENT_TEXT_NO_OUTLINE, TEXT_OUTLINE, TEXT_OUTLINE_SOFT, TITLE_YELLOW } from "@/lib/text";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 
-export default function CarteHero() {
+export default function CarteHero({ t }: { t: Dictionary["pages"]["restauration"] }) {
+  const regles = ui(useLocale()).regles;
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -58,12 +61,12 @@ export default function CarteHero() {
           className="text-5xl md:text-7xl font-extrabold text-white mb-4 leading-tight"
           style={{ fontFamily: "var(--font-baloo)", textShadow: TEXT_OUTLINE }}
         >
-          La{" "}
+          {t.titleStart}{" "}
           <span
             className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent"
             style={GRADIENT_TEXT_NO_OUTLINE}
           >
-            carte
+            {t.titleAccent}
           </span>
         </motion.h1>
 
@@ -74,7 +77,7 @@ export default function CarteHero() {
           className="text-lg text-white/80 max-w-xl mx-auto"
           style={{ fontFamily: "var(--font-nunito)", textShadow: TEXT_OUTLINE_SOFT }}
         >
-          Pizzas maison, crêpes, gaufres, glaces et boissons — tout ce qu&rsquo;il faut pour recharger les batteries entre deux parties.
+          {t.subtitle}
         </motion.p>
 
         {/* Règle « nourriture extérieure » — dans le hero plutôt qu'en bandeau
@@ -94,13 +97,13 @@ export default function CarteHero() {
           <span className="text-3xl leading-none mt-0.5 flex-shrink-0" aria-hidden="true">🚫</span>
           <div>
             <p className="font-extrabold text-lg sm:text-xl leading-snug" style={{ fontFamily: BALOO, color: TITLE_YELLOW, textShadow: TEXT_OUTLINE }}>
-              {NOURRITURE_TITLE}
+              {regles.nourritureTitle}
             </p>
             <p className="text-white font-bold text-sm sm:text-base leading-snug" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE }}>
-              Normes sanitaires — tout est disponible sur place.
+              {t.sanitary}
             </p>
             <p className="text-white/85 font-semibold text-xs sm:text-sm leading-snug mt-1" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
-              {NOURRITURE_EXCEPTIONS}
+              {regles.nourritureExceptions}
             </p>
           </div>
         </motion.div>

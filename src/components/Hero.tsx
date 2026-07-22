@@ -4,10 +4,16 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useMounted } from "@/hooks/useMounted";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 import YouTubeHeroBg from "./YouTubeHeroBg";
 import { GRADIENT_TEXT_NO_OUTLINE, TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
+const NUMBER_LOCALE: Record<Locale, string> = { fr: "fr-FR", en: "en-GB" };
+
 function CountUp({ to, duration = 1800 }: { to: number; duration?: number }) {
+  const locale = useLocale();
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [count, setCount] = useState(0);
@@ -25,7 +31,7 @@ function CountUp({ to, duration = 1800 }: { to: number; duration?: number }) {
     requestAnimationFrame(step);
   }, [inView, to, duration]);
 
-  return <span ref={ref}>{count.toLocaleString("fr-FR")}</span>;
+  return <span ref={ref}>{count.toLocaleString(NUMBER_LOCALE[locale])}</span>;
 }
 
 // Conservé pour un usage futur (autres sections) — plus utilisé dans le hero
@@ -59,7 +65,6 @@ const stats = [
       </svg>
     ),
     prefix: "", to: 1300, suffix: " m²",
-    label: "de jeux couverts",
   },
   {
     icon: (
@@ -69,7 +74,6 @@ const stats = [
       </svg>
     ),
     prefix: "", to: 9, suffix: "+",
-    label: "activités uniques",
   },
   {
     icon: (
@@ -79,7 +83,6 @@ const stats = [
       </svg>
     ),
     prefix: "+", to: 500, suffix: "",
-    label: "avis · Note 4,8/5 ⭐",
   },
   {
     icon: (
@@ -90,11 +93,11 @@ const stats = [
       </svg>
     ),
     prefix: "", to: 2, suffix: "",
-    label: "sites près de Caen",
   },
 ];
 
-export default function Hero() {
+export default function Hero({ t }: { t: Dictionary["home"]["hero"] }) {
+  const lp = useLocalePath();
   const mounted = useMounted();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -187,11 +190,11 @@ export default function Hero() {
           className="text-[1.9rem] sm:text-5xl xl:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.12] mb-3 sm:mb-5 max-w-2xl"
           style={{ fontFamily: "var(--font-baloo)", textShadow: TEXT_OUTLINE }}
         >
-          La plaine de jeux{" "}
+          {t.titleStart}{" "}
           <span style={{ background: "linear-gradient(135deg, #F5A623 0%, #FF5722 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", ...GRADIENT_TEXT_NO_OUTLINE }}>
-            préférée des enfants
+            {t.titleAccent}
           </span>{" "}
-          <span className="text-white">près de Caen</span>
+          <span className="text-white">{t.titleEnd}</span>
         </motion.h1>
 
         <motion.p
@@ -201,7 +204,7 @@ export default function Hero() {
           className="text-sm sm:text-lg text-white/90 max-w-lg mb-5 sm:mb-8 leading-relaxed"
           style={{ fontFamily: "var(--font-nunito)", textShadow: `${TEXT_OUTLINE_SOFT}, 0 1px 4px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)` }}
         >
-          <strong className="text-white">1 300 m²</strong> de jeux couverts — hélicoptère exclusif, trampolines, karting, NeoXperience et bien plus. Pour les <strong className="text-white">1 à 12 ans</strong>, ouvert toute l&rsquo;année.
+          <strong className="text-white">{t.descStrong1}</strong>{t.descMid}<strong className="text-white">{t.descStrong2}</strong>{t.descEnd}
         </motion.p>
 
         <motion.div
@@ -211,18 +214,18 @@ export default function Hero() {
           className="grid self-start gap-2.5 sm:flex sm:flex-row sm:self-auto sm:gap-3"
         >
           <Link
-            href="/activites"
+            href={lp("/activites")}
             className="btn-shine text-center px-5 py-2.5 text-sm sm:px-7 sm:py-3.5 sm:text-base rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-extrabold shadow-2xl shadow-orange-900/40 hover:-translate-y-1 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Découvrir les activités
+            {t.ctaActivities}
           </Link>
           <a
             href="#anniversaires"
             className="text-center px-5 py-2.5 text-sm sm:px-7 sm:py-3.5 sm:text-base rounded-2xl text-white font-extrabold hover:-translate-y-1 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)", background: "#1C1008", border: "1.5px solid rgba(180,110,30,0.4)" }}
           >
-            Organiser un anniversaire
+            {t.ctaBirthday}
           </a>
         </motion.div>
       </motion.div>
@@ -268,7 +271,7 @@ export default function Hero() {
                 {s.prefix}<CountUp to={s.to} duration={1600} />{s.suffix}
               </div>
               <p className="text-amber-900/60 text-[10px] sm:text-xs font-semibold leading-tight" style={{ fontFamily: "var(--font-nunito)" }}>
-                {s.label}
+                {t.stats[i]}
               </p>
             </motion.div>
           ))}

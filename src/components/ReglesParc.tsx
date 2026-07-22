@@ -2,13 +2,9 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import {
-  CHAUSSETTES,
-  CHAUSSETTES_TITLE,
-  NOURRITURE,
-  NOURRITURE_EXCEPTIONS,
-  NOURRITURE_TITLE,
-} from "@/lib/regles";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Locale } from "@/lib/i18n/config";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -16,7 +12,15 @@ const NUNITO = "var(--font-nunito)";
 // Panneau « À savoir avant de venir » — les deux règles du parc (chaussettes +
 // nourriture extérieure) réunies dans un encart volontairement visible.
 // Utilisé sur Prix des entrées, les 9 pages Activités et Restauration.
-export default function ReglesParc({ title = "À savoir avant de venir" }: { title?: string }) {
+const DEFAULT_TITLE: Record<Locale, string> = {
+  fr: "À savoir avant de venir",
+  en: "Before you visit",
+};
+
+export default function ReglesParc({ title }: { title?: string }) {
+  const locale = useLocale();
+  const t = ui(locale);
+  const heading = title ?? DEFAULT_TITLE[locale];
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -33,7 +37,7 @@ export default function ReglesParc({ title = "À savoir avant de venir" }: { tit
         className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-amber-900 mb-5"
         style={{ fontFamily: BALOO }}
       >
-        <span aria-hidden="true">⚠️</span> {title}
+        <span aria-hidden="true">⚠️</span> {heading}
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -58,10 +62,10 @@ export default function ReglesParc({ title = "À savoir avant de venir" }: { tit
           </motion.div>
           <div>
             <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>
-              {CHAUSSETTES_TITLE}
+              {t.regles.chaussettesTitle}
             </p>
             <p className="text-sm text-amber-800/70 leading-snug" style={{ fontFamily: NUNITO }}>
-              {CHAUSSETTES}
+              {t.regles.chaussettes}
             </p>
           </div>
         </div>
@@ -77,13 +81,13 @@ export default function ReglesParc({ title = "À savoir avant de venir" }: { tit
           </motion.div>
           <div>
             <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>
-              {NOURRITURE_TITLE}
+              {t.regles.nourritureTitle}
             </p>
             <p className="text-sm text-amber-800/70 leading-snug" style={{ fontFamily: NUNITO }}>
-              {NOURRITURE}
+              {t.regles.nourriture}
             </p>
             <p className="text-xs text-amber-800/45 leading-snug mt-1.5" style={{ fontFamily: NUNITO }}>
-              {NOURRITURE_EXCEPTIONS}
+              {t.regles.nourritureExceptions}
             </p>
           </div>
         </div>

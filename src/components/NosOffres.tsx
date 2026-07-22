@@ -5,6 +5,8 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import ReglesParc from "./ReglesParc";
+import { useLocalePath } from "@/lib/i18n/useLocale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
@@ -15,56 +17,25 @@ const NUNITO = "var(--font-nunito)";
 const RESERVATION_URL =
   "https://girafou.qweekle.com/shop/girafou/ticketing?type=ticket&lang=fr&_gl=1*427gqt*_gcl_au*NDAwNzYxOTg1LjE3ODIzNDQwMDQ.*_ga*MTQ5MTU5NjY1MC4xNzgyMzQ0MDA0*_ga_W96LVS4H2M*czE3ODQwMjYyMDMkbzEzJGcxJHQxNzg0MDI2ODA5JGo1OSRsMCRoNTMwMzE3NDg.";
 
-type Offre = {
-  image: string;
-  title: string;
-  desc: string;
-  cta: string;
-  href: string;
-  accent: string;
-};
-
-// Contenu repris de https://girafou.com/nos-offres/ (mis en page façon site actuel).
-const offres: Offre[] = [
-  {
-    image: "/images/nos-offres/prix-entrees.jpg",
-    title: "Prix des Entrées et Horaires",
-    desc:
-      "Découvrez les tarifs de nos entrées pour accéder au parc. Tarifs – 2 ans et de 2 à 12 ans, entrée accompagnateur et horaires d'accès à nos structures de jeux !",
-    cta: "En savoir +",
-    href: "/prix-des-entrees",
-    accent: "#E8940A",
-  },
-  {
-    image: "/images/nos-offres/groupes.jpg",
-    title: "Offres Groupes",
-    desc:
-      "Vous venez à plus de 10, vous êtes un centre de loisirs, un CE, vous gérez un groupe de jeunes enfants… contactez-nous pour bénéficier de tarifs avantageux !",
-    cta: "Contactez-nous",
-    href: "mailto:contact@girafou.com",
-    accent: "#00A0B0",
-  },
-  {
-    image: "/images/nos-offres/cse.jpg",
-    title: "Offres CSE",
-    desc:
-      "Vous gérez le CSE de votre entreprise, vos collègues ont des enfants de 0 à 12 ans… commandez des carnets de billets CE à prix tout doux.",
-    cta: "Contactez-nous",
-    href: "mailto:contact@girafou.com",
-    accent: "#7C3AED",
-  },
-  {
-    image: "/images/nos-offres/privatisation.jpg",
-    title: "Privatisation du Site",
-    desc:
-      "Un évènement, un arbre de Noël, une fête géante… vous pouvez privatiser Girafou parc pour des moments inoubliables.",
-    cta: "Contactez-nous",
-    href: "mailto:contact@girafou.com",
-    accent: "#FF4081",
-  },
+// Présentation des 4 offres (photo, lien, couleur) — les textes, eux, vivent
+// dans le dictionnaire, dans le même ordre.
+const offres = [
+  { image: "/images/nos-offres/prix-entrees.jpg", href: "/prix-des-entrees", accent: "#E8940A" },
+  { image: "/images/nos-offres/groupes.jpg", href: "mailto:contact@girafou.com", accent: "#00A0B0" },
+  { image: "/images/nos-offres/cse.jpg", href: "mailto:contact@girafou.com", accent: "#7C3AED" },
+  { image: "/images/nos-offres/privatisation.jpg", href: "mailto:contact@girafou.com", accent: "#FF4081" },
 ];
 
-function OffreCard({ o, i }: { o: Offre; i: number }) {
+function OffreCard({
+  o,
+  i,
+  texte,
+}: {
+  o: (typeof offres)[number];
+  i: number;
+  texte: Dictionary["pages"]["nosOffres"]["offres"][number];
+}) {
+  const lp = useLocalePath();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-70px" });
   const isMail = o.href.startsWith("mailto:");
@@ -80,7 +51,7 @@ function OffreCard({ o, i }: { o: Offre; i: number }) {
       <div className="relative h-48 sm:h-52 overflow-hidden">
         <Image
           src={o.image}
-          alt={o.title}
+          alt={texte.title}
           fill
           sizes="(max-width: 640px) 100vw, 50vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -90,26 +61,26 @@ function OffreCard({ o, i }: { o: Offre; i: number }) {
 
       <div className="p-6 flex flex-col flex-1">
         <h3 className="text-xl sm:text-2xl font-extrabold mb-3" style={{ fontFamily: BALOO, color: o.accent }}>
-          {o.title}
+          {texte.title}
         </h3>
         <p className="text-sm sm:text-base text-amber-900/60 leading-relaxed flex-1" style={{ fontFamily: NUNITO }}>
-          {o.desc}
+          {texte.desc}
         </p>
 
         <Link
-          href={o.href}
+          href={lp(o.href)}
           {...(isMail ? {} : { prefetch: false })}
           className="self-start mt-6 px-5 py-2.5 rounded-xl text-white text-sm font-extrabold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           style={{ background: o.accent, fontFamily: NUNITO }}
         >
-          {o.cta}
+          {texte.cta}
         </Link>
       </div>
     </motion.div>
   );
 }
 
-export default function NosOffres() {
+export default function NosOffres({ t }: { t: Dictionary["pages"]["nosOffres"] }) {
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
   const resaRef = useRef(null);
@@ -143,13 +114,13 @@ export default function NosOffres() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold mb-4"
             style={{ fontFamily: NUNITO }}
           >
-            Groupes · CSE · Privatisation
+            {t.badge}
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
-            Nos <span style={{ color: "#FFD23F" }}>offres</span>
+            {t.titleStart} <span style={{ color: "#FFD23F" }}>{t.titleAccent}</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
-            Des tarifs et des formules adaptés à chacun : visite libre, groupes, comités d&rsquo;entreprise ou privatisation complète du parc.
+            {t.subtitle}
           </motion.p>
         </div>
 
@@ -174,7 +145,7 @@ export default function NosOffres() {
           className="inline-block px-12 py-4 rounded-2xl text-white text-xl font-extrabold tracking-wide shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200"
           style={{ background: "#C0392B", fontFamily: BALOO }}
         >
-          RESERVEZ
+          {t.book}
         </motion.a>
       </section>
 
@@ -182,7 +153,7 @@ export default function NosOffres() {
       <section className="relative pt-6 pb-14 max-w-5xl mx-auto px-6" style={{ background: "#FFFDF5" }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {offres.map((o, i) => (
-            <OffreCard key={o.title} o={o} i={i} />
+            <OffreCard key={o.href + i} o={o} i={i} texte={t.offres[i]} />
           ))}
         </div>
       </section>

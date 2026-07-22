@@ -2,13 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  CHAUSSETTES_SHORT,
-  CHAUSSETTES_TITLE,
-  NOURRITURE_SHORT,
-  NOURRITURE_TITLE,
-} from "@/lib/regles";
 import { TITLE_YELLOW } from "@/lib/text";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import { ui, type UIStrings } from "@/lib/i18n/ui";
 
 const parc = [
   { icon: "📍", text: "ZA Clos de la Hogue, 14970 Bénouville" },
@@ -23,29 +19,37 @@ const plage = [
 ];
 
 
-const infoLinks = [
-  { label: "Conditions générales de ventes", href: "/conditions-generales-de-ventes" },
-  { label: "Contactez-nous", href: "/contactez-nous" },
-  { label: "Plan d'accès", href: "/plan-dacces" },
-  { label: "Conditions générales utilisateur", href: "/conditions-generales-utilisateur" },
-];
+// Les pages légales restent en français quelle que soit la langue (décision
+// client) ; seuls les libellés des liens suivent la locale.
+function buildInfoLinks(t: UIStrings) {
+  return [
+    { label: t.footer.salesTerms, href: "/conditions-generales-de-ventes" },
+    { label: t.nav.contact, href: "/contactez-nous" },
+    { label: t.nav.access, href: "/plan-dacces" },
+    { label: t.footer.terms, href: "/conditions-generales-utilisateur" },
+  ];
+}
 
-// Les deux règles rappelées en bas de chaque page (cf. lib/regles.ts).
-const regles = [
-  { icon: "🧦", label: CHAUSSETTES_TITLE, sub: CHAUSSETTES_SHORT },
-  { icon: "🚫", label: NOURRITURE_TITLE, sub: NOURRITURE_SHORT },
-];
+// Les deux règles rappelées en bas de chaque page (cf. lib/i18n/ui.ts).
+function buildRegles(t: UIStrings) {
+  return [
+    { icon: "🧦", label: t.regles.chaussettesTitle, sub: t.regles.chaussettesShort },
+    { icon: "🚫", label: t.regles.nourritureTitle, sub: t.regles.nourritureShort },
+  ];
+}
 
 // Maillage interne : lien vers toutes les pages principales du site.
-const siteMap = [
-  { label: "Accueil", href: "/" },
-  { label: "Activités", href: "/activites" },
-  { label: "Restauration", href: "/restauration" },
-  { label: "Anniversaires", href: "/anniversaires" },
-  { label: "Nos offres", href: "/nos-offres" },
-  { label: "Infos pratiques", href: "/#infos" },
-  { label: "F.A.Q", href: "/faq" },
-];
+function buildSiteMap(t: UIStrings) {
+  return [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.activities, href: "/activites" },
+    { label: t.nav.restaurant, href: "/restauration" },
+    { label: t.nav.birthdays, href: "/anniversaires" },
+    { label: t.nav.offers, href: "/nos-offres" },
+    { label: t.nav.practical, href: "/#infos" },
+    { label: t.nav.faq, href: "/faq" },
+  ];
+}
 
 // Titulares del footer: amarillo con pequeño contorno negro para destacar sobre el rojo.
 const TITLE_OUTLINE =
@@ -53,6 +57,12 @@ const TITLE_OUTLINE =
 const titleStyle = { color: TITLE_YELLOW, textShadow: TITLE_OUTLINE } as const;
 
 export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }) {
+  const lp = useLocalePath();
+  const t = ui(useLocale());
+  const infoLinks = buildInfoLinks(t);
+  const regles = buildRegles(t);
+  const siteMap = buildSiteMap(t);
+
   return (
     <footer className="relative overflow-hidden" style={{ background: "#C0392B" }}>
       {/* Top wave */}
@@ -77,7 +87,7 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
           <div className="col-span-2 md:col-span-1">
             <Image src="/images/logo-girafou.png" alt="Girafou" width={150} height={63} className="h-11 w-auto mb-3 drop-shadow-lg" />
             <p className="text-xs text-white/75 leading-relaxed mb-4" style={{ fontFamily: "var(--font-nunito)" }}>
-              La plaine de jeux couverte préférée des enfants près de Caen. 1 300 m² d&rsquo;aventures !
+              {t.footer.tagline}
             </p>
             <div className="flex gap-2">
               <a href="https://www.facebook.com/girafoubenouville" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
@@ -107,8 +117,8 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
           {/* 2 — Girafou le parc */}
           <div className="min-w-0">
             <h4 className="font-extrabold text-sm mb-4 leading-snug" style={{ fontFamily: "var(--font-nunito)" }}>
-              <span style={titleStyle}>Girafou le parc</span><br />
-              <span className="text-white">• Toute l&rsquo;année !</span>
+              <span style={titleStyle}>{t.footer.parkTitle}</span><br />
+              <span className="text-white">{t.footer.parkSub}</span>
             </h4>
             <ul className="space-y-2">
               {parc.map((item, i) => (
@@ -125,8 +135,8 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
           {/* 3 — Girafou Plage Club */}
           <div className="min-w-0">
             <h4 className="font-extrabold text-sm mb-4 leading-snug" style={{ fontFamily: "var(--font-nunito)" }}>
-              <span style={titleStyle}>Girafou Plage Club</span><br />
-              <span className="text-white">• De juin à septembre !</span>
+              <span style={titleStyle}>{t.footer.beachTitle}</span><br />
+              <span className="text-white">{t.footer.beachSub}</span>
             </h4>
             <ul className="space-y-2">
               {plage.map((item, i) => (
@@ -144,12 +154,12 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
           <div>
             {/* mt+mb compensés : F.A.Q descend un peu (plus proche de la liste) sans déplacer la liste. */}
             <h4 className="mt-3 mb-1">
-              <Link href="/faq" className="text-white/85 hover:text-[#FFD23F] text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>F.A.Q</Link>
+              <Link href={lp("/faq")} className="text-white/85 hover:text-[#FFD23F] text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{t.nav.faq}</Link>
             </h4>
             <ul className="space-y-2">
               {infoLinks.map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} className="text-white/85 hover:text-[#FFD23F] text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
+                  <a href={lp(item.href)} className="text-white/85 hover:text-[#FFD23F] text-sm leading-relaxed transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
                     {item.label}
                   </a>
                 </li>
@@ -159,7 +169,7 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
 
           {/* 6 — Partenaires */}
           <div>
-            <h4 className="font-extrabold text-xs uppercase tracking-wider mb-4" style={{ fontFamily: "var(--font-nunito)", ...titleStyle }}>Partenaires</h4>
+            <h4 className="font-extrabold text-xs uppercase tracking-wider mb-4" style={{ fontFamily: "var(--font-nunito)", ...titleStyle }}>{t.footer.partners}</h4>
             <div className="flex flex-col gap-4 items-start">
               <a href="https://space-association.fr/" target="_blank" rel="noopener noreferrer">
                 <Image src="/images/partenaires/space.png" alt="Space" width={110} height={22} className="h-5 w-auto opacity-65 hover:opacity-100 transition-opacity" />
@@ -196,11 +206,11 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
         </div>
 
         {/* Plan du site — maillage interne */}
-        <nav aria-label="Plan du site" className="border-t border-white/8 mt-6 pt-6 pb-5">
+        <nav aria-label={t.footer.sitemap} className="border-t border-white/8 mt-6 pt-6 pb-5">
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {siteMap.map((item) => (
               <li key={item.label}>
-                <Link href={item.href} className="text-white/70 hover:text-[#FFD23F] text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
+                <Link href={lp(item.href)} className="text-white/70 hover:text-[#FFD23F] text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>
                   {item.label}
                 </Link>
               </li>
@@ -211,20 +221,20 @@ export default function Footer({ waveColor = "#FFE8A0" }: { waveColor?: string }
         {/* Bottom bar */}
         <div className="border-t border-white/8 pt-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/60 text-xs" style={{ fontFamily: "var(--font-nunito)" }}>
-            Girafou © {new Date().getFullYear()}. Tous droits réservés.
+            Girafou © {new Date().getFullYear()}. {t.footer.rights}
           </p>
           <div className="flex flex-col items-center gap-1">
-            <p className="text-white/60 text-xs uppercase tracking-widest" style={{ fontFamily: "var(--font-nunito)" }}>Réalisé par</p>
+            <p className="text-white/60 text-xs uppercase tracking-widest" style={{ fontFamily: "var(--font-nunito)" }}>{t.footer.madeBy}</p>
             <a href="https://www.banana-growth.agency/accompagnement-marketing-digital-parc-de-loisir" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
               <Image src="/images/logo-banana-growth.png" alt="Banana Growth Agency" width={140} height={46} className="h-8 w-auto" />
             </a>
           </div>
           <div className="flex gap-4">
             {[
-              { label: "Mentions légales", href: "/mentions-legales" },
-              { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+              { label: t.footer.legalNotice, href: "/mentions-legales" },
+              { label: t.footer.privacy, href: "/politique-de-confidentialite" },
             ].map((l) => (
-              <a key={l.href} href={l.href} className="text-white/70 hover:text-[#FFD23F] text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{l.label}</a>
+              <a key={l.href} href={lp(l.href)} className="text-white/70 hover:text-[#FFD23F] text-xs transition-colors" style={{ fontFamily: "var(--font-nunito)" }}>{l.label}</a>
             ))}
           </div>
         </div>

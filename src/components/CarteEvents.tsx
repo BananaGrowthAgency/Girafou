@@ -3,10 +3,13 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import { useLocalePath } from "@/lib/i18n/useLocale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const privatisationTags = ["Anniversaire", "Comité d’entreprise", "Arbre de Noël", "Événement sur mesure"];
 
-export default function CarteEvents() {
+export default function CarteEvents({ t }: { t: Dictionary["pages"]["restauration"] }) {
+  const lp = useLocalePath();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -54,17 +57,17 @@ export default function CarteEvents() {
             🎉 Fêtes inoubliables
           </span>
           <h3 className="text-2xl font-extrabold mb-2" style={{ fontFamily: "var(--font-baloo)" }}>
-            Viens fêter ton anniversaire à Girafou !
+            {t.birthdayTitle}
           </h3>
           <p className="text-sm text-white/80 leading-relaxed mb-5" style={{ fontFamily: "var(--font-nunito)" }}>
-            Ici, nous prenons en charge chaque détail pour faire de l&rsquo;anniversaire de votre enfant un moment unique ! Les parents, détendez-vous : nos formules tout inclus garantissent une fête mémorable, où chaque aspect, de l&rsquo;amusement aux friandises, est pris en charge par notre équipe. Laissez-nous créer des souvenirs magiques pendant que vous profitez pleinement de ce moment !
+            {t.birthdayText}
           </p>
           <Link
-            href="/anniversaires"
+            href={lp("/anniversaires")}
             className="btn-shine inline-block px-5 py-3 rounded-2xl bg-white font-extrabold text-sm hover:-translate-y-0.5 transition-all duration-200"
             style={{ color: "#C0392B", fontFamily: "var(--font-nunito)" }}
           >
-            Voir les formules
+            {t.birthdayCta}
           </Link>
         </motion.div>
 
@@ -82,10 +85,10 @@ export default function CarteEvents() {
             ✨ Sur mesure
           </span>
           <h3 className="text-2xl font-extrabold text-amber-900 mb-2" style={{ fontFamily: "var(--font-baloo)" }}>
-            Privatisation
+            {t.privatisationTitle}
           </h3>
           <p className="text-sm text-amber-800/60 leading-relaxed mb-4" style={{ fontFamily: "var(--font-nunito)" }}>
-            Girafou propose aussi la privatisation pour vos événements professionnels ou personnels. Nous fournissons des solutions sur mesure pour chaque demande.
+            {t.privatisationText}
           </p>
           <div className="flex flex-wrap gap-2 mb-5">
             {privatisationTags.map((tag) => (
@@ -103,7 +106,7 @@ export default function CarteEvents() {
             className="inline-block px-5 py-3 rounded-2xl border-2 border-amber-200 text-amber-800 font-extrabold text-sm hover:bg-amber-50 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Devis sur demande ✉️
+            {t.privatisationCta}
           </a>
         </motion.div>
       </div>

@@ -1,0 +1,62 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ActiviteDetail from "@/components/ActiviteDetail";
+import { ACTIVITES, activiteBySlug } from "@/lib/activites";
+import { hasLocale } from "@/lib/i18n/config";
+import { fill, getDictionary } from "@/lib/i18n/dictionaries";
+import { ui } from "@/lib/i18n/ui";
+import { alternates } from "@/lib/i18n/seo";
+
+// Pré-génère les 9 pages d'activités au build (SSG) — une fois par langue :
+// Next exécute ce generateStaticParams pour chaque `lang` du layout parent.
+export function generateStaticParams() {
+  return ACTIVITES.map((a) => ({ slug: a.slug }));
+}
+
+export async function generateMetadata(
+  props: PageProps<"/[lang]/activites/[slug]">,
+): Promise<Metadata> {
+  const { lang, slug } = await props.params;
+  if (!hasLocale(lang)) notFound();
+  const { meta, activites } = await getDictionary(lang);
+
+  const texte = activites[slug];
+  if (!texte) return { title: meta.activiteDetail.fallback };
+
+  const values = {
+    name: ui(lang).names.activites[slug],
+    tagline: texte.tagline.toLowerCase(),
+    desc: texte.description[0],
+  };
+  return {
+    alternates: alternates(lang, `/activites/${slug}`),
+    title: fill(meta.activiteDetail.title, values),
+    description: fill(meta.activiteDetail.description, values),
+  };
+}
+
+export default async function ActivitePage(props: PageProps<"/[lang]/activites/[slug]">) {
+  const { lang, slug } = await props.params;
+  if (!hasLocale(lang)) notFound();
+
+  const activite = activiteBySlug(slug);
+  if (!activite) notFound();
+
+  const dict = await getDictionary(lang);
+
+  return (
+    <>
+      <Navbar />
+      <main>
+        <ActiviteDetail
+          activite={activite}
+          t={dict.pages.activites.detail}
+          activites={dict.activites}
+        />
+      </main>
+      <Footer waveColor="#FFFDF5" />
+    </>
+  );
+}

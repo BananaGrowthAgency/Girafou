@@ -4,6 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import ReglesParc from "./ReglesParc";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -14,35 +15,6 @@ const RED = "#C0392B";
 // enfants, confettis) sont détourées sur transparence, donc ce ton s'affiche
 // uniformément derrière elles, sans aucune bordure visible.
 const CREAM = "#FEF1D6";
-
-// Tranches d'âge exprimées en intervalles fermés : la grille d'origine
-// enchaînait des « moins de X » qui se chevauchaient (les 12–18 mois y
-// apparaissaient à la fois à « Gratuit » et à « 6,00€ », sans qu'on voie que le
-// gratuit était conditionné à une autre entrée payante).
-type Tarif = { label: string; price: string };
-const tarifs: Tarif[] = [
-  { label: "Moins de 12 mois", price: "Gratuit" },
-  { label: "De 12 à 18 mois, accompagné d'une entrée enfant (–12 ans) payante", price: "Gratuit" },
-  { label: "De 12 à 18 mois, sans autre entrée payante", price: "6,00€" },
-  { label: "De 18 mois à 3 ans", price: "8,50€ + 1 jeton offert" },
-  { label: "De 3 à 12 ans", price: "11,50€ + 1 jeton offert" },
-  { label: "Adulte accompagnateur", price: "2,00€ + 1 boisson chaude offerte" },
-];
-
-const jetons = [
-  { n: "1 jeton", price: "2,00€" },
-  { n: "3 jetons", price: "5,00€" },
-  { n: "6 jetons", price: "10,00€" },
-  { n: "14 jetons", price: "20,00€" },
-];
-
-type Horaire = { day: string; note?: string; time: string };
-const horaires: Horaire[] = [
-  { day: "Mercredi", time: "10h00 à 19h00" },
-  { day: "Jeudi des tout-petits", note: "5€ par enfant · gratuit pour les accompagnants", time: "10h00 à 12h30" },
-  { day: "Samedi & Dimanche", time: "10h00 à 19h00" },
-  { day: "Jours fériés", time: "10h00 à 19h00" },
-];
 
 // Wrapper d'apparition au scroll — chaque bloc a son propre useInView (cascade réelle).
 function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
@@ -72,7 +44,7 @@ function Title({ children }: { children: ReactNode }) {
   );
 }
 
-export default function PrixEntrees() {
+export default function PrixEntrees({ t }: { t: Dictionary["pages"]["prix"] }) {
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
 
@@ -91,13 +63,13 @@ export default function PrixEntrees() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: NUNITO }}
           >
-            Tarifs &amp; horaires
+            {t.badge}
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-amber-900 mb-4 leading-tight" style={{ fontFamily: BALOO }}>
-            Prix des <span className="text-giraffe">entrées</span>
+            {t.titleStart} <span className="text-giraffe">{t.titleAccent}</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-amber-900/60 max-w-xl mx-auto" style={{ fontFamily: NUNITO }}>
-            Un seul tarif pour un temps de jeu illimité. Retrouvez nos tarifs, les jetons pour les activités et nos horaires d&rsquo;ouverture.
+            {t.subtitle}
           </motion.p>
         </div>
       </section>
@@ -116,21 +88,21 @@ export default function PrixEntrees() {
 
               <div className="relative px-6 sm:px-12 pt-12 sm:pt-14 pb-10 sm:pb-12">
                 {/* Prix des entrées */}
-                <Title>Prix des entrées individuelles</Title>
+                <Title>{t.pricesTitle}</Title>
                 <ul className="mt-7 space-y-3 text-center">
-                  {tarifs.map((t, i) => (
+                  {t.prices.map((p, i) => (
                     <li key={i} className="text-base sm:text-lg leading-snug" style={{ fontFamily: NUNITO }}>
-                      <span className="font-extrabold" style={{ color: BROWN }}>{t.label} : </span>
-                      <span className="font-extrabold" style={{ color: VALUE }}>{t.price}</span>
+                      <span className="font-extrabold" style={{ color: BROWN }}>{p.label} : </span>
+                      <span className="font-extrabold" style={{ color: VALUE }}>{p.price}</span>
                     </li>
                   ))}
                 </ul>
 
                 {/* Jetons */}
                 <div className="mt-12">
-                  <Title>Les jetons pour nos activités</Title>
+                  <Title>{t.tokensTitle}</Title>
                   <ul className="mt-6 space-y-2 text-center">
-                    {jetons.map((j) => (
+                    {t.tokens.map((j) => (
                       <li key={j.n} className="text-base sm:text-lg" style={{ fontFamily: NUNITO }}>
                         <span className="font-extrabold" style={{ color: BROWN }}>{j.n} : </span>
                         <span className="font-extrabold" style={{ color: VALUE }}>{j.price}</span>
@@ -140,7 +112,7 @@ export default function PrixEntrees() {
                 </div>
 
                 <p className="mt-9 text-center text-sm sm:text-base font-semibold" style={{ fontFamily: NUNITO, color: BROWN }}>
-                  Moyens de paiement acceptés : Espèces, Carte Bleue, Chèque vacances ANCV et ANCV Connect
+                  {t.payment}
                 </p>
               </div>
             </div>
@@ -153,23 +125,23 @@ export default function PrixEntrees() {
               <Image src="/images/prix-entrees/spots-h.png" alt="" width={300} height={165} className="absolute top-0 left-0 w-24 sm:w-32 h-auto pointer-events-none select-none" />
               <Image src="/images/prix-entrees/kids.png" alt="" width={283} height={284} className="absolute bottom-0 right-3 sm:right-8 w-20 sm:w-28 h-auto pointer-events-none select-none" />
               <h2 className="relative text-2xl sm:text-4xl font-extrabold px-24 sm:px-32 text-center" style={{ fontFamily: BALOO, color: BROWN }}>
-                Horaires aire de jeux Girafou
+                {t.hoursTitle}
               </h2>
             </div>
 
             {/* Tableau */}
             <div className="rounded-[1.5rem] overflow-hidden shadow-lg border border-amber-900/10">
               <div className="py-3.5 text-center text-white text-lg font-extrabold tracking-wide" style={{ background: RED, fontFamily: BALOO }}>
-                TOUTE L&rsquo;ANNÉE
+                {t.allYear}
               </div>
 
               {/* En-têtes de colonnes */}
               <div className="flex items-stretch bg-white" style={{ borderBottom: "1px solid rgba(120,80,40,0.12)" }}>
-                <div className="flex-1 px-5 py-3 text-center text-lg font-extrabold" style={{ fontFamily: BALOO, color: BROWN }}>Jours d&rsquo;ouverture</div>
-                <div className="w-32 sm:w-52 px-4 py-3 text-center text-lg font-extrabold" style={{ fontFamily: BALOO, color: BROWN, borderLeft: "1px solid rgba(120,80,40,0.12)" }}>Horaires</div>
+                <div className="flex-1 px-5 py-3 text-center text-lg font-extrabold" style={{ fontFamily: BALOO, color: BROWN }}>{t.colDays}</div>
+                <div className="w-32 sm:w-52 px-4 py-3 text-center text-lg font-extrabold" style={{ fontFamily: BALOO, color: BROWN, borderLeft: "1px solid rgba(120,80,40,0.12)" }}>{t.colHours}</div>
               </div>
 
-              {horaires.map((h, i) => (
+              {t.hours.map((h, i) => (
                 <div key={i} className="flex items-stretch bg-white" style={{ borderTop: i === 0 ? "none" : "1px solid rgba(120,80,40,0.08)" }}>
                   <div className="flex-1 px-5 py-4">
                     <p className="font-bold text-sm sm:text-base text-amber-900/85" style={{ fontFamily: NUNITO }}>{h.day}</p>
@@ -182,18 +154,15 @@ export default function PrixEntrees() {
               ))}
 
               {/* Vacances scolaires */}
-              {[
-                "PENDANT LES VACANCES SCOLAIRES — Normandie (Zone B)",
-                "PENDANT LES VACANCES SCOLAIRES — Paris (Zone C)",
-              ].map((zone) => (
+              {t.holidayZones.map((zone) => (
                 <div key={zone}>
                   <div className="px-5 py-3 text-center text-white text-sm sm:text-base font-bold" style={{ background: RED, fontFamily: NUNITO }}>
                     {zone}
                   </div>
                   <div className="flex items-stretch bg-white">
-                    <div className="flex-1 px-5 py-4 font-bold text-sm sm:text-base text-amber-900/85" style={{ fontFamily: NUNITO }}>Tous les jours</div>
+                    <div className="flex-1 px-5 py-4 font-bold text-sm sm:text-base text-amber-900/85" style={{ fontFamily: NUNITO }}>{t.everyDay}</div>
                     <div className="w-32 sm:w-52 px-4 py-4 flex items-center justify-center text-center font-bold text-sm sm:text-base text-amber-900/85" style={{ fontFamily: NUNITO, borderLeft: "1px solid rgba(120,80,40,0.08)" }}>
-                      10h00 à 19h00
+                      {t.holidayHours}
                     </div>
                   </div>
                 </div>

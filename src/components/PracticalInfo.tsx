@@ -3,50 +3,32 @@
 import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { useLocalePath } from "@/lib/i18n/useLocale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-// Horaires — repris de la page Prix des entrées (source : girafou.com).
-// `highlight` = le Jeudi des tout-petits, mis en avant : c'est une offre
-// récente que le parc cherche à faire connaître.
-const hours = [
-  // Les jours de fermeture ouvrent la liste : c'est ce que les parents
-  // vérifient en premier, autant l'annoncer avant les horaires d'ouverture.
-  {
-    day: "Lundi · Mardi · Vendredi",
-    time: "Fermé",
-    note: "Hors vacances scolaires",
-    closed: true,
-  },
-  { day: "Mercredi · Samedi · Dimanche", time: "10h ~ 19h" },
-  {
-    day: "Jeudi des tout-petits",
-    time: "10h ~ 12h30",
-    note: "5 € par enfant · gratuit pour les accompagnants",
-    highlight: true,
-  },
-  { day: "Jours fériés", time: "10h ~ 19h" },
-  { day: "Vacances scolaires Zone B (Normandie)", time: "Tous les jours · 10h ~ 19h" },
-  { day: "Vacances scolaires Zone C (Paris)", time: "Tous les jours · 10h ~ 19h" },
+// Mise en forme des horaires : quelle ligne est une fermeture (en rouge) et
+// laquelle est mise en avant (Jeudi des tout-petits). Même ordre que le
+// dictionnaire — les textes, eux, sont traduits.
+const HOUR_STYLES = [
+  { closed: true },
+  {},
+  { highlight: true },
+  {},
+  {},
+  {},
 ];
 
-// Extrait des tarifs — le détail complet (dont les 12–18 mois) vit sur
-// /prix-des-entrees. Tranches en intervalles fermés, comme sur cette page.
-const tarifs = [
-  { label: "Moins de 12 mois", price: "Gratuit" },
-  { label: "De 18 mois à 3 ans", price: "8,50 €" },
-  { label: "De 3 à 12 ans", price: "11,50 €" },
-  { label: "Adulte accompagnateur", price: "2,00 €" },
+// Icônes et couleurs des repères rapides ; `strong` = une des deux règles du
+// parc, encadrée plus visiblement.
+const TIP_STYLES = [
+  { icon: "🧦", color: "#F5A623", strong: true },
+  { icon: "🚫", color: "#C0392B", strong: true },
+  { icon: "🚗", color: "#00897B" },
+  { icon: "👧", color: "#7C3AED" },
 ];
 
-// Les deux règles du parc arrivent en tête : ce sont les deux motifs de
-// friction les plus fréquents à l'accueil.
-const tips = [
-  { icon: "🧦", label: "Chaussettes obligatoires", sub: "Enfants et adultes — 2,50 € la paire sur place", color: "#F5A623", strong: true },
-  { icon: "🚫", label: "Pas de nourriture extérieure", sub: "Ni boissons — restaurant sur place", color: "#C0392B", strong: true },
-  { icon: "🚗", label: "Parking gratuit", sub: "Grand parking devant le parc", color: "#00897B" },
-  { icon: "👧", label: "1 à 12 ans", sub: "Zones adaptées à chaque âge", color: "#7C3AED" },
-];
-
-export default function PracticalInfo() {
+export default function PracticalInfo({ t }: { t: Dictionary["home"]["practical"] }) {
+  const lp = useLocalePath();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const sectionRef = useRef<HTMLElement>(null);
@@ -125,14 +107,14 @@ export default function PracticalInfo() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Comment nous rejoindre
+            {t.badge}
           </motion.span>
           <h2
             className="text-5xl md:text-6xl font-extrabold text-amber-900"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
-            Infos{" "}
-            <span className="text-giraffe">pratiques</span>
+            {t.titleStart}{" "}
+            <span className="text-giraffe">{t.titleAccent}</span>
           </h2>
         </motion.div>
 
@@ -144,23 +126,23 @@ export default function PracticalInfo() {
 
           {/* ── Bande 1 — repères rapides ── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {tips.map((t, i) => (
+            {t.tips.map((tip, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 25 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
                 className="bg-white rounded-2xl p-5 border-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-                style={{ borderColor: t.color + (t.strong ? "80" : "30") }}
+                style={{ borderColor: TIP_STYLES[i].color + (TIP_STYLES[i].strong ? "80" : "30") }}
               >
-                <div className="text-3xl mb-2">{t.icon}</div>
+                <div className="text-3xl mb-2">{TIP_STYLES[i].icon}</div>
                 <h4
                   className="font-extrabold text-sm mb-0.5"
-                  style={{ fontFamily: "var(--font-baloo)", color: t.color }}
+                  style={{ fontFamily: "var(--font-baloo)", color: TIP_STYLES[i].color }}
                 >
-                  {t.label}
+                  {tip.label}
                 </h4>
-                <p className="text-xs text-amber-800/50" style={{ fontFamily: "var(--font-nunito)" }}>{t.sub}</p>
+                <p className="text-xs text-amber-800/50" style={{ fontFamily: "var(--font-nunito)" }}>{tip.sub}</p>
               </motion.div>
             ))}
           </div>
@@ -179,11 +161,11 @@ export default function PracticalInfo() {
                 className="text-2xl font-extrabold text-amber-900 mb-6"
                 style={{ fontFamily: "var(--font-baloo)" }}
               >
-                Horaires d&rsquo;ouverture
+                {t.hoursTitle}
               </h3>
               <div className="space-y-0 divide-y divide-amber-50">
-                {hours.map((h, i) =>
-                  h.highlight ? (
+                {t.hours.map((h, i) =>
+                  HOUR_STYLES[i].highlight ? (
                     // Jeudi des tout-petits — sorti du flux en carte colorée.
                     <div key={i} className="py-3">
                       <div
@@ -198,7 +180,7 @@ export default function PracticalInfo() {
                               className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide text-white"
                               style={{ background: "#C0392B" }}
                             >
-                              Nouveau
+                              {t.new}
                             </span>
                           </span>
                           <span className="font-extrabold text-sm sm:text-base" style={{ fontFamily: "var(--font-baloo)", color: "#E05A2F" }}>
@@ -210,7 +192,7 @@ export default function PracticalInfo() {
                         </p>
                       </div>
                     </div>
-                  ) : h.closed ? (
+                  ) : HOUR_STYLES[i].closed ? (
                     // Fermeture : même ligne que les autres (pas d'encart, qui
                     // entrerait en concurrence avec celui du Jeudi), mais en
                     // rouge pour qu'on ne la lise pas comme une ouverture.
@@ -244,27 +226,27 @@ export default function PracticalInfo() {
                 className="text-2xl font-extrabold text-amber-900 mb-5"
                 style={{ fontFamily: "var(--font-baloo)" }}
               >
-                Tarifs d&rsquo;entrée
+                {t.pricesTitle}
               </h3>
               <div className="space-y-0 divide-y divide-amber-50 mb-5">
-                {tarifs.map((t, i) => (
+                {t.prices.map((p, i) => (
                   <div key={i} className="flex items-center justify-between gap-2 py-3">
-                    <span className="font-bold text-amber-800" style={{ fontFamily: "var(--font-nunito)" }}>{t.label}</span>
-                    <span className="font-extrabold text-amber-500 text-sm sm:text-base whitespace-nowrap" style={{ fontFamily: "var(--font-baloo)" }}>{t.price}</span>
+                    <span className="font-bold text-amber-800" style={{ fontFamily: "var(--font-nunito)" }}>{p.label}</span>
+                    <span className="font-extrabold text-amber-500 text-sm sm:text-base whitespace-nowrap" style={{ fontFamily: "var(--font-baloo)" }}>{p.price}</span>
                   </div>
                 ))}
               </div>
               <p className="text-xs text-amber-800/55 mb-4" style={{ fontFamily: "var(--font-nunito)" }}>
-Entrées enfant avec 1 jeton offert, adulte avec 1 boisson chaude offerte. Temps de jeu illimité. Tarif spécifique pour les 12&ndash;18 mois.
+{t.pricesNote}
               </p>
               {/* mt-auto : le lien reste collé en bas même si la carte s'étire
                   pour s'aligner sur celle des horaires. */}
               <Link
-                href="/prix-des-entrees"
+                href={lp("/prix-des-entrees")}
                 className="mt-auto self-start inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 font-bold text-sm hover:bg-white hover:border-amber-300 transition-all"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
-                Voir tous les tarifs &amp; jetons →
+                {t.allPrices}
               </Link>
             </motion.div>
           </div>
@@ -283,7 +265,7 @@ Entrées enfant avec 1 jeton offert, adulte avec 1 boisson chaude offerte. Temps
                 className="text-2xl font-extrabold text-amber-900 mb-5"
                 style={{ fontFamily: "var(--font-baloo)" }}
               >
-                Nous trouver
+                {t.findUs}
               </h3>
               {/* Deux sites distincts : le parc couvert (toute l'année) et le
                   club de plage estival. Adresses identiques au footer. */}
@@ -291,15 +273,15 @@ Entrées enfant avec 1 jeton offert, adulte avec 1 boisson chaude offerte. Temps
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🏠</span>
                   <div>
-                    <p className="font-bold text-amber-900" style={{ fontFamily: "var(--font-nunito)" }}>Girafou le parc — Toute l&rsquo;année&nbsp;!</p>
-                    <p className="text-sm text-amber-800/70" style={{ fontFamily: "var(--font-nunito)" }}>ZA Clos de la Hogue, 14970 Bénouville</p>
+                    <p className="font-bold text-amber-900" style={{ fontFamily: "var(--font-nunito)" }}>{t.parkName}</p>
+                    <p className="text-sm text-amber-800/70" style={{ fontFamily: "var(--font-nunito)" }}>{t.parkAddress}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🏖️</span>
                   <div>
-                    <p className="font-bold text-amber-900" style={{ fontFamily: "var(--font-nunito)" }}>Girafou Plage Club — De juin à septembre&nbsp;!</p>
-                    <p className="text-sm text-amber-800/70" style={{ fontFamily: "var(--font-nunito)" }}>Plage de Ouistreham - Riva Bella, 14150 Ouistreham</p>
+                    <p className="font-bold text-amber-900" style={{ fontFamily: "var(--font-nunito)" }}>{t.beachName}</p>
+                    <p className="text-sm text-amber-800/70" style={{ fontFamily: "var(--font-nunito)" }}>{t.beachAddress}</p>
                   </div>
                 </div>
               </div>

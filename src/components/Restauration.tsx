@@ -3,8 +3,10 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { NOURRITURE_SHORT, NOURRITURE_TITLE } from "@/lib/regles";
 import type { SummaryCard } from "@/lib/menu/summary";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const pizzaSlides = [
   "/images/resto/option-pizza-1.jpg",
@@ -126,7 +128,14 @@ function MenuCard({ item, index, inView }: { item: SummaryCard; index: number; i
   );
 }
 
-export default function Restauration({ cards }: { cards: SummaryCard[] }) {
+export default function Restauration({
+  cards,
+  t,
+}: {
+  cards: SummaryCard[];
+  t: Dictionary["home"]["restauration"];
+}) {
+  const regles = ui(useLocale()).regles;
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -158,21 +167,21 @@ export default function Restauration({ cards }: { cards: SummaryCard[] }) {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Manger sur place
+            {t.badge}
           </motion.span>
           <h2
             className="text-4xl md:text-5xl font-extrabold leading-tight mb-3"
             style={{ fontFamily: "var(--font-baloo)", color: "#1C1008", textShadow: "-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 2px 8px rgba(255,255,255,0.8)" }}
           >
-            Un espace{" "}
-            <span style={{ color: "#A0621A", WebkitTextStroke: "1.5px rgba(0,0,0,0.75)", paintOrder: "stroke fill" }}>restauration</span>{" "}
-            pour toute la famille
+            {t.titleStart}{" "}
+            <span style={{ color: "#A0621A", WebkitTextStroke: "1.5px rgba(0,0,0,0.75)", paintOrder: "stroke fill" }}>{t.titleAccent}</span>{" "}
+            {t.titleEnd}
           </h2>
           <p
             className="text-base max-w-xl mx-auto leading-relaxed"
             style={{ fontFamily: "var(--font-nunito)", color: "#1C1008", textShadow: "-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 2px 6px rgba(255,255,255,0.8)" }}
           >
-            Après tant d&rsquo;aventures, rechargez les batteries ! Pizzas fraîches, gourmandises et boissons — sans quitter le parc.
+            {t.text}
           </p>
 
           {/* Règle « nourriture extérieure » — carte blanche pour rester lisible
@@ -184,10 +193,10 @@ export default function Restauration({ cards }: { cards: SummaryCard[] }) {
             <span className="text-xl leading-none mt-0.5" aria-hidden="true">🚫</span>
             <div>
               <p className="font-extrabold text-sm sm:text-base leading-snug" style={{ fontFamily: "var(--font-baloo)", color: "#C0392B" }}>
-                {NOURRITURE_TITLE}
+                {regles.nourritureTitle}
               </p>
               <p className="text-xs sm:text-sm text-amber-900/60 leading-snug" style={{ fontFamily: "var(--font-nunito)" }}>
-                {NOURRITURE_SHORT}
+                {regles.nourritureShort}
               </p>
             </div>
           </div>
@@ -218,7 +227,7 @@ export default function Restauration({ cards }: { cards: SummaryCard[] }) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/resto/pastille-pizza-2-50.png"
-                  alt="2,50 € par enfant"
+                  alt={t.pizzaTitle}
                   style={{
                     height: "clamp(70px, 9vw, 110px)",
                     width: "auto",
@@ -240,7 +249,7 @@ export default function Restauration({ cards }: { cards: SummaryCard[] }) {
                 className="text-xl sm:text-2xl font-extrabold text-white mb-2 leading-tight"
                 style={{ fontFamily: "var(--font-baloo)" }}
               >
-                Option Pizza
+                {t.pizzaTitle}
               </h3>
               {/* max-w : force le texte sur deux lignes au lieu d'une seule très
                   longue, ce qui rend la largeur gagnée aux trois photos. */}
@@ -248,7 +257,7 @@ export default function Restauration({ cards }: { cards: SummaryCard[] }) {
                 className="text-white/85 text-sm leading-snug sm:max-w-[25rem]"
                 style={{ fontFamily: "var(--font-nunito)" }}
               >
-                Réservée aux anniversaires du matin. Les enfants réalisent eux-mêmes leur pizza et la mangent ensemble.
+                {t.pizzaText}
               </p>
             </div>
 

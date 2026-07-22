@@ -3,9 +3,10 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { OPTION_PIZZA, CONDITIONS, CHAUSSETTES } from "@/lib/anniversaires";
 import { InterditSticker } from "./ReglesParc";
-import { NOURRITURE, NOURRITURE_EXCEPTIONS, NOURRITURE_TITLE } from "@/lib/regles";
+import { useLocale } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
@@ -17,7 +18,7 @@ const pizzaSlides = [
 ];
 
 /* ── Option Pizza add-on banner (réutilise le style de la home) ── */
-export function OptionPizzaBanner() {
+export function OptionPizzaBanner({ t }: { t: Dictionary["anniversaires"]["optionPizza"] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
@@ -38,7 +39,7 @@ export function OptionPizzaBanner() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/resto/pastille-pizza-2-50.png"
-          alt="2,50 € par enfant"
+          alt={t.price}
           loading="lazy"
           style={{ height: "clamp(64px, 8vw, 96px)", width: "auto", display: "block", filter: "drop-shadow(-2px 6px 12px rgba(0,0,0,0.28))" }}
         />
@@ -47,10 +48,10 @@ export function OptionPizzaBanner() {
       <div className="relative rounded-3xl overflow-hidden flex flex-col sm:flex-row sm:items-center" style={{ background: "#E8400C" }}>
         <div className="flex flex-col justify-center py-6 sm:py-8 sm:flex-1" style={{ paddingLeft: "clamp(3rem, 8vw, 5.5rem)", paddingRight: "1.5rem" }}>
           <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-2 leading-tight" style={{ fontFamily: BALOO }}>
-            {OPTION_PIZZA.title}
+            {t.title}
           </h3>
           <p className="text-white/85 text-sm leading-snug" style={{ fontFamily: NUNITO }}>
-            {OPTION_PIZZA.text}
+            {t.text}
           </p>
         </div>
         <div className="grid grid-cols-3 gap-2.5 p-3 sm:p-4 sm:w-[46%] sm:flex-none">
@@ -66,7 +67,8 @@ export function OptionPizzaBanner() {
 }
 
 /* ── Chaussettes + conditions ── */
-export function ConditionsBlock() {
+export function ConditionsBlock({ t }: { t: Dictionary["anniversaires"] }) {
+  const regles = ui(useLocale()).regles;
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
@@ -101,7 +103,7 @@ export function ConditionsBlock() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/chaussettes-obligatoires.png"
-                  alt="Chaussettes obligatoires"
+                  alt={regles.chaussettesTitle}
                   style={{ height: "clamp(66px, 7vw, 92px)", width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(0,0,0,0.18))" }}
                 />
               </motion.div>
@@ -118,13 +120,13 @@ export function ConditionsBlock() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/chaussettes-obligatoires.png"
-            alt="Chaussettes obligatoires"
+            alt={regles.chaussettesTitle}
             style={{ height: 56, width: "auto", display: "block", filter: "drop-shadow(-2px 6px 10px rgba(0,0,0,0.18))" }}
           />
         </motion.div>
         <div>
-          <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>Chaussettes obligatoires</p>
-          <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{CHAUSSETTES}</p>
+          <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>{regles.chaussettesTitle}</p>
+          <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{regles.chaussettes}</p>
         </div>
       </motion.div>
 
@@ -143,9 +145,9 @@ export function ConditionsBlock() {
           <InterditSticker size={56} />
         </motion.div>
         <div>
-          <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>{NOURRITURE_TITLE}</p>
-          <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{NOURRITURE}</p>
-          <p className="text-xs text-amber-800/40 leading-snug mt-1.5" style={{ fontFamily: NUNITO }}>{NOURRITURE_EXCEPTIONS}</p>
+          <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>{regles.nourritureTitle}</p>
+          <p className="text-sm text-amber-800/60 leading-snug" style={{ fontFamily: NUNITO }}>{regles.nourriture}</p>
+          <p className="text-xs text-amber-800/40 leading-snug mt-1.5" style={{ fontFamily: NUNITO }}>{regles.nourritureExceptions}</p>
         </div>
       </motion.div>
 
@@ -157,9 +159,9 @@ export function ConditionsBlock() {
         className="rounded-3xl px-7 py-7 text-white shadow-xl"
         style={{ background: "#C0392B" }}
       >
-        <p className="font-extrabold text-lg mb-3" style={{ fontFamily: BALOO }}>Bon à savoir</p>
+        <p className="font-extrabold text-lg mb-3" style={{ fontFamily: BALOO }}>{t.conditionsTitle}</p>
         <ul className="flex flex-col gap-2.5">
-          {CONDITIONS.map((c, i) => (
+          {t.conditions.map((c, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm leading-snug text-white/90" style={{ fontFamily: NUNITO }}>
               <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-white/70" />
               {c}

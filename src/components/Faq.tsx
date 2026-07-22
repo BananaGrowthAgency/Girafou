@@ -2,164 +2,23 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLocalePath } from "@/lib/i18n/useLocale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
+// Contenu (17 questions) repris à l'identique de https://girafou.com/f-a-q/
+// puis traduit ; il vit dans les dictionnaires, ces types en dérivent.
+type FaqStrings = Dictionary["pages"]["faq"];
 // Un segment de texte : texte simple, souligné (u), ou lien (href).
-type Seg = { t: string; u?: boolean; href?: string };
-// Une ligne = suite de segments. `null` = ligne vide (espacement).
-type Line = Seg[] | null;
-// `important` = règle du parc, remontée en tête de liste et badgée « À savoir
-// avant de venir » : ce sont les deux sujets qui génèrent des réclamations à
-// l'accueil quand le visiteur les découvre sur place.
-type QA = { q: string; a: Line[]; important?: boolean };
-
-// Contenu repris à l'identique de https://girafou.com/f-a-q/
-const faqs: QA[] = [
-  {
-    q: "Les chaussettes sont-elles indispensables ?",
-    important: true,
-    a: [
-      [{ t: "Les chaussettes pour vos enfants sont OBLIGATOIRES, pour des questions d’hygiène et de sécurité." }],
-      [{ t: "Girafou propose ses chaussettes antidérapantes en VENTE à 2,50 € la paire. Elles sont également indispensables pour les adultes souhaitant accompagner les enfants dans les jeux." }],
-    ],
-  },
-  {
-    q: "Peut-on venir avec son goûter ou son pique nique ?",
-    important: true,
-    a: [
-      [{ t: "Non, compte-tenu des normes sanitaires, il n’est pas possible de venir avec de la nourriture ou des boissons de l’extérieur." }],
-      [{ t: "Notre restaurant vous accueille sur place : pizzas maison, crêpes, gaufres, glaces et boissons." }, { t: " → Voir la carte", href: "/restauration", u: true }],
-      null,
-      [{ t: "Sont tolérés les aliments pour bébés, ou régime pour enfants présentant des allergies alimentaires." }],
-    ],
-  },
-  {
-    q: "Quand Girafou est-il ouvert ?",
-    a: [
-      [{ t: "Périodes scolaires :", u: true }],
-      [{ t: "Mercredi, Samedi, Dimanche et jours fériés de 10h00 à 19h00." }],
-      null,
-      [{ t: "Vacances scolaires :", u: true }],
-      [{ t: "Tous les jours et jours fériés de 10h00 à 19h00." }],
-      null,
-      [{ t: "Vacances d’été (juillet/août) :", u: true }],
-      [{ t: "Tous les jours et jours fériés de 10h00 à 19h00." }],
-      null,
-      [{ t: "Jours de fermeture exceptionnelle :", u: true }],
-      [{ t: "Fermé les 25 Décembre et 1er Janvier." }],
-    ],
-  },
-  {
-    q: "Doit-on réserver pour venir chez Girafou ?",
-    a: [
-      [{ t: "Non, sauf pour les anniversaires (voir plus bas) et les groupes (Accueil de centres de Loisirs, Associations, etc…)." }],
-      [{ t: "Compte-tenu des normes de sécurité, l’accès peut être reporté durant les périodes de forte affluence." }],
-      [{ t: "Les périodes de forte affluence sont les après-midi de vacances scolaires de Toussaint, Février, Pâques et Juillet/Aout." }],
-      [{ t: "De manière générale, une météo dégradée provoque une forte affluence dans le parc." }],
-    ],
-  },
-  {
-    q: "Qui paye quoi ? et pour quelle durée de jeu ?",
-    a: [
-      [{ t: "Girafou propose un seul tarif pour un temps « illimité »." }],
-      [{ t: "L’entrée est payante pour les adultes accompagnateurs (2€ par adulte avec 1 boisson offerte)." }],
-      [{ t: "→ Cliquez ici pour consulter nos tarifs", href: "/prix-des-entrees", u: true }],
-    ],
-  },
-  {
-    q: "Que font les Parents pendant que les enfants jouent ?",
-    a: [
-      [{ t: "Girafou est un parc de jeux FAMILIAL, les parents ont la possibilité (selon l’affluence) de savourer ce moment de jeux avec leurs enfants." }],
-      [{ t: "Un accès WIFI ainsi que des magazines sont mis gratuitement à la disposition des parents." }],
-      [{ t: "La cafétéria est bien entendu à la disposition des parents." }],
-    ],
-  },
-  {
-    q: "Peut-on venir le matin, partir le temps du déjeuner et revenir ensuite ?",
-    a: [
-      [{ t: "Non, toute sortie est définitive." }],
-      [{ t: "Notre SNACK vous propose des formules pour déjeuner sur place." }],
-    ],
-  },
-  {
-    q: "Anniversaire : Comment réserver et combien de temps à l’avance ?",
-    a: [
-      [{ t: "Vous pouvez réserver votre anniversaire sur le site www.girafou.com." }],
-      [{ t: "Vous pouvez également réserver votre anniversaire à l’accueil du Girafou." }],
-      [{ t: "Il est conseillé de réserver au moins " }, { t: "2 semaines à l’avance.", u: true }],
-    ],
-  },
-  {
-    q: "Quand Girafou Plage est-il ouvert ?",
-    a: [
-      [{ t: "De mi-Juin à mi-Septembre de 11h00 à 19h00. Sauf en cas de vent violent ou de pluie, le parc de Ouistreham pourra être fermé." }],
-    ],
-  },
-  {
-    q: "Peut-on laisser les enfants chez Girafou et aller faire ses courses ?",
-    a: [
-      [{ t: "Chez Girafou, les enfants doivent TOUJOURS être accompagnés d’un adulte." }],
-    ],
-  },
-  {
-    q: "A quel âge les enfants peuvent-ils venir chez Girafou ?",
-    a: [
-      [{ t: "Les jeux chez Girafou sont accessibles aux enfants âgés de 1 à 12 ans. Un espace de jeux clos et sécurisé est aménagé spécifiquement pour les enfants de 1 à 5 ans." }],
-      [{ t: "Les jeux gonflables sont accessibles aux enfants de 4 à 12 ans. Le Grand Labyrinthe est réservé aux enfants de 4 à 12 ans." }],
-    ],
-  },
-  {
-    q: "Peut-on accompagner les enfants dans les jeux ?",
-    a: [
-      [{ t: "Oui, cela est possible selon l’affluence, et sous réserve de porter des chaussettes, sauf dans les structures gonflables qui sont interdites aux adultes." }],
-      [{ t: "L’accès aux jeux reste possible à tout moment en cas d’urgence." }],
-    ],
-  },
-  {
-    // Aucune information d'accessibilité n'est publiée par le parc : on ne
-    // promet donc rien ici, on renvoie vers l'accueil qui pourra répondre
-    // précisément selon le besoin de chaque visiteur.
-    q: "Le parc est-il accessible aux personnes à mobilité réduite (PMR) ?",
-    a: [
-      [{ t: "Pour toute question sur les conditions d’accès et d’accueil des personnes à mobilité réduite, contactez-nous avant votre venue : nous vous renseignerons sur ce qu’il est possible de faire selon votre situation." }],
-      [{ t: "→ 02 31 53 72 68", href: "tel:0231537268", u: true }],
-      [{ t: "→ contact@girafou.com", href: "mailto:contact@girafou.com", u: true }],
-    ],
-  },
-  {
-    q: "Quels sont les moyens de paiement acceptés ?",
-    a: [
-      [{ t: "Vous " }, { t: "pouvez payer", u: true }, { t: " en espèces, carte bleue ou chèques vacances." }],
-      [{ t: "Les chèques " }, { t: "ne sont plus acceptés", u: true }, { t: " chez Girafou." }],
-    ],
-  },
-  {
-    q: "Anniversaire : Que comprend la prestation ?",
-    a: [
-      [{ t: "→ Voir la page « Anniversaire »", href: "/anniversaires", u: true }],
-    ],
-  },
-  {
-    q: "Accueils de centres de Loisirs, CE, Associations, Entreprises : quelles sont nos formules sur mesure ?",
-    a: [
-      [{ t: "Pour les « Accueils de centres loisirs », des tarifs spécifiques sont proposés les mercredis ainsi que pendant toutes les vacances scolaires. Pour les « Comités d’Entreprise », Girafou propose de la billetterie ainsi que des formules à la carte pour des Arbres de Noël ou autre événement." }],
-    ],
-  },
-  {
-    q: "Une autre question ?",
-    a: [
-      [{ t: "Vous avez une demande ou une question sur un sujet en particulier ?" }],
-      [{ t: "Posez-la nous, nous y répondrons dans les plus bref délais." }],
-      null,
-      [{ t: "Nous poser une question :" }],
-      [{ t: "→ Contactez-nous ici", href: "mailto:contact@girafou.com", u: true }],
-    ],
-  },
-];
+type Seg = FaqStrings["items"][number]["a"][number] extends (infer S)[] | null ? S : never;
+// `important` = règle du parc, remontée en tête de liste et badgée : ce sont
+// les deux sujets qui génèrent des réclamations à l'accueil.
+type QA = FaqStrings["items"][number];
 
 function Segment({ s }: { s: Seg }) {
+  const lp = useLocalePath();
   if (s.href) {
     return (
-      <a href={s.href} className="underline text-[#C0392B] hover:text-[#FF5722] transition-colors">
+      <a href={lp(s.href)} className="underline text-[#C0392B] hover:text-[#FF5722] transition-colors">
         {s.t}
       </a>
     );
@@ -168,7 +27,7 @@ function Segment({ s }: { s: Seg }) {
 }
 
 // Chaque item a son propre useInView → cascade réelle au scroll.
-function FaqItem({ item, isOpen, onToggle }: { item: QA; isOpen: boolean; onToggle: () => void }) {
+function FaqItem({ item, isOpen, onToggle, badge }: { item: QA; isOpen: boolean; onToggle: () => void; badge: string }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-70px" });
 
@@ -198,7 +57,7 @@ function FaqItem({ item, isOpen, onToggle }: { item: QA; isOpen: boolean; onTogg
               className="inline-block mb-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wide text-white"
               style={{ background: "#C0392B", fontFamily: "var(--font-nunito)" }}
             >
-              À savoir avant de venir
+              {badge}
             </span>
           )}
           <span
@@ -249,7 +108,7 @@ function FaqItem({ item, isOpen, onToggle }: { item: QA; isOpen: boolean; onTogg
   );
 }
 
-export default function Faq() {
+export default function Faq({ t }: { t: FaqStrings }) {
   const [open, setOpen] = useState<number | null>(null);
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
@@ -268,21 +127,22 @@ export default function Faq() {
         >
           <span className="inline-block text-4xl mb-3" aria-hidden>🦒</span>
           <h1 className="text-4xl sm:text-5xl font-extrabold" style={{ fontFamily: "var(--font-baloo)", color: "var(--giraffe-brown)" }}>
-            Foire aux questions
+            {t.title}
           </h1>
           <p className="mt-4 text-base sm:text-lg" style={{ fontFamily: "var(--font-nunito)", color: "var(--text-muted)" }}>
-            Tout ce qu&rsquo;il faut savoir avant votre visite au parc Girafou, près de Caen.
+            {t.subtitle}
           </p>
         </motion.div>
 
         {/* Accordion */}
         <ul className="space-y-3">
-          {faqs.map((item, i) => (
+          {t.items.map((item, i) => (
             <FaqItem
               key={i}
               item={item}
               isOpen={open === i}
               onToggle={() => setOpen(open === i ? null : i)}
+              badge={t.importantBadge}
             />
           ))}
         </ul>

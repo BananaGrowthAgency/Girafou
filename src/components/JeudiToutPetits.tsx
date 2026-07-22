@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { RESERVATION_URL } from "@/lib/anniversaires";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { TEXT_OUTLINE_THIN, TEXT_OUTLINE_THIN_SOFT, TITLE_YELLOW } from "@/lib/text";
 
 const BALOO = "var(--font-baloo)";
@@ -12,13 +13,9 @@ const NUNITO = "var(--font-nunito)";
 // Placé juste après le hero : c'est la première chose vue après le pli.
 // Le fond reprend le #FFF8E1 sur lequel s'ouvre la section Activités, pour
 // s'insérer entre les deux sans couture.
-const points = [
-  { icon: "🕥", label: "10h00 – 12h30", sub: "Tous les jeudis matin" },
-  { icon: "🎟️", label: "5 € par enfant", sub: "Temps de jeu illimité" },
-  { icon: "🤗", label: "Accompagnants gratuits", sub: "Parents, mamies, nounous…" },
-];
+const POINT_ICONS = ["🕥", "🎟️", "🤗"];
 
-export default function JeudiToutPetits() {
+export default function JeudiToutPetits({ t }: { t: Dictionary["home"]["toddler"] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -47,25 +44,24 @@ export default function JeudiToutPetits() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/35 text-white text-xs font-extrabold uppercase tracking-wide mb-2.5"
             style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_THIN_SOFT }}
           >
-            Nouveau · Tous les jeudis
+            {t.badge}
           </motion.span>
 
           <h2
             className="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight"
             style={{ fontFamily: BALOO, color: TITLE_YELLOW, textShadow: TEXT_OUTLINE_THIN }}
           >
-            Le Jeudi des tout-petits
+            {t.title}
           </h2>
           <p
             className="text-white font-semibold text-sm sm:text-base max-w-3xl mx-auto mb-5"
             style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_THIN_SOFT }}
           >
-            Une matinée rien que pour les plus petits : le parc au calme, sans les grands,
-            pour explorer et jouer en toute tranquillité.
+            {t.text}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 max-w-4xl mx-auto">
-            {points.map((p, i) => (
+            {t.points.map((p, i) => (
               <motion.div
                 key={p.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -73,7 +69,7 @@ export default function JeudiToutPetits() {
                 transition={{ duration: 0.45, delay: 0.15 + i * 0.08 }}
                 className="flex items-center justify-center gap-3 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 px-4 py-2"
               >
-                <span className="text-xl flex-shrink-0" aria-hidden="true">{p.icon}</span>
+                <span className="text-xl flex-shrink-0" aria-hidden="true">{POINT_ICONS[i]}</span>
                 <div className="text-left">
                   <p className="text-white font-extrabold text-base leading-tight" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE_THIN }}>
                     {p.label}
@@ -96,7 +92,7 @@ export default function JeudiToutPetits() {
             className="btn-shine inline-block px-9 py-3 rounded-2xl bg-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200"
             style={{ color: "#E8400C", fontFamily: NUNITO }}
           >
-            Réserver ma matinée
+            {t.cta}
           </a>
         </div>
       </motion.div>

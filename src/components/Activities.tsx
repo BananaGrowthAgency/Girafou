@@ -5,9 +5,14 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ACTIVITES, type Activite } from "@/lib/activites";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { ui } from "@/lib/i18n/ui";
 import JeudiToutPetits from "./JeudiToutPetits";
 
-function ActivityCard({ act, index }: { act: Activite; index: number }) {
+function ActivityCard({ act, index, cardDesc, more }: { act: Activite; index: number; cardDesc: string; more: string }) {
+  const lp = useLocalePath();
+  const name = ui(useLocale()).names.activites[act.slug];
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -40,7 +45,7 @@ function ActivityCard({ act, index }: { act: Activite; index: number }) {
         {!imgErr ? (
           <Image
             src={act.image}
-            alt={act.name}
+            alt={name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             onError={() => setImgErr(true)}
@@ -67,20 +72,20 @@ function ActivityCard({ act, index }: { act: Activite; index: number }) {
           className="text-xl font-extrabold mb-0.5"
           style={{ fontFamily: "var(--font-baloo)", color: act.accent }}
         >
-          {act.name}
+          {name}
         </h3>
         <p
           className="text-sm text-amber-900/60 leading-relaxed flex-1"
           style={{ fontFamily: "var(--font-nunito)" }}
         >
-          {act.cardDesc}
+          {cardDesc}
         </p>
         <Link
-          href={`/activites/${act.slug}`}
+          href={lp(`/activites/${act.slug}`)}
           className="self-start mt-1 px-4 py-2 rounded-xl text-white text-xs font-extrabold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           style={{ background: act.accent, fontFamily: "var(--font-nunito)" }}
         >
-          En savoir +
+          {more}
         </Link>
       </div>
 
@@ -95,19 +100,28 @@ function ActivityCard({ act, index }: { act: Activite; index: number }) {
   );
 }
 
-export default function Activities() {
+export default function Activities({
+  t,
+  toddler,
+  activites,
+}: {
+  t: Dictionary["home"]["activities"];
+  toddler: Dictionary["home"]["toddler"];
+  activites: Dictionary["activites"];
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const socksOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const socksAlt = ui(useLocale()).regles.chaussettesTitle;
 
   return (
     // Dégradé vertical (et non 160deg) : le bord supérieur est ainsi uniformément
     // #FFF8E1, la couleur sur laquelle se termine le hero — plus de ligne de raccord.
     <section ref={sectionRef} id="activites" className="relative pt-12 pb-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(to bottom, #FFF8E1 0%, #FFF3C4 50%, #FFE8A0 100%)" }}>
       {/* Bandeau « Jeudi des tout-petits » — dans cette section pour partager son fond */}
-      <JeudiToutPetits />
+      <JeudiToutPetits t={toddler} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
@@ -142,7 +156,7 @@ export default function Activities() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/chaussettes-obligatoires.png"
-                  alt="Chaussettes obligatoires"
+                  alt={socksAlt}
                   style={{
                     height: "clamp(80px, 10vw, 130px)",
                     width: "auto",
@@ -160,20 +174,20 @@ export default function Activities() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            9 activités pour s&rsquo;amuser sans limites
+            {t.badge}
           </motion.span>
           <h2
             className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-amber-900 mb-3 leading-tight"
             style={{ fontFamily: "var(--font-baloo)" }}
           >
-            Des aventures pour{" "}
-            <span className="text-giraffe">tous les âges</span>
+            {t.titleStart}{" "}
+            <span className="text-giraffe">{t.titleAccent}</span>
           </h2>
           <p
             className="text-lg text-amber-800/60 max-w-xl mx-auto"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Chaque visite chez Girafou est une nouvelle aventure. Survole, saute, joue, glisse…
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -193,13 +207,19 @@ export default function Activities() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/chaussettes-obligatoires.png"
-                alt="Chaussettes obligatoires"
+                alt={socksAlt}
                 style={{ height: 72, width: "auto", display: "block", filter: "drop-shadow(-3px 8px 14px rgba(0,0,0,0.18))" }}
               />
             </motion.div>
           </motion.div>
           {ACTIVITES.map((act, i) => (
-            <ActivityCard key={act.slug} act={act} index={i} />
+            <ActivityCard
+              key={act.slug}
+              act={act}
+              index={i}
+              cardDesc={activites[act.slug].cardDesc}
+              more={t.more}
+            />
           ))}
         </div>
 
@@ -215,7 +235,7 @@ export default function Activities() {
             className="btn-shine inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-extrabold text-lg shadow-xl shadow-amber-200 hover:shadow-amber-300 hover:-translate-y-1 transition-all duration-200"
             style={{ fontFamily: "var(--font-nunito)" }}
           >
-            Tarifs & horaires →
+            {t.cta}
           </a>
         </motion.div>
       </div>

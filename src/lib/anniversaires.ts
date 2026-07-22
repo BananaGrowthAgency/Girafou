@@ -1,68 +1,27 @@
-// Real birthday-party content, transcribed from girafou.com (the 3 "formules").
-// Prices and inclusions are verbatim from the live site. Photos are added later
-// under /images/anniversaires/ — until then the cards fall back to the existing
-// formula illustrations, so nothing renders broken.
+// Présentation des 3 formules anniversaire : couleurs, illustrations et liens
+// de réservation Qweekle.
+//
+// Tout le TEXTE (nom, accroche, prix, inclusions, conditions) vit dans
+// src/lib/i18n/ — `ui.ts` pour les noms (le Navbar en a besoin côté client) et
+// les dictionnaires pour le reste. Ce fichier part en props vers des composants
+// clients : y laisser du français l'aurait envoyé dans le bundle anglais.
 
 export const RESERVATION_URL = "https://girafou.qweekle.com/shop/girafou";
 
-// Créneaux horaires communs aux 3 formules.
-export const CRENEAUX = "De 10h à 13h ou de 14h à 18h";
-
-// Une inclusion = un début en gras (b) + un complément en texte normal (t).
-export type Inclusion = { b: string; t?: string };
-
-// Inclusions communes à toutes les formules (dans l'ordre du site).
-// Le 1er élément (« L'entrée au parc Girafou ») sert de sous-titre sur les
-// pages formules ; les suivants forment la liste « + ».
-export const BASE_INCLUSIONS: Inclusion[] = [
-  { b: "L'entrée au parc Girafou" },
-  { b: "Une table réservée", t: "rien que pour vous tout le temps de l'anniversaire de votre enfant" },
-  { b: "Un gâteau au chocolat", t: "personnalisé avec le prénom de l'enfant" },
-  { b: "Des sirops à l'eau", t: "à volonté" },
-  { b: "Un cadeau", t: "pour votre enfant" },
-  { b: "Une photo de groupe" },
-  { b: "Une super boum" },
-  { b: "Des cartons d'invitation" },
-  { b: "Une entrée classique offerte", t: "pour l'enfant qui fête son anniversaire, valable un an" },
-  { b: "Une portion de bonbons Haribo", t: "par enfant" },
-  { b: "1 jeton par enfant", t: "à utiliser dans nos karts ou nos hélicos" },
-];
-
-// Encart « option pizza » présent sur les pages formules.
-export const OPTION_PIZZA = {
-  price: "2,50 € / enfant",
-  title: "Option Pizza",
-  text: "Réservée aux anniversaires du matin. Les enfants réalisent eux-mêmes leur pizza et la mangent ensemble.",
-};
-
-// Bloc conditions (bas de page), verbatim.
-export const CONDITIONS = [
-  "Un minimum de 8 enfants est requis pour l'organisation d'un anniversaire.",
-  "Nous vous conseillons de réserver au moins 15 jours avant la date. Un acompte de 30 € vous sera demandé à la réservation.",
-  "Les cartons d'invitations sont à télécharger directement depuis votre compte client.",
-  "L'apport de bonbons, boissons ou gâteaux supplémentaires est interdit.",
-];
-
-// La règle vit désormais dans lib/regles.ts (partagée avec tout le site) ;
-// on la ré-exporte ici pour ne rien casser côté pages Anniversaires.
+// La règle vit dans lib/regles.ts (partagée avec tout le site) ; on la
+// ré-exporte ici pour ne rien casser côté pages Anniversaires.
 export { CHAUSSETTES } from "./regles";
 
 export type Formule = {
-  slug: string;
-  name: string;
+  slug: string; // route /anniversaires/<slug> et clé de traduction
   // Lien de réservation Qweekle propre à la formule (sinon boutique générale).
   reserveUrl: string;
-  price: string; // par enfant
-  tagline: string;
-  // Ligne supplémentaire propre à la formule (au-delà de la base), si elle existe.
-  extra?: string;
   // "Option pizza" proposée en plus (matin) ?
   optionPizza?: boolean;
   accent: string; // couleur d'accent
   gradient: string; // dégradé du hero
   soft: string; // fond doux de section
   emoji: string;
-  // Illustration existante (réutilisée en attendant les photos réelles).
   illustration: string;
   highlight?: boolean; // "plus populaire"
   // Photo réelle du parc utilisée en fond du hero (optionnelle, par formule).
@@ -71,8 +30,6 @@ export type Formule = {
   heroFocus?: string;
   // Fond illustré de marque pour la section « Ce que comprend la formule ».
   fondImage?: string;
-  // Texte court de l'« extra » mis en avant sur le fond (gros « + » + texte).
-  fondExtra?: string;
   // Pastille de prix découpée (fond transparent) affichée sur la carte mobile.
   fondBadge?: string;
 };
@@ -82,11 +39,7 @@ export type Formule = {
 export const FORMULES: Formule[] = [
   {
     slug: "formule-du-lion",
-    name: "Formule du Lion",
     reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-lion?lang=fr",
-    price: "16,50 €",
-    tagline: "La plus complète",
-    extra: "Une boisson au choix : Coca, IceTea ou Oasis tropical",
     optionPizza: true,
     accent: "#F5A623",
     gradient: "linear-gradient(135deg, #F5A623, #FF8A00)",
@@ -97,14 +50,11 @@ export const FORMULES: Formule[] = [
     heroFocus: "center 42%",
     fondImage: "/images/anniversaires/lion-fond-2025.png",
     fondBadge: "/images/anniversaires/lion-badge.png",
-    fondExtra: "Coca, IceTea, Oasis tropical AU CHOIX",
   },
   {
     slug: "ptits-gourmands",
-    name: "Formule P'tits Gourmands",
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
-    price: "14,90 €",
-    tagline: "L'anniversaire tout compris",
+    reserveUrl:
+      "https://girafou.qweekle.com/shop/girafou/anniversaires/anniversaire-ptits-gourmands?lang=fr",
     optionPizza: true,
     accent: "#FF5722",
     gradient: "linear-gradient(135deg, #FF5722, #F5A623)",
@@ -119,12 +69,9 @@ export const FORMULES: Formule[] = [
   },
   {
     slug: "gira-fun-karaoke",
-    name: "Gira Fun Karaoké",
-    // 2 packs Qweekle (matin / après-midi) sans page commune -> catalogue anniversaires.
-    reserveUrl: "https://girafou.qweekle.com/shop/girafou/anniversaires?lang=fr",
-    price: "16,90 €",
-    tagline: "Musique & fête",
-    extra: "Une session de 30 min dans notre BOX KARAFUN — viens chanter tes chansons préférées avec tes copains !",
+    // Pack Qweekle de l'après-midi (« amidi ») — fourni par le parc.
+    reserveUrl:
+      "https://girafou.qweekle.com/shop/girafou/anniversaires/pack/anniversaire-karaoke-amidi?lang=fr",
     optionPizza: true,
     accent: "#FF5722",
     gradient: "linear-gradient(135deg, #FF5722, #F5A623)",
@@ -135,7 +82,6 @@ export const FORMULES: Formule[] = [
     heroFocus: "center 42%",
     fondImage: "/images/anniversaires/karaoke-fond.png",
     fondBadge: "/images/anniversaires/karaoke-badge.png",
-    fondExtra: "Et une session de 30 minutes dans notre BOX KARAFUN\nVient chanter sur tes chansons préférés avec tous tes copains",
   },
 ];
 

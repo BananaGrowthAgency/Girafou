@@ -4,15 +4,36 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FORMULES, CRENEAUX, type Formule } from "@/lib/anniversaires";
+import { FORMULES, type Formule } from "@/lib/anniversaires";
+import { useLocale, useLocalePath } from "@/lib/i18n/useLocale";
+import { ui } from "@/lib/i18n/ui";
+import type { Dictionary, FormuleTexte } from "@/lib/i18n/dictionaries";
 import { OptionPizzaBanner, ConditionsBlock } from "./AnniversairesShared";
+import Reviews, { REVIEWS_ANNIVERSAIRES, SECTION_BG as REVIEWS_BG } from "./Reviews";
+import Wave from "./Wave";
 
 import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
 
-function FormuleCard({ f, i, inView }: { f: Formule; i: number; inView: boolean }) {
+function FormuleCard({
+  f,
+  i,
+  inView,
+  texte,
+  t,
+  creneaux,
+}: {
+  f: Formule;
+  i: number;
+  inView: boolean;
+  texte: FormuleTexte;
+  t: Dictionary["pages"]["anniversaires"]["hub"];
+  creneaux: string;
+}) {
+  const lp = useLocalePath();
+  const name = ui(useLocale()).names.formules[f.slug];
   return (
     <motion.div
       initial={{ opacity: 0, y: 55 }}
@@ -24,21 +45,29 @@ function FormuleCard({ f, i, inView }: { f: Formule; i: number; inView: boolean 
       {f.highlight && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
           <span className="px-4 py-1.5 rounded-full text-white text-xs font-extrabold shadow-lg" style={{ background: f.accent, fontFamily: NUNITO }}>
-            ⭐ Plus populaire
+            {t.popular}
           </span>
         </div>
       )}
 
       {/* Image complète (illustration + prix intégrés) */}
       <div className="rounded-t-3xl overflow-hidden" style={{ background: f.soft }}>
-        <Image src={f.illustration} alt={f.name} width={420} height={420} className="w-full h-auto" />
+        <Image src={f.illustration} alt={name} width={420} height={420} className="w-full h-auto" />
       </div>
 
       {/* Infos + boutons */}
       <div className="px-6 pt-4 pb-6 flex flex-col gap-1 flex-1">
-        <h3 className="text-2xl font-extrabold leading-tight" style={{ color: f.accent, fontFamily: BALOO }}>{f.name}</h3>
-        <p className="text-sm font-semibold text-amber-800/60" style={{ fontFamily: NUNITO }}>{f.tagline}</p>
-        <p className="text-xs text-amber-800/45 mb-4" style={{ fontFamily: NUNITO }}>⏰ {CRENEAUX}</p>
+        <h3 className="text-2xl font-extrabold leading-tight" style={{ color: f.accent, fontFamily: BALOO }}>{name}</h3>
+        <p className="text-sm font-semibold text-amber-800/60" style={{ fontFamily: NUNITO }}>{texte.tagline}</p>
+        <p className="text-xs text-amber-800/45" style={{ fontFamily: NUNITO }}>⏰ {creneaux}</p>
+
+        {/* Prix en texte, en plus de celui incrusté dans l'illustration. */}
+        <p className="mb-4 mt-2 flex items-baseline gap-1.5" style={{ fontFamily: NUNITO }}>
+          <span className="text-2xl font-extrabold" style={{ color: f.accent, fontFamily: BALOO }}>
+            {texte.price}
+          </span>
+          <span className="text-xs font-semibold text-amber-800/55">{t.perChild}</span>
+        </p>
 
         <div className="flex gap-3 mt-auto">
           <a
@@ -48,14 +77,14 @@ function FormuleCard({ f, i, inView }: { f: Formule; i: number; inView: boolean 
             className="btn-shine flex-1 py-3 rounded-2xl text-center text-white font-extrabold text-sm shadow-md hover:scale-[1.02] transition-all duration-200"
             style={{ background: f.accent, fontFamily: NUNITO }}
           >
-            Je réserve
+            {t.book}
           </a>
           <Link
-            href={`/anniversaires/${f.slug}`}
+            href={lp(`/anniversaires/${f.slug}`)}
             className="flex-1 py-3 rounded-2xl text-center font-extrabold text-sm border-2 hover:scale-[1.02] transition-all duration-200"
             style={{ borderColor: f.accent, color: f.accent, fontFamily: NUNITO }}
           >
-            En savoir +
+            {t.more}
           </Link>
         </div>
       </div>
@@ -63,7 +92,17 @@ function FormuleCard({ f, i, inView }: { f: Formule; i: number; inView: boolean 
   );
 }
 
-export default function AnniversairesHub() {
+export default function AnniversairesHub({
+  t,
+  reviews,
+  formules,
+  anniversaires,
+}: {
+  t: Dictionary["pages"]["anniversaires"]["hub"];
+  reviews: Dictionary["pages"]["anniversaires"]["reviews"];
+  formules: Dictionary["anniversaires"]["formules"];
+  anniversaires: Dictionary["anniversaires"];
+}) {
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
   const cardsRef = useRef(null);
@@ -94,13 +133,13 @@ export default function AnniversairesHub() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold mb-4"
             style={{ fontFamily: NUNITO }}
           >
-            🎉 Des fêtes inoubliables
+            {t.badge}
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
-            Anniversaires <span style={{ color: "#FFD23F" }}>magiques</span>
+            {t.titleStart} <span style={{ color: "#FFD23F" }}>{t.titleAccent}</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
-            {CRENEAUX} · 3 formules tout inclus au choix. On s&rsquo;occupe de tout, vous profitez !
+            {anniversaires.creneaux} {t.subtitleSuffix}
           </motion.p>
         </div>
 
@@ -127,7 +166,15 @@ export default function AnniversairesHub() {
         <div ref={cardsRef} className="relative max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-7">
             {FORMULES.map((f, i) => (
-              <FormuleCard key={f.slug} f={f} i={i} inView={cardsInView} />
+              <FormuleCard
+                key={f.slug}
+                f={f}
+                i={i}
+                inView={cardsInView}
+                texte={formules[f.slug]}
+                t={t}
+                creneaux={anniversaires.creneaux}
+              />
             ))}
           </div>
         </div>
@@ -135,13 +182,20 @@ export default function AnniversairesHub() {
 
       {/* ── Option Pizza ── */}
       <section className="relative pb-16 max-w-5xl mx-auto px-6">
-        <OptionPizzaBanner />
+        <OptionPizzaBanner t={anniversaires.optionPizza} />
       </section>
 
       {/* ── Conditions ── */}
       <section className="relative pb-20 px-6">
-        <ConditionsBlock />
+        <ConditionsBlock t={anniversaires} />
       </section>
+
+      {/* ── Avis Google (filtrés sur les anniversaires) ──
+          La section est sombre : une vague fait la jonction depuis le crème de
+          la page. Côté bas c'est le footer qui enchaîne, d'où son `waveColor`
+          calé sur ce même brun dans anniversaires/page.tsx. */}
+      <Wave above="#FFFDF5" fill={REVIEWS_BG} />
+      <Reviews t={reviews} appId={REVIEWS_ANNIVERSAIRES} />
     </>
   );
 }

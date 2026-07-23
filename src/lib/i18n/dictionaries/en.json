@@ -218,8 +218,16 @@
       "label": "Families trust us",
       "accent": "+500",
       "rest": "reviews · Rated 4.8/5 ⭐",
-      "subtitle": "What families say after their visit to the park.",
-      "cta": "Leave us a Google review"
+      "subtitle": "What families say after their visit to the park."
+    },
+    "fidelite": {
+      "badge": "Loyalty programme",
+      "title": "Every visit brings you closer to a free entry",
+      "spend": "€1 spent",
+      "point": "1 point",
+      "rewardValue": "100 points",
+      "rewardText": "1 free entry",
+      "extra": "Plus other gifts all along your loyalty journey!"
     }
   },
   "carte": {
@@ -306,8 +314,16 @@
       "age": "Ages 1 to 99",
       "ageDetail": "From 1 to 8 players.",
       "rules": [
-        "Open all day, except during Girafou's big party."
-      ]
+        "Open all day, except during Girafou's Big Party (12pm & 2pm)."
+      ],
+      "grandeFete": {
+        "title": "Girafou's Big Party",
+        "intro": "Every day, children love Girafou's Big Party — an unmissable festive moment that takes place in the NeoXperience area!",
+        "body": "For 15 minutes, the children enjoy a high-energy show with music, a foam blast and a host getting everyone going on the mic. Laughter, dancing and good vibes all round, to make their visit even more memorable.",
+        "sessionsLabel": "Two sessions a day",
+        "sessions": "12.00pm & 2.00pm",
+        "outro": "A free show that makes children's eyes light up and turns their day at Girafou into an unforgettable memory!"
+      }
     },
     "karting": {
       "cardDesc": "Drive your own kart or bike around the track — for budding little racers!",
@@ -467,8 +483,7 @@
         "label": "Families trust us",
         "accent": "Birthdays",
         "rest": "they remember ⭐",
-        "subtitle": "What families say after their child's party.",
-        "cta": "Leave us a Google review"
+        "subtitle": "What families say after their child's party."
       }
     },
     "faq": {
@@ -941,7 +956,21 @@
         "DURING THE SCHOOL HOLIDAYS — Paris (Zone C)"
       ],
       "everyDay": "Every day",
-      "holidayHours": "10.00am to 7.00pm"
+      "holidayHours": "10.00am to 7.00pm",
+      "beach": {
+        "title": "Girafou Plage — Ouistreham",
+        "season": "From mid-June to mid-September",
+        "hoursLabel": "Opening times",
+        "hours": "Every day, 11.00am – 7.00pm",
+        "weather": "May close in the event of strong wind or rain.",
+        "activitiesLabel": "On site",
+        "activities": "Bouncy castles and trampolines, right on Riva Bella beach.",
+        "addressLabel": "Address",
+        "address": "Plage de Ouistreham - Riva Bella, 14150 Ouistreham",
+        "priceLabel": "Prices",
+        "priceNote": "Prices given on site. Any questions? Call us on 02 31 53 72 68.",
+        "call": "02 31 53 72 68"
+      }
     },
     "planAcces": {
       "badge": "How to get here?",

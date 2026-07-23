@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useLocalePath } from "@/lib/i18n/useLocale";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import BeachClub from "./BeachClub";
 
 // Mise en forme des horaires : quelle ligne est une fermeture (en rouge) et
 // laquelle est mise en avant (Jeudi des tout-petits). Même ordre que le
@@ -27,7 +28,13 @@ const TIP_STYLES = [
   { icon: "👧", color: "#7C3AED" },
 ];
 
-export default function PracticalInfo({ t }: { t: Dictionary["home"]["practical"] }) {
+export default function PracticalInfo({
+  t,
+  beach,
+}: {
+  t: Dictionary["home"]["practical"];
+  beach: Dictionary["pages"]["prix"]["beach"];
+}) {
   const lp = useLocalePath();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -322,6 +329,15 @@ export default function PracticalInfo({ t }: { t: Dictionary["home"]["practical"
               />
             </motion.div>
           </div>
+
+          {/* ── Girafou Plage (Ouistreham) — sous « Nous trouver » ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <BeachClub t={beach} />
+          </motion.div>
         </div>
       </div>
     </section>

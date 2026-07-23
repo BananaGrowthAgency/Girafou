@@ -218,8 +218,16 @@
       "label": "Ils nous font confiance",
       "accent": "+500",
       "rest": "avis · Note 4,8/5 ⭐",
-      "subtitle": "Ce que les familles racontent après leur visite au parc.",
-      "cta": "Laissez-nous un avis sur Google"
+      "subtitle": "Ce que les familles racontent après leur visite au parc."
+    },
+    "fidelite": {
+      "badge": "Programme de fidélité",
+      "title": "Chaque visite vous rapproche d'une entrée offerte",
+      "spend": "1 € dépensé",
+      "point": "1 point",
+      "rewardValue": "100 points",
+      "rewardText": "1 entrée gratuite offerte",
+      "extra": "Et d'autres cadeaux tout au long de votre parcours de fidélité !"
     }
   },
   "carte": {
@@ -306,8 +314,16 @@
       "age": "De 1 à 99 ans",
       "ageDetail": "De 1 à 8 joueurs.",
       "rules": [
-        "Ouvert toute la journée, sauf pendant la grande boum de Girafou."
-      ]
+        "Ouvert toute la journée, sauf pendant La Grande Fête de Girafou (12h & 14h)."
+      ],
+      "grandeFete": {
+        "title": "La Grande Fête de Girafou",
+        "intro": "Chaque jour, les enfants adorent La Grande Fête de Girafou, un moment festif incontournable qui se déroule dans l'espace NeoXperience !",
+        "body": "Pendant 15 minutes, les enfants profitent d'une animation pleine d'énergie avec de la musique, une projection de mousse et un animateur qui met l'ambiance au micro. Rires, danse et bonne humeur sont au rendez-vous pour rendre leur visite encore plus mémorable.",
+        "sessionsLabel": "Deux sessions par jour",
+        "sessions": "12h00 & 14h00",
+        "outro": "Une animation offerte qui fait briller les yeux des enfants et transforme leur journée chez Girafou en un souvenir inoubliable !"
+      }
     },
     "karting": {
       "cardDesc": "Pilote ton kart ou ta moto sur la piste — pour les petits pilotes en herbe !",
@@ -467,8 +483,7 @@
         "label": "Ils nous font confiance",
         "accent": "Des anniversaires",
         "rest": "qui marquent ⭐",
-        "subtitle": "Ce que les familles racontent après la fête de leur enfant.",
-        "cta": "Laissez-nous un avis sur Google"
+        "subtitle": "Ce que les familles racontent après la fête de leur enfant."
       }
     },
     "faq": {
@@ -941,7 +956,21 @@
         "PENDANT LES VACANCES SCOLAIRES — Paris (Zone C)"
       ],
       "everyDay": "Tous les jours",
-      "holidayHours": "10h00 à 19h00"
+      "holidayHours": "10h00 à 19h00",
+      "beach": {
+        "title": "Girafou Plage — Ouistreham",
+        "season": "De mi-juin à mi-septembre",
+        "hoursLabel": "Horaires",
+        "hours": "Tous les jours, 11h00 – 19h00",
+        "weather": "Fermeture possible en cas de vent violent ou de pluie.",
+        "activitiesLabel": "Sur place",
+        "activities": "Jeux gonflables et trampolines, directement sur la plage de Riva Bella.",
+        "addressLabel": "Adresse",
+        "address": "Plage de Ouistreham - Riva Bella, 14150 Ouistreham",
+        "priceLabel": "Tarifs",
+        "priceNote": "Tarifs communiqués sur place. Une question ? Appelez-nous au 02 31 53 72 68.",
+        "call": "02 31 53 72 68"
+      }
     },
     "planAcces": {
       "badge": "Comment venir ?",

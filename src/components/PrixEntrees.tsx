@@ -4,6 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import ReglesParc from "./ReglesParc";
+import BeachClub from "./BeachClub";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
@@ -168,6 +169,11 @@ export default function PrixEntrees({ t }: { t: Dictionary["pages"]["prix"] }) {
                 </div>
               ))}
             </div>
+          </Reveal>
+
+          {/* ── Girafou Plage (Ouistreham) ── */}
+          <Reveal>
+            <BeachClub t={t.beach} />
           </Reveal>
 
           {/* ── Règles du parc ── */}

@@ -109,14 +109,98 @@ function AutresActivites({
   );
 }
 
+/* ── Bloc « Grande Fête » (animation quotidienne, pour l'instant NeoXperience) ── */
+function GrandeFete({
+  gf,
+  accent,
+  gradient,
+  video,
+}: {
+  gf: NonNullable<Dictionary["activites"][string]["grandeFete"]>;
+  accent: string;
+  gradient: string;
+  video: string | null;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55 }}
+      className="relative rounded-3xl overflow-hidden text-white shadow-xl"
+      style={{ background: gradient }}
+    >
+      <div className="absolute inset-0 spots-pattern opacity-[0.07] pointer-events-none" />
+
+      <div className={`relative grid gap-6 p-7 sm:p-9 ${video ? "lg:grid-cols-2 lg:items-center" : ""}`}>
+        {/* Texte */}
+        <div>
+          <span
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-extrabold uppercase tracking-wide"
+            style={{ fontFamily: NUNITO }}
+          >
+            🎉 {gf.sessionsLabel}
+          </span>
+
+          <h3 className="mt-4 text-2xl sm:text-3xl font-extrabold leading-tight" style={{ fontFamily: BALOO }}>
+            {gf.title}
+          </h3>
+
+          <p className="mt-3 text-[15px] sm:text-base font-semibold leading-relaxed text-white/95" style={{ fontFamily: NUNITO }}>
+            {gf.intro}
+          </p>
+          <p className="mt-3 text-[15px] sm:text-base leading-relaxed text-white/85" style={{ fontFamily: NUNITO }}>
+            {gf.body}
+          </p>
+
+          {/* Sessions — repère horaire mis en avant */}
+          <div
+            className="mt-5 inline-flex items-center gap-2.5 rounded-2xl bg-white px-4 py-2.5 shadow-md"
+            style={{ color: accent }}
+          >
+            <IconClock className="w-5 h-5" />
+            <span className="font-extrabold text-base sm:text-lg" style={{ fontFamily: BALOO }}>
+              {gf.sessions}
+            </span>
+          </div>
+
+          <p className="mt-5 text-sm sm:text-[15px] font-semibold leading-relaxed text-white/90" style={{ fontFamily: NUNITO }}>
+            {gf.outro}
+          </p>
+        </div>
+
+        {/* Vidéo — n'apparaît que si le fichier a été déposé (cf. page.tsx) */}
+        {video && (
+          <div className="rounded-2xl overflow-hidden shadow-2xl bg-black/20" style={{ aspectRatio: "9 / 16", maxHeight: 460, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
+            <video
+              className="w-full h-full object-cover"
+              controls
+              playsInline
+              preload="metadata"
+              poster="/images/grande-fete/poster.jpg"
+            >
+              <source src={video} type="video/mp4" />
+            </video>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function ActiviteDetail({
   activite: a,
   t,
   activites,
+  grandeFeteVideo,
 }: {
   activite: Activite;
   t: Detail;
   activites: Dictionary["activites"];
+  grandeFeteVideo: string | null;
 }) {
   const texte = activites[a.slug];
   const lp = useLocalePath();
@@ -212,6 +296,11 @@ export default function ActiviteDetail({
               </a>
             </div>
           </motion.div>
+
+          {/* ── Grande Fête (bloc spécial de certaines activités) ── */}
+          {texte.grandeFete && (
+            <GrandeFete gf={texte.grandeFete} accent={a.accent} gradient={a.gradient} video={grandeFeteVideo} />
+          )}
 
           {/* ── Règlement de l'attraction (checklist) ── */}
           {texte.rules.length > 0 && (

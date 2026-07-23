@@ -13,28 +13,6 @@ const NUNITO = "var(--font-nunito)";
 export const REVIEWS_PARC = "fc0026c3-430b-48ad-bf69-1ef9c9a4ddc4";
 export const REVIEWS_ANNIVERSAIRES = "519ebacd-1797-460e-9bef-8d84a96f0bf1";
 
-// Lien « écrire un avis » de la fiche Google du parc.
-//
-// ⚠️ Ce lien vient d'une recherche Google : le jeton `si` identifie la fiche,
-// mais ce format n'est pas garanti dans le temps. Le lien stable est celui de
-// la fiche d'établissement (Google Business Profile → « Demander des avis »),
-// de la forme https://search.google.com/local/writereview?placeid=… — le
-// remplacer ici le jour où on l'a sous la main.
-const GOOGLE_REVIEW_URL =
-  "https://www.google.com/search?si=APenkKn5T4YN59srr511wD6k6Pufj9DEzRUvB1XJSwUeeT5afhIG04xBMi7Xxb1VgRoFnt2iCSXfYXEHVOoagzZYKQT1mcTM0z9LqlKeMDnmZDpJhnR1X9njx6cJpUeMiOGEpe40iERe&q=Girafou";
-
-// Le « G » de Google, pour que le bouton soit reconnaissable au premier coup d'œil.
-function GoogleG({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 48 48" className={className} aria-hidden focusable="false">
-      <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h11.8c-.5 2.7-2 5-4.4 6.6v5.5h7.1c4.1-3.8 6.6-9.4 6.6-16.3z" />
-      <path fill="#34A853" d="M24 46c6 0 11-2 14.5-5.2l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.2-9H4.5v5.7C8 41.3 15.4 46 24 46z" />
-      <path fill="#FBBC05" d="M11.8 28.4c-.4-1.3-.7-2.7-.7-4.4s.3-3 .7-4.4v-5.7H4.5C2.9 17.1 2 20.4 2 24s.9 6.9 2.5 10.1l7.3-5.7z" />
-      <path fill="#EA4335" d="M24 10.6c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4 30 2 24 2 15.4 2 8 6.7 4.5 13.9l7.3 5.7c1.7-5.2 6.5-9 12.2-9z" />
-    </svg>
-  );
-}
-
 // Brun intermédiaire entre --dark (#1C1008) et --giraffe-brown (#8B5E3C) :
 // assez clair pour rester chaleureux, assez sombre pour que les cartes
 // blanches des avis ressortent. Repris tel quel par les vagues de page.tsx.
@@ -141,20 +119,6 @@ export default function Reviews({
             pour que la page ne saute pas quand le widget se rend. */}
         <div style={{ minHeight: 250 }}>
           <div className={`elfsight-app-${appId}`} />
-        </div>
-
-        {/* ── Appel à avis ── (frère du widget, jamais ancêtre) */}
-        <div className="mt-10 text-center">
-          <a
-            href={GOOGLE_REVIEW_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-shine inline-flex items-center gap-3 px-7 py-3.5 rounded-2xl bg-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-            style={{ color: "#3D2718", fontFamily: NUNITO }}
-          >
-            <GoogleG className="w-5 h-5 flex-shrink-0" />
-            {t.cta}
-          </a>
         </div>
       </div>
 

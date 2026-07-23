@@ -5,6 +5,7 @@ import Activities from "@/components/Activities";
 import WhyGirafou from "@/components/WhyGirafou";
 import Restauration from "@/components/Restauration";
 import Birthday from "@/components/Birthday";
+import Fidelite from "@/components/Fidelite";
 import Reviews, { REVIEWS_PARC, SECTION_BG as REVIEWS_BG } from "@/components/Reviews";
 import Wave from "@/components/Wave";
 import PracticalInfo from "@/components/PracticalInfo";
@@ -53,12 +54,13 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </div>
         <Restauration cards={restaurationCards} t={t.restauration} />
         <Birthday t={t.birthday} formules={dict.anniversaires.formules} />
+        <Fidelite t={t.fidelite} />
         {/* Les avis coupent sur fond sombre entre le blanc des anniversaires et
             le crème des infos pratiques — d'où une vague de chaque côté. */}
         <Wave above="#ffffff" fill={REVIEWS_BG} />
         <Reviews t={t.reviews} appId={REVIEWS_PARC} />
         <Wave above={REVIEWS_BG} fill="#FFF8E1" />
-        <PracticalInfo t={t.practical} />
+        <PracticalInfo t={t.practical} beach={dict.pages.prix.beach} />
       </main>
       <Footer />
     </>

@@ -73,9 +73,11 @@ export const FORMULES: Formule[] = [
     reserveUrl:
       "https://girafou.qweekle.com/shop/girafou/anniversaires/pack/anniversaire-karaoke-amidi?lang=fr",
     optionPizza: true,
-    accent: "#FF5722",
-    gradient: "linear-gradient(135deg, #FF5722, #F5A623)",
-    soft: "#FFF3EE",
+    // Thème violet/bleu (demande du parc) : différencie le karaoké des deux
+    // autres formules, chaudes. Utilisé par la home, le hub et la page de détail.
+    accent: "#7C3AED",
+    gradient: "linear-gradient(135deg, #7C3AED, #A855F7)",
+    soft: "#F5F0FF",
     emoji: "🎤",
     illustration: "/images/birthday/formula-karaoke.png",
     heroImage: "/images/anniversaires/parc-hero.jpg",

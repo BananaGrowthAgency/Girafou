@@ -119,7 +119,9 @@ export default function Activities({
   return (
     // Dégradé vertical (et non 160deg) : le bord supérieur est ainsi uniformément
     // #FFF8E1, la couleur sur laquelle se termine le hero — plus de ligne de raccord.
-    <section ref={sectionRef} id="activites" className="relative pt-12 pb-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(to bottom, #FFF8E1 0%, #FFF3C4 50%, #FFE8A0 100%)" }}>
+    // pt plus grand sur mobile : les cartes de stats du hero débordent davantage
+    // (2 lignes au lieu d'1) et chevauchaient le bandeau « Jeudi des tout-petits ».
+    <section ref={sectionRef} id="activites" className="relative pt-28 sm:pt-12 pb-24 overflow-hidden spots-pattern" style={{ background: "linear-gradient(to bottom, #FFF8E1 0%, #FFF3C4 50%, #FFE8A0 100%)" }}>
       {/* Bandeau « Jeudi des tout-petits » — dans cette section pour partager son fond */}
       <JeudiToutPetits t={toddler} />
 

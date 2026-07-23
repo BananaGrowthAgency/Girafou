@@ -18,7 +18,6 @@ type ReviewsSection = {
   accent: string;
   rest: string;
   subtitle: string;
-  cta: string;
 };
 
 export type Dictionary = {
@@ -88,6 +87,15 @@ export type Dictionary = {
       infoStrong: string;
     };
     reviews: ReviewsSection;
+    fidelite: {
+      badge: string;
+      title: string;
+      spend: string;
+      point: string;
+      rewardValue: string;
+      rewardText: string;
+      extra: string;
+    };
     practical: {
       badge: string;
       titleStart: string;
@@ -143,6 +151,15 @@ export type Dictionary = {
       age?: string;
       ageDetail?: string;
       rules: string[];
+      // Bloc spécial « Grande Fête » — pour l'instant seulement NeoXperience.
+      grandeFete?: {
+        title: string;
+        intro: string;
+        body: string;
+        sessionsLabel: string;
+        sessions: string;
+        outro: string;
+      };
     }
   >;
   pages: {
@@ -248,6 +265,22 @@ export type Dictionary = {
       holidayZones: string[];
       everyDay: string;
       holidayHours: string;
+      // Girafou Plage (Ouistreham) : horaires confirmés en F.A.Q ; les tarifs
+      // ne sont pas publiés par le parc, d'où le renvoi au téléphone.
+      beach: {
+        title: string;
+        season: string;
+        hoursLabel: string;
+        hours: string;
+        weather: string;
+        activitiesLabel: string;
+        activities: string;
+        addressLabel: string;
+        address: string;
+        priceLabel: string;
+        priceNote: string;
+        call: string;
+      };
     };
     nosOffres: {
       badge: string;

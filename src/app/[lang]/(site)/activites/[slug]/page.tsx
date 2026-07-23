@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
@@ -46,6 +48,14 @@ export default async function ActivitePage(props: PageProps<"/[lang]/activites/[
 
   const dict = await getDictionary(lang);
 
+  // Le bloc « Grande Fête » n'affiche sa vidéo que si le fichier a été déposé
+  // dans public/videos/ — sinon on rend juste le texte, pas un lecteur vide.
+  // Vérifié côté serveur (SSG) : pas de coût client, et ça se met à jour dès
+  // que le parc ajoute la vidéo.
+  const grandeFeteVideo = existsSync(join(process.cwd(), "public/videos/grande-fete.mp4"))
+    ? "/videos/grande-fete.mp4"
+    : null;
+
   return (
     <>
       <Navbar />
@@ -54,6 +64,7 @@ export default async function ActivitePage(props: PageProps<"/[lang]/activites/[
           activite={activite}
           t={dict.pages.activites.detail}
           activites={dict.activites}
+          grandeFeteVideo={grandeFeteVideo}
         />
       </main>
       <Footer waveColor="#FFFDF5" />

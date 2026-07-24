@@ -19,6 +19,7 @@ const PAGE_SLUGS: Record<string, Partial<Record<Locale, string>>> = {
   "prix-des-entrees": { fr: "prix-des-entrees", en: "admission-prices" },
   "plan-dacces": { fr: "plan-dacces", en: "getting-here" },
   "contactez-nous": { fr: "contactez-nous", en: "contact-us" },
+  karaoke: { fr: "karaoke", en: "karaoke" },
   faq: { fr: "faq", en: "faq" },
   // Pages légales : françaises uniquement (décision client). Sans entrée `en`,
   // elles n'ont pas d'URL anglaise ni d'alternate hreflang — les liens du site

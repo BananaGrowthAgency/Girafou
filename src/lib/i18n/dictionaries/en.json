@@ -504,6 +504,116 @@
         "subtitle": "What families say after their child's party."
       }
     },
+    "karaoke": {
+      "badge": "Karaoke · Quiz & Fun",
+      "titleStart": "Just",
+      "titleAccent": "Karaoke",
+      "subtitle": "Your private stage for 2 hours of fun. From €9/person. You're THE STAR!",
+      "book": "Book my session",
+      "viewSite": "View the site",
+      "conceptTitle": "You're the star",
+      "conceptLead": "A private box just for your group, with an immersive neon look. Mic in hand, thousands of songs and music quizzes: sing, play and have a blast for 2 hours.",
+      "features": [
+        {
+          "title": "Private box",
+          "text": "A room just for your group, with an immersive neon look."
+        },
+        {
+          "title": "Thousands of songs",
+          "text": "A huge song catalogue plus music quizzes."
+        },
+        {
+          "title": "Pro sound & video",
+          "text": "Sound system and screen for a real on-stage feel."
+        },
+        {
+          "title": "2 hours of fun",
+          "text": "Time to sing, laugh and become the star of the night."
+        }
+      ],
+      "formulesTitle": "Our packages",
+      "formulesSubtitle": "Two hours of karaoke and quizzes in your private box.",
+      "formules": [
+        {
+          "name": "Family package",
+          "price": "€9",
+          "unit": "/person",
+          "duration": "2 hours",
+          "desc": "Tailored playlist & quiz.",
+          "audience": "For families — children, parents and friends."
+        },
+        {
+          "name": "Friends / Teens package",
+          "price": "€10",
+          "unit": "/person",
+          "duration": "2 hours",
+          "desc": "Access to thousands of songs & quizzes.",
+          "audience": "Students, friends or teenagers."
+        },
+        {
+          "name": "Birthday package",
+          "price": "€14.90",
+          "unit": "/person",
+          "duration": "2 hours",
+          "desc": "Karaoke & quiz, cake or sweet buffet, sweet bar, drink & gift.",
+          "audience": "To celebrate a birthday in style."
+        }
+      ],
+      "formulesNote": "Student rate: €9/person for secondary-school and university students (16+, valid ID required).",
+      "annivBadge": "Birthday",
+      "annivTitle": "Forget the usual birthday parties",
+      "annivLead": "Laughter, music and good vibes: a private session just for your crew, in a room with an immersive neon look and a professional sound and video system.",
+      "annivMeta": "Private 2-hour session · 6 to 15 guests · €14.90/person",
+      "annivPoints": [
+        "Karaoke & quiz",
+        "Cake or sweet buffet",
+        "Sweet bar",
+        "Drink & gift"
+      ],
+      "annivBook": "Book the birthday",
+      "infosTitle": "Visitor info",
+      "quick": [
+        {
+          "label": "Capacity",
+          "value": "Up to 15 people per box (children and adults)."
+        },
+        {
+          "label": "Hygiene",
+          "value": "Mics cleaned and disinfected after each session."
+        },
+        {
+          "label": "Getting here",
+          "value": "Large free car park on site."
+        }
+      ],
+      "hoursTitle": "Opening times",
+      "hours": [
+        {
+          "days": "Wednesday, Saturday & Sunday",
+          "time": "10am – 7pm"
+        },
+        {
+          "days": "Monday, Tuesday, Thursday & Friday",
+          "time": "Closed",
+          "closed": true
+        },
+        {
+          "days": "School holidays (Zone B)",
+          "time": "Every day · 10am – 7pm"
+        }
+      ],
+      "hoursNote": "Private 2-hour sessions — please arrive 5 to 10 minutes before your session starts.",
+      "addressTitle": "Address",
+      "address": "ZA Clos de la Hogue, 14690 Bénouville.",
+      "contactTitle": "Contact",
+      "phones": [
+        "02 31 34 56 78"
+      ],
+      "email": "contact@just-karaoke.com",
+      "ctaTitle": "Ready to take the stage?",
+      "ctaText": "Book your private box in just a few clicks.",
+      "ctaButton": "Book my session"
+    },
     "faq": {
       "title": "Frequently asked questions",
       "subtitle": "Everything you need to know before your visit to Girafou, near Caen.",
@@ -1145,6 +1255,10 @@
     "nosOffres": {
       "title": "Our offers — groups, works councils, private hire | Girafou",
       "description": "Girafou prices and packages near Caen: admission prices, group and holiday-club offers, works-council tickets and exclusive hire of the park."
+    },
+    "karaoke": {
+      "title": "Karaoke — Just Karaoke near Caen | Girafou",
+      "description": "Private karaoke box in Bénouville: 2 hours of fun, thousands of songs and quizzes. Packages from €9/person, birthdays and neon vibes. Book online."
     },
     "prix": {
       "title": "Admission prices & opening times — Girafou near Caen",

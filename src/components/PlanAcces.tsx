@@ -71,7 +71,7 @@ export default function PlanAcces({ t }: { t: Dictionary["pages"]["planAcces"] }
             alt="Entrée du parc Girafou à Bénouville"
             fill
             priority
-            sizes="100vw"
+            sizes="(max-width: 768px) 200vw, 100vw"
             className="object-cover object-[center_25%]"
           />
           {/* Overlay pour la lisibilité du texte */}

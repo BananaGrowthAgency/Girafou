@@ -96,7 +96,7 @@ export default function ActivitesHub({
             alt="Enfant dans la piscine à balles Girafou"
             fill
             priority
-            sizes="100vw"
+            sizes="(max-width: 768px) 200vw, 100vw"
             className="object-cover object-center"
           />
           {/* Overlay pour la lisibilité du texte */}

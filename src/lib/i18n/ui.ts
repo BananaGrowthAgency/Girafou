@@ -21,6 +21,7 @@ import {
 type Nav = {
   home: string;
   activities: string;
+  karaoke: string;
   restaurant: string;
   offers: string;
   birthdays: string;
@@ -82,6 +83,7 @@ const fr: UIStrings = {
   nav: {
     home: "Accueil",
     activities: "Activités",
+    karaoke: "Karaoké",
     restaurant: "Restauration",
     offers: "Nos offres",
     birthdays: "Anniversaires",
@@ -146,6 +148,7 @@ const en: UIStrings = {
   nav: {
     home: "Home",
     activities: "Activities",
+    karaoke: "Karaoke",
     restaurant: "Food & drinks",
     offers: "Our offers",
     birthdays: "Birthdays",

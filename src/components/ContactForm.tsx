@@ -107,12 +107,13 @@ export default function ContactForm({ t }: { t: Dictionary["pages"]["contact"] }
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/contactez-nous-hero/hero.jpg"
+            src="/images/contactez-nous-hero/hero-hd.jpg"
             alt="Façade du parc Girafou"
             fill
             priority
-            sizes="100vw"
-            className="object-cover object-center"
+            sizes="(max-width: 768px) 200vw, 100vw"
+            className="object-cover"
+            style={{ objectPosition: "center 35%" }}
           />
           {/* Overlay pour la lisibilité du texte */}
           <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(28,16,8,0.72) 0%, rgba(28,16,8,0.5) 55%, rgba(245,166,35,0.45) 100%)" }} />

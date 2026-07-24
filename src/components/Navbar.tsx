@@ -196,7 +196,9 @@ export default function Navbar() {
 
             {/* CTA */}
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-              <LangSwitch />
+              {/* En défilement (capsule flottante) : uniquement les drapeaux,
+                  sans les libellés FR/EN — comme la barre mobile. */}
+              <LangSwitch compact={scrolled} />
               <PhoneButton showNumber={!scrolled} label={t.call(PHONE)} />
               <a
                 href={SHOP_URL}

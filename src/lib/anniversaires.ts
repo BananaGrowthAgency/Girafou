@@ -8,6 +8,11 @@
 
 export const RESERVATION_URL = "https://girafou.qweekle.com/shop/girafou";
 
+// Billetterie (entrées individuelles) et catalogue des packs d'entrées, vendus
+// sur Qweekle. Utilisés par la home (PracticalInfo) et /prix-des-entrees.
+export const TICKETING_URL = "https://girafou.qweekle.com/shop/girafou/ticketing?type=ticket&lang=fr";
+export const PACKS_URL = "https://girafou.qweekle.com/shop/girafou/multi/entrees-parc?lang=fr";
+
 // La règle vit dans lib/regles.ts (partagée avec tout le site) ; on la
 // ré-exporte ici pour ne rien casser côté pages Anniversaires.
 export { CHAUSSETTES } from "./regles";
@@ -46,8 +51,8 @@ export const FORMULES: Formule[] = [
     soft: "#FFF7E6",
     emoji: "🦁",
     illustration: "/images/birthday/formula-lion.png",
-    heroImage: "/images/anniversaires/parc-hero.jpg",
-    heroFocus: "center 42%",
+    heroImage: "/images/anniversaires/formule-hero.jpg",
+    heroFocus: "center 40%",
     fondImage: "/images/anniversaires/lion-fond-2025.png",
     fondBadge: "/images/anniversaires/lion-badge.png",
   },
@@ -62,8 +67,8 @@ export const FORMULES: Formule[] = [
     emoji: "🎂",
     illustration: "/images/birthday/formula-pizza.png",
     highlight: true,
-    heroImage: "/images/anniversaires/parc-hero.jpg",
-    heroFocus: "center 42%",
+    heroImage: "/images/anniversaires/formule-hero.jpg",
+    heroFocus: "center 40%",
     fondImage: "/images/anniversaires/ptits-gourmands-fond-v2.png",
     fondBadge: "/images/anniversaires/ptits-badge.png",
   },
@@ -80,8 +85,8 @@ export const FORMULES: Formule[] = [
     soft: "#F5F0FF",
     emoji: "🎤",
     illustration: "/images/birthday/formula-karaoke.png",
-    heroImage: "/images/anniversaires/parc-hero.jpg",
-    heroFocus: "center 42%",
+    heroImage: "/images/anniversaires/formule-hero.jpg",
+    heroFocus: "center 40%",
     fondImage: "/images/anniversaires/karaoke-fond.png",
     fondBadge: "/images/anniversaires/karaoke-badge.png",
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,6 +36,12 @@ const IconCheck = (p: { className?: string }) => (
 );
 const IconClock = (p: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+);
+const IconReplay = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>
+);
+const IconCamera = (p: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></svg>
 );
 
 /* ── Bandeau de faits clés (âge / accès / à savoir) ── */
@@ -138,12 +144,14 @@ function GrandeFete({
       <div className={`relative grid gap-6 p-7 sm:p-9 ${video ? "lg:grid-cols-2 lg:items-center" : ""}`}>
         {/* Texte */}
         <div>
-          <span
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-extrabold uppercase tracking-wide"
             style={{ fontFamily: NUNITO }}
           >
             🎉 {gf.sessionsLabel}
-          </span>
+          </motion.span>
 
           <h3 className="mt-4 text-2xl sm:text-3xl font-extrabold leading-tight" style={{ fontFamily: BALOO }}>
             {gf.title}
@@ -173,21 +181,91 @@ function GrandeFete({
         </div>
 
         {/* Vidéo — n'apparaît que si le fichier a été déposé (cf. page.tsx) */}
-        {video && (
-          <div className="rounded-2xl overflow-hidden shadow-2xl bg-black/20" style={{ aspectRatio: "9 / 16", maxHeight: 460, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
-            <video
-              className="w-full h-full object-cover"
-              controls
-              playsInline
-              preload="metadata"
-              poster="/images/grande-fete/poster.jpg"
-            >
-              <source src={video} type="video/mp4" />
-            </video>
-          </div>
-        )}
+        {video && <AutoLoopVideo src={video} poster="/images/grande-fete/poster.jpg" replayLabel={gf.replay} accent={accent} />}
       </div>
     </motion.div>
+  );
+}
+
+/* Lecteur vidéo réutilisable — sans contrôles natifs (donc sans menu de
+   téléchargement). Lecture auto muette à l'entrée dans le viewport, deux passages
+   puis arrêt avec un bouton « Revoir ». Utilisé par « Grande Fête » et par la
+   vidéo illustrative de « L'attraction ». */
+function AutoLoopVideo({ src, poster, replayLabel, accent }: { src: string; poster: string; replayLabel: string; accent: string }) {
+  const wrapRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const inView = useInView(wrapRef, { margin: "-15% 0px" });
+  const playsRef = useRef(0);
+  const [finished, setFinished] = useState(false);
+  const [needsTap, setNeedsTap] = useState(false);
+
+  // Démarrage automatique au premier passage dans le viewport.
+  useEffect(() => {
+    if (inView && playsRef.current === 0 && !finished) {
+      videoRef.current?.play().then(() => setNeedsTap(false)).catch(() => setNeedsTap(true));
+    }
+  }, [inView, finished]);
+
+  // Deux lectures consécutives, puis arrêt.
+  const handleEnded = () => {
+    playsRef.current += 1;
+    const v = videoRef.current;
+    if (playsRef.current < 2 && v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else {
+      setFinished(true);
+    }
+  };
+
+  const replay = () => {
+    playsRef.current = 0;
+    setFinished(false);
+    setNeedsTap(false);
+    const v = videoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+
+  return (
+    <div
+      ref={wrapRef}
+      className="relative self-center rounded-2xl overflow-hidden shadow-2xl bg-black/20 w-full"
+      style={{ aspectRatio: "9 / 16", maxHeight: 440, marginLeft: "auto", marginRight: "auto" }}
+    >
+      <video
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        muted
+        playsInline
+        preload="metadata"
+        poster={poster}
+        onEnded={handleEnded}
+        onContextMenu={(e) => e.preventDefault()}
+        disablePictureInPicture
+        controlsList="nodownload noplaybackrate noremoteplayback"
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+
+      {/* Bouton « Revoir » (fin de lecture) ou lecture manuelle (autoplay bloqué). */}
+      {(finished || needsTap) && (
+        <button
+          type="button"
+          onClick={replay}
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/45 backdrop-blur-[1px] text-white transition-colors hover:bg-black/55"
+          style={{ fontFamily: NUNITO }}
+          aria-label={replayLabel}
+        >
+          <span className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg" style={{ background: accent }}>
+            <IconReplay className="w-7 h-7" />
+          </span>
+          <span className="text-sm font-extrabold">{replayLabel}</span>
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -196,11 +274,15 @@ export default function ActiviteDetail({
   t,
   activites,
   grandeFeteVideo,
+  attractionVideo,
+  attractionImage,
 }: {
   activite: Activite;
   t: Detail;
   activites: Dictionary["activites"];
   grandeFeteVideo: string | null;
+  attractionVideo: string | null;
+  attractionImage: string | null;
 }) {
   const texte = activites[a.slug];
   const lp = useLocalePath();
@@ -214,7 +296,7 @@ export default function ActiviteDetail({
     <>
       {/* ── Hero ── */}
       <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "62vh" }}>
-        <Image src={a.image} alt={`${name} — Girafou`} fill priority sizes="100vw" className="object-cover" />
+        <Image src={a.heroImage ?? a.image} alt={`${name} — Girafou`} fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0" style={{ background: a.gradient, opacity: 0.45, mixBlendMode: "multiply" }} />
         <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(20,10,4,0.45) 0%, rgba(20,10,4,0.3) 45%, rgba(20,10,4,0.78) 100%)" }} />
 
@@ -278,22 +360,64 @@ export default function ActiviteDetail({
             className="relative rounded-3xl bg-white shadow-lg border border-amber-100 overflow-hidden"
           >
             <div className="h-1.5 w-full" style={{ background: a.gradient }} />
-            <div className="p-7 sm:p-10">
-              <p className="text-xs font-extrabold uppercase tracking-widest mb-4" style={{ color: a.accent, fontFamily: NUNITO }}>{t.attraction}</p>
-              <div className="flex flex-col gap-4">
-                {texte.description.map((p, i) => (
-                  <p key={i} className="text-[17px] sm:text-lg leading-relaxed text-amber-900/80 font-medium" style={{ fontFamily: NUNITO }}>{p}</p>
-                ))}
+            <div className="p-6 sm:p-8">
+              {/* Deux colonnes : la colonne texte s'aligne sur le média — titre en
+                  haut (au niveau où commence l'image/vidéo), description au centre,
+                  bouton en bas. La carte épouse ainsi la hauteur du média, sans
+                  titre qui dépasse au-dessus. */}
+              <div className="grid gap-8 lg:gap-10 lg:grid-cols-2 lg:items-stretch">
+                <div className="flex flex-col justify-between gap-6 text-center lg:text-left">
+                  <div>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight" style={{ fontFamily: BALOO, color: a.accent }}>
+                      {t.attraction}
+                    </h2>
+                    <span className="mt-3 mx-auto lg:mx-0 block w-16 h-1.5 rounded-full" style={{ background: a.gradient }} />
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    {texte.description.map((p, i) => (
+                      <p key={i} className="text-[17px] sm:text-lg leading-relaxed text-amber-900/80 font-medium" style={{ fontFamily: NUNITO }}>{p}</p>
+                    ))}
+                  </div>
+                  <div className="flex justify-center">
+                    <a
+                      href={RESERVATION_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-shine inline-flex items-center gap-2 px-9 py-3.5 rounded-2xl text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
+                      style={{ background: a.gradient, fontFamily: NUNITO }}
+                    >
+                      <IconTicket className="w-5 h-5" /> {t.book}
+                    </a>
+                  </div>
+                </div>
+
+                {/* Média : vidéo, sinon photo, sinon emplacement réservé (zones-saut). */}
+                {attractionVideo ? (
+                  <AutoLoopVideo
+                    src={attractionVideo}
+                    poster={`/images/attraction-${a.slug}/poster.jpg`}
+                    replayLabel={t.replay}
+                    accent={a.accent}
+                  />
+                ) : attractionImage ? (
+                  <div
+                    className="relative self-center rounded-2xl overflow-hidden shadow-2xl bg-black/10 w-full"
+                    style={{ aspectRatio: "4 / 5", maxHeight: 440, marginLeft: "auto", marginRight: "auto" }}
+                  >
+                    <Image src={attractionImage} alt={`${name} — Girafou`} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                  </div>
+                ) : (
+                  <div
+                    className="relative self-center flex items-center justify-center rounded-2xl w-full border-2 border-dashed"
+                    style={{ aspectRatio: "9 / 16", maxHeight: 440, marginLeft: "auto", marginRight: "auto", borderColor: `${a.accent}33`, background: `linear-gradient(135deg, ${a.accent}12, ${a.accent}06)` }}
+                    aria-hidden="true"
+                  >
+                    <span style={{ color: a.accent, opacity: 0.4 }}>
+                      <IconCamera className="w-12 h-12" />
+                    </span>
+                  </div>
+                )}
               </div>
-              <a
-                href={RESERVATION_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-shine mt-8 inline-flex items-center gap-2 px-9 py-3.5 rounded-2xl text-white font-extrabold text-base shadow-lg hover:-translate-y-0.5 transition-transform duration-200"
-                style={{ background: a.gradient, fontFamily: NUNITO }}
-              >
-                <IconTicket className="w-5 h-5" /> {t.book}
-              </a>
             </div>
           </motion.div>
 

@@ -56,6 +56,18 @@ export default async function ActivitePage(props: PageProps<"/[lang]/activites/[
     ? "/videos/grande-fete.mp4"
     : null;
 
+  // Vidéo illustrative de « L'attraction », propre à chaque activité : elle
+  // n'apparaît que si public/videos/attraction-<slug>.mp4 a été déposé.
+  const attractionVideo = existsSync(join(process.cwd(), `public/videos/attraction-${activite.slug}.mp4`))
+    ? `/videos/attraction-${activite.slug}.mp4`
+    : null;
+
+  // À défaut de vidéo, une simple photo illustrative
+  // (public/images/attraction-<slug>/photo.jpg) occupe le même emplacement.
+  const attractionImage = existsSync(join(process.cwd(), `public/images/attraction-${activite.slug}/photo.jpg`))
+    ? `/images/attraction-${activite.slug}/photo.jpg`
+    : null;
+
   return (
     <>
       <Navbar />
@@ -65,6 +77,8 @@ export default async function ActivitePage(props: PageProps<"/[lang]/activites/[
           t={dict.pages.activites.detail}
           activites={dict.activites}
           grandeFeteVideo={grandeFeteVideo}
+          attractionVideo={attractionVideo}
+          attractionImage={attractionImage}
         />
       </main>
       <Footer waveColor="#FFFDF5" />

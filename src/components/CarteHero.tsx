@@ -20,11 +20,12 @@ export default function CarteHero({ t }: { t: Dictionary["pages"]["restauration"
     <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "56vh" }}>
       {/* Background photo */}
       <Image
-        src="/images/nos-offres/hero.jpg"
-        alt="Le parc de jeux Girafou"
+        src="/images/restauration/hero-parc.jpg"
+        alt="L’espace restauration du parc Girafou"
         fill
         priority
-        className="object-cover object-bottom"
+        className="object-cover"
+        style={{ objectPosition: "center 60%" }}
         sizes="100vw"
       />
 

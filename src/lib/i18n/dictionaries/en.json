@@ -153,8 +153,8 @@
           "sub": "Large car park in front of the park"
         },
         {
-          "label": "1 to 12 years",
-          "sub": "Zones suited to every age"
+          "label": "Reduced-mobility access",
+          "sub": "Contact us before your visit"
         }
       ],
       "hoursTitle": "Opening times",
@@ -206,6 +206,22 @@
           "price": "€2.00"
         }
       ],
+      "passes": {
+        "badge": "Special rate",
+        "items": [
+          {
+            "n": "5-entry pass",
+            "price": "€49.00",
+            "note": "5 entries to use whenever you like. Valid for 6 months."
+          },
+          {
+            "n": "10-entry pass",
+            "price": "€93.00",
+            "note": "10 entries to use whenever you like. Valid for 1 year."
+          }
+        ]
+      },
+      "book": "Book",
       "pricesNote": "Child admission includes 1 free token, adult admission includes 1 free hot drink. Unlimited play time. A specific rate applies for 12–18 months.",
       "allPrices": "See all prices & tokens →",
       "findUs": "Find us",
@@ -321,8 +337,9 @@
         "intro": "Every day, children love Girafou's Big Party — an unmissable festive moment that takes place in the NeoXperience area!",
         "body": "For 15 minutes, the children enjoy a high-energy show with music, a foam blast and a host getting everyone going on the mic. Laughter, dancing and good vibes all round, to make their visit even more memorable.",
         "sessionsLabel": "Two sessions a day",
-        "sessions": "12.00pm & 2.00pm",
-        "outro": "A free show that makes children's eyes light up and turns their day at Girafou into an unforgettable memory!"
+        "sessions": "12.00pm & 4.00pm",
+        "outro": "A free show that makes children's eyes light up and turns their day at Girafou into an unforgettable memory!",
+        "replay": "Watch again"
       }
     },
     "karting": {
@@ -435,6 +452,7 @@
         "allAges": "All ages",
         "socksRequired": "Socks compulsory",
         "attraction": "The attraction",
+        "replay": "Watch again",
         "rulesTitle": "Attraction rules",
         "hoursTitle": "Opening times",
         "hours": [
@@ -908,6 +926,21 @@
           "price": "€2.00 + 1 free hot drink"
         }
       ],
+      "passes": {
+        "badge": "Special rate",
+        "items": [
+          {
+            "n": "5-entry pass",
+            "price": "€49.00",
+            "note": "5 entries to use whenever you like. Valid for 6 months."
+          },
+          {
+            "n": "10-entry pass",
+            "price": "€93.00",
+            "note": "10 entries to use whenever you like. Valid for 1 year."
+          }
+        ]
+      },
       "tokensTitle": "Tokens for our paid activities",
       "tokens": [
         {
@@ -927,6 +960,7 @@
           "price": "€20.00"
         }
       ],
+      "tickets": "Buy tickets",
       "payment": "Payment methods accepted: cash, bank card, ANCV holiday vouchers and ANCV Connect",
       "hoursTitle": "Girafou play area opening times",
       "allYear": "ALL YEAR ROUND",
@@ -959,17 +993,27 @@
       "holidayHours": "10.00am to 7.00pm",
       "beach": {
         "title": "Girafou Plage — Ouistreham",
-        "season": "From mid-June to mid-September",
+        "season": "This summer, on Esplanade Alexandre Lofi",
         "hoursLabel": "Opening times",
-        "hours": "Every day, 11.00am – 7.00pm",
-        "weather": "May close in the event of strong wind or rain.",
-        "activitiesLabel": "On site",
-        "activities": "Bouncy castles and trampolines, right on Riva Bella beach.",
+        "hours": [
+          {
+            "when": "Until 3 July",
+            "time": "Wednesday, Saturday & Sunday · 2pm – 7pm"
+          },
+          {
+            "when": "From 4 July",
+            "time": "7 days a week · 11.30am – 7pm"
+          }
+        ],
+        "weather": "Closed in poor weather.",
+        "activitiesLabel": "The games",
+        "activities": "Giant bouncy castles for children aged 1 to 12.",
+        "foodLabel": "On site",
+        "food": "Drinks, sweets and ice creams.",
         "addressLabel": "Address",
-        "address": "Plage de Ouistreham - Riva Bella, 14150 Ouistreham",
-        "priceLabel": "Prices",
-        "priceNote": "Prices given on site. Any questions? Call us on 02 31 53 72 68.",
-        "call": "02 31 53 72 68"
+        "address": "Esplanade Alexandre Lofi, Ouistreham",
+        "priceLabel": "On-site price",
+        "price": "€6 for 1 hour of play"
       }
     },
     "planAcces": {

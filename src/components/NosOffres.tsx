@@ -92,11 +92,11 @@ export default function NosOffres({ t }: { t: Dictionary["pages"]["nosOffres"] }
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/nos-offres-hero/hero.png"
+            src="/images/nos-offres-hero/hero-v2.jpg"
             alt="Enfant sur une moto au parc Girafou"
             fill
             priority
-            sizes="100vw"
+            sizes="(max-width: 768px) 200vw, 100vw"
             className="object-cover object-center"
           />
           {/* Overlay pour la lisibilité du texte */}

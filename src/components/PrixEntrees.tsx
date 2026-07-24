@@ -6,6 +6,7 @@ import Image from "next/image";
 import ReglesParc from "./ReglesParc";
 import BeachClub from "./BeachClub";
 import { PACKS_URL, TICKETING_URL } from "@/lib/anniversaires";
+import { TEXT_OUTLINE, TEXT_OUTLINE_SOFT } from "@/lib/text";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
@@ -60,27 +61,28 @@ export default function PrixEntrees({ t }: { t: Dictionary["pages"]["prix"] }) {
           alt="La fresque peinte du parc Girafou"
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 768px) 200vw, 100vw"
           className="object-cover"
           style={{ objectPosition: "center 44%" }}
         />
-        {/* Voile crème léger : lisibilité du texte + raccord avec la section crème dessous. */}
-        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(255,248,225,0.52) 0%, rgba(255,243,196,0.36) 45%, rgba(255,253,245,0.94) 100%)" }} />
+        {/* Voile sombre pour la lisibilité du texte blanc (comme « Nos offres »),
+            avec un dégradé vers le crème en bas pour raccorder à la section. */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(28,16,8,0.55) 0%, rgba(28,16,8,0.42) 55%, rgba(255,253,245,0.92) 100%)" }} />
 
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <motion.span
             initial={{ opacity: 0 }}
             animate={heroInView ? { opacity: 1, y: [0, -8, 0] } : { opacity: 0 }}
             transition={{ opacity: { duration: 0.5 }, y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold mb-4"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-bold mb-4"
             style={{ fontFamily: NUNITO }}
           >
             {t.badge}
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-amber-900 mb-4 leading-tight" style={{ fontFamily: BALOO }}>
-            {t.titleStart} <span className="text-giraffe">{t.titleAccent}</span>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" style={{ fontFamily: BALOO, textShadow: TEXT_OUTLINE }}>
+            {t.titleStart} <span style={{ color: "#FFD23F" }}>{t.titleAccent}</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-amber-900/60 max-w-xl mx-auto" style={{ fontFamily: NUNITO }}>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-white/85 max-w-xl mx-auto drop-shadow" style={{ fontFamily: NUNITO, textShadow: TEXT_OUTLINE_SOFT }}>
             {t.subtitle}
           </motion.p>
         </div>

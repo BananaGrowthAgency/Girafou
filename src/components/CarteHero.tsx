@@ -26,7 +26,7 @@ export default function CarteHero({ t }: { t: Dictionary["pages"]["restauration"
         priority
         className="object-cover"
         style={{ objectPosition: "center 60%" }}
-        sizes="100vw"
+        sizes="(max-width: 768px) 200vw, 100vw"
       />
 
       {/* Dark overlay for legibility */}

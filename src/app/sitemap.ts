@@ -13,6 +13,7 @@ const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://girafou.com").replace
 const STATIC_PATHS: { path: string; priority: number }[] = [
   { path: "/", priority: 1 },
   { path: "/activites", priority: 0.9 },
+  { path: "/karaoke", priority: 0.8 },
   { path: "/anniversaires", priority: 0.9 },
   { path: "/nos-offres", priority: 0.8 },
   { path: "/restauration", priority: 0.8 },

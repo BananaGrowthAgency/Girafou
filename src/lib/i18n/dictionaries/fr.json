@@ -504,6 +504,116 @@
         "subtitle": "Ce que les familles racontent après la fête de leur enfant."
       }
     },
+    "karaoke": {
+      "badge": "Karaoké · Quizz & Fun",
+      "titleStart": "Just",
+      "titleAccent": "Karaoké",
+      "subtitle": "Votre scène privée pour 2 heures d'animation. À partir de 9 €/pers. C'est vous LA STAR !",
+      "book": "Je réserve ma session",
+      "viewSite": "Voir le site",
+      "conceptTitle": "C'est vous la star",
+      "conceptLead": "Un box privatif rien que pour votre groupe, à la déco néon immersive. Micro en main, des milliers de titres et des quizz musicaux : chantez, jouez et éclatez-vous pendant 2 heures.",
+      "features": [
+        {
+          "title": "Box privatif",
+          "text": "Une salle rien que pour votre groupe, déco néon immersive."
+        },
+        {
+          "title": "Des milliers de titres",
+          "text": "Un immense catalogue de chansons et des quizz musicaux."
+        },
+        {
+          "title": "Son & vidéo pro",
+          "text": "Système son et écran pour une vraie ambiance de scène."
+        },
+        {
+          "title": "2 heures d'animation",
+          "text": "Le temps de chanter, rire et devenir la star de la soirée."
+        }
+      ],
+      "formulesTitle": "Nos formules",
+      "formulesSubtitle": "Deux heures de karaoké et de quizz, dans votre box privatif.",
+      "formules": [
+        {
+          "name": "Formule Famille",
+          "price": "9 €",
+          "unit": "/pers",
+          "duration": "2 heures",
+          "desc": "Playlist adaptée & quizz.",
+          "audience": "En famille — enfants, parents et amis."
+        },
+        {
+          "name": "Formule Amis / Ado",
+          "price": "10 €",
+          "unit": "/pers",
+          "duration": "2 heures",
+          "desc": "Accès à des milliers de titres & quizz.",
+          "audience": "Étudiants, amis ou ados."
+        },
+        {
+          "name": "Formule Anniversaire",
+          "price": "14,90 €",
+          "unit": "/pers",
+          "duration": "2 heures",
+          "desc": "Karaoké & quizz, gâteau ou buffet sucré, bar à bonbons, boisson & cadeau.",
+          "audience": "Pour fêter son anniversaire en grand."
+        }
+      ],
+      "formulesNote": "Tarif étudiant : 9 €/pers pour les lycéens et étudiants (16 ans et +, sur présentation d'un justificatif).",
+      "annivBadge": "Anniversaire",
+      "annivTitle": "Oublie les anniversaires classiques",
+      "annivLead": "Rires, musique et bonne humeur : une session privative rien que pour la bande, dans une salle à la déco néon immersive avec un système son et vidéo professionnel.",
+      "annivMeta": "Session privative de 2h · de 6 à 15 participants · 14,90 €/pers",
+      "annivPoints": [
+        "Karaoké & quizz",
+        "Gâteau ou buffet sucré",
+        "Bar à bonbons",
+        "Boisson & cadeau"
+      ],
+      "annivBook": "Réserver l'anniversaire",
+      "infosTitle": "Infos pratiques",
+      "quick": [
+        {
+          "label": "Capacité",
+          "value": "Jusqu'à 15 personnes par box (enfants et adultes)."
+        },
+        {
+          "label": "Hygiène",
+          "value": "Micros nettoyés et désinfectés après chaque session."
+        },
+        {
+          "label": "Accès",
+          "value": "Grand parking gratuit sur place."
+        }
+      ],
+      "hoursTitle": "Horaires",
+      "hours": [
+        {
+          "days": "Mercredi, samedi & dimanche",
+          "time": "10h – 19h"
+        },
+        {
+          "days": "Lundi, mardi, jeudi & vendredi",
+          "time": "Fermé",
+          "closed": true
+        },
+        {
+          "days": "Vacances scolaires (Zone B)",
+          "time": "Tous les jours · 10h – 19h"
+        }
+      ],
+      "hoursNote": "Sessions privatives de 2h — présentez-vous 5 à 10 minutes avant le début de votre session.",
+      "addressTitle": "Adresse",
+      "address": "ZA Clos de la Hogue, 14690 Bénouville.",
+      "contactTitle": "Contact",
+      "phones": [
+        "02 31 34 56 78"
+      ],
+      "email": "contact@just-karaoke.com",
+      "ctaTitle": "Prêt à monter sur scène ?",
+      "ctaText": "Réservez votre box privatif en quelques clics.",
+      "ctaButton": "Je réserve ma session"
+    },
     "faq": {
       "title": "Foire aux questions",
       "subtitle": "Tout ce qu’il faut savoir avant votre visite au parc Girafou, près de Caen.",
@@ -1145,6 +1255,10 @@
     "nosOffres": {
       "title": "Nos offres — groupes, CSE, privatisation | Girafou",
       "description": "Tarifs et formules Girafou près de Caen : prix des entrées, offres groupes et centres de loisirs, billetterie CSE et privatisation du parc."
+    },
+    "karaoke": {
+      "title": "Karaoké — Just Karaoké près de Caen | Girafou",
+      "description": "Box karaoké privatif à Bénouville : 2h d'animation, des milliers de titres et des quizz. Formules dès 9 €/pers, anniversaires et ambiance néon. Réservez en ligne."
     },
     "prix": {
       "title": "Prix des entrées & horaires — Girafou près de Caen",

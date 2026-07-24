@@ -296,7 +296,7 @@ export default function ActiviteDetail({
     <>
       {/* ── Hero ── */}
       <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: "62vh" }}>
-        <Image src={a.heroImage ?? a.image} alt={`${name} — Girafou`} fill priority sizes="100vw" className="object-cover" />
+        <Image src={a.heroImage ?? a.image} alt={`${name} — Girafou`} fill priority sizes="(max-width: 768px) 200vw, 100vw" className="object-cover" style={{ objectPosition: a.heroFocus ?? "center" }} />
         <div className="absolute inset-0" style={{ background: a.gradient, opacity: 0.45, mixBlendMode: "multiply" }} />
         <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(20,10,4,0.45) 0%, rgba(20,10,4,0.3) 45%, rgba(20,10,4,0.78) 100%)" }} />
 

@@ -114,11 +114,11 @@ export default function AnniversairesHub({
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/anniversaires-hero/hero.jpg"
+            src="/images/anniversaires-hero/hero-v2.jpg"
             alt="Enfants fêtant un anniversaire au parc Girafou"
             fill
             priority
-            sizes="100vw"
+            sizes="(max-width: 768px) 200vw, 100vw"
             className="object-cover object-center"
           />
           {/* Overlay pour la lisibilité du texte */}

@@ -41,55 +41,55 @@ export default function ReglesParc({ title }: { title?: string }) {
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* ── Règle 1 : chaussettes ── */}
-        <div className="flex items-start gap-4 rounded-2xl bg-white border border-amber-100 shadow-md p-5">
-          <motion.div
-            className="flex-shrink-0"
-            animate={{ y: [0, -8, 0], rotateZ: [0, 2, 0, -2, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/chaussettes-obligatoires.png"
-              alt=""
-              style={{
-                height: 64,
-                width: "auto",
-                display: "block",
-                filter: "drop-shadow(-2px 6px 10px rgba(0,0,0,0.18))",
-              }}
-            />
-          </motion.div>
-          <div>
-            <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>
+        {/* ── Règle 1 : chaussettes ── (icône + titre en tête, texte pleine largeur) */}
+        <div className="rounded-2xl bg-white border border-amber-100 shadow-md p-5">
+          <div className="flex items-center gap-3 mb-2">
+            <motion.div
+              className="flex-shrink-0"
+              animate={{ y: [0, -8, 0], rotateZ: [0, 2, 0, -2, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/chaussettes-obligatoires.png"
+                alt=""
+                style={{
+                  height: 56,
+                  width: "auto",
+                  display: "block",
+                  filter: "drop-shadow(-2px 6px 10px rgba(0,0,0,0.18))",
+                }}
+              />
+            </motion.div>
+            <p className="font-extrabold text-amber-900 leading-tight" style={{ fontFamily: BALOO }}>
               {t.regles.chaussettesTitle}
             </p>
-            <p className="text-sm text-amber-800/70 leading-snug" style={{ fontFamily: NUNITO }}>
-              {t.regles.chaussettes}
-            </p>
           </div>
+          <p className="text-sm text-amber-800/70 leading-snug" style={{ fontFamily: NUNITO }}>
+            {t.regles.chaussettes}
+          </p>
         </div>
 
         {/* ── Règle 2 : nourriture extérieure ── */}
-        <div className="flex items-start gap-4 rounded-2xl bg-white border border-amber-100 shadow-md p-5">
-          <motion.div
-            className="flex-shrink-0"
-            animate={{ y: [0, -8, 0], rotateZ: [0, -2, 0, 2, 0] }}
-            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <InterditSticker />
-          </motion.div>
-          <div>
-            <p className="font-extrabold text-amber-900 mb-0.5" style={{ fontFamily: BALOO }}>
+        <div className="rounded-2xl bg-white border border-amber-100 shadow-md p-5">
+          <div className="flex items-center gap-3 mb-2">
+            <motion.div
+              className="flex-shrink-0"
+              animate={{ y: [0, -8, 0], rotateZ: [0, -2, 0, 2, 0] }}
+              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <InterditSticker size={56} />
+            </motion.div>
+            <p className="font-extrabold text-amber-900 leading-tight" style={{ fontFamily: BALOO }}>
               {t.regles.nourritureTitle}
             </p>
-            <p className="text-sm text-amber-800/70 leading-snug" style={{ fontFamily: NUNITO }}>
-              {t.regles.nourriture}
-            </p>
-            <p className="text-xs text-amber-800/45 leading-snug mt-1.5" style={{ fontFamily: NUNITO }}>
-              {t.regles.nourritureExceptions}
-            </p>
           </div>
+          <p className="text-sm text-amber-800/70 leading-snug" style={{ fontFamily: NUNITO }}>
+            {t.regles.nourriture}
+          </p>
+          <p className="text-xs text-amber-800/45 leading-snug mt-1.5" style={{ fontFamily: NUNITO }}>
+            {t.regles.nourritureExceptions}
+          </p>
         </div>
       </div>
     </motion.div>

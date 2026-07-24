@@ -300,6 +300,42 @@ export type Dictionary = {
       // Même ordre que `offres` dans NosOffres.tsx (photo, lien, couleur en code).
       offres: { title: string; desc: string; cta: string }[];
     };
+    // Just Karaoké : service karaoké de Girafou. Données réelles tirées de
+    // just-karaoke.com (téléphones/adresse repris tels quels de leur site).
+    karaoke: {
+      badge: string;
+      titleStart: string;
+      titleAccent: string;
+      subtitle: string;
+      book: string;
+      viewSite: string;
+      conceptTitle: string;
+      conceptLead: string;
+      features: { title: string; text: string }[];
+      formulesTitle: string;
+      formulesSubtitle: string;
+      formules: { name: string; price: string; unit: string; duration: string; desc: string; audience: string }[];
+      formulesNote: string;
+      annivBadge: string;
+      annivTitle: string;
+      annivLead: string;
+      annivMeta: string;
+      annivPoints: string[];
+      annivBook: string;
+      infosTitle: string;
+      quick: { label: string; value: string }[];
+      hoursTitle: string;
+      hours: { days: string; time: string; closed?: boolean }[];
+      hoursNote: string;
+      addressTitle: string;
+      address: string;
+      contactTitle: string;
+      phones: string[];
+      email: string;
+      ctaTitle: string;
+      ctaText: string;
+      ctaButton: string;
+    };
     faq: {
       title: string;
       subtitle: string;
@@ -357,6 +393,7 @@ export type Dictionary = {
     formuleDetail: { title: string; description: string; fallback: string };
     faq: { title: string; description: string };
     nosOffres: { title: string; description: string };
+    karaoke: { title: string; description: string };
     prix: { title: string; description: string };
     planAcces: { title: string; description: string };
     contact: { title: string; description: string };

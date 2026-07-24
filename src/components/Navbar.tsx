@@ -23,6 +23,7 @@ function buildLinks(t: UIStrings["nav"], names: UIStrings["names"]): NavLink[] {
       href: "/activites",
       children: ACTIVITES.map((a) => ({ label: names.activites[a.slug], href: `/activites/${a.slug}` })),
     },
+    { label: t.karaoke, href: "/karaoke" },
     { label: t.restaurant, href: "/restauration" },
     { label: t.offers, href: "/nos-offres" },
     {

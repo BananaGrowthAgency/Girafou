@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useLocalePath } from "@/lib/i18n/useLocale";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { PACKS_URL } from "@/lib/anniversaires";
 import BeachClub from "./BeachClub";
 
 // Mise en forme des horaires : quelle ligne est une fermeture (en rouge) et
@@ -25,7 +26,7 @@ const TIP_STYLES = [
   { icon: "🧦", color: "#F5A623", strong: true },
   { icon: "🚫", color: "#C0392B", strong: true },
   { icon: "🚗", color: "#00897B" },
-  { icon: "👧", color: "#7C3AED" },
+  { icon: "♿", color: "#0284C7" },
 ];
 
 export default function PracticalInfo({
@@ -243,18 +244,58 @@ export default function PracticalInfo({
                   </div>
                 ))}
               </div>
+
+              {/* Packs d'entrées à tarif préférentiel — mis en avant (fond ambré,
+                  chaque pack renvoie vers sa vente sur Qweekle). */}
+              <div className="mb-5 rounded-2xl border-2 border-amber-200 bg-amber-50/70 p-4">
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-giraffe/10 text-giraffe text-xs font-extrabold uppercase tracking-wide mb-3"
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                >
+                  🎟️ {t.passes.badge}
+                </span>
+                <div className="space-y-2">
+                  {t.passes.items.map((pack, i) => (
+                    <a
+                      key={i}
+                      href={PACKS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between gap-3 rounded-xl bg-white border border-amber-100 px-3 py-2.5 shadow-sm hover:border-amber-300 hover:-translate-y-0.5 transition-all"
+                    >
+                      <span className="min-w-0">
+                        <span className="block font-extrabold text-amber-900 text-sm" style={{ fontFamily: "var(--font-baloo)" }}>{pack.n}</span>
+                        <span className="block text-xs text-amber-800/60" style={{ fontFamily: "var(--font-nunito)" }}>{pack.note}</span>
+                      </span>
+                      <span className="font-extrabold text-giraffe text-base sm:text-lg whitespace-nowrap" style={{ fontFamily: "var(--font-baloo)" }}>{pack.price}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
               <p className="text-xs text-amber-800/55 mb-4" style={{ fontFamily: "var(--font-nunito)" }}>
 {t.pricesNote}
               </p>
-              {/* mt-auto : le lien reste collé en bas même si la carte s'étire
-                  pour s'aligner sur celle des horaires. */}
-              <Link
-                href={lp("/prix-des-entrees")}
-                className="mt-auto self-start inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 font-bold text-sm hover:bg-white hover:border-amber-300 transition-all"
-                style={{ fontFamily: "var(--font-nunito)" }}
-              >
-                {t.allPrices}
-              </Link>
+              {/* mt-auto : les boutons restent collés en bas même si la carte
+                  s'étire pour s'aligner sur celle des horaires. */}
+              <div className="mt-auto flex flex-wrap items-center gap-3">
+                <Link
+                  href={lp("/prix-des-entrees")}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 font-bold text-sm hover:bg-white hover:border-amber-300 transition-all"
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                >
+                  {t.allPrices}
+                </Link>
+                <a
+                  href={PACKS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-shine inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-white font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
+                  style={{ background: "linear-gradient(135deg, #F5A623, #FF5722)", fontFamily: "var(--font-nunito)" }}
+                >
+                  🎟️ {t.book}
+                </a>
+              </div>
             </motion.div>
           </div>
 

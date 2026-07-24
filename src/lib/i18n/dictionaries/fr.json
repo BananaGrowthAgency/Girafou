@@ -153,8 +153,8 @@
           "sub": "Grand parking devant le parc"
         },
         {
-          "label": "1 à 12 ans",
-          "sub": "Zones adaptées à chaque âge"
+          "label": "Accessibilité PMR",
+          "sub": "Contactez-nous avant votre visite"
         }
       ],
       "hoursTitle": "Horaires d’ouverture",
@@ -206,6 +206,22 @@
           "price": "2,00 €"
         }
       ],
+      "passes": {
+        "badge": "Tarif préférentiel",
+        "items": [
+          {
+            "n": "Pack 5 entrées",
+            "price": "49,00 €",
+            "note": "5 entrées à utiliser quand vous voulez. Valable 6 mois."
+          },
+          {
+            "n": "Pack 10 entrées",
+            "price": "93,00 €",
+            "note": "10 entrées à utiliser quand vous voulez. Valable 1 an."
+          }
+        ]
+      },
+      "book": "Réserver",
       "pricesNote": "Entrées enfant avec 1 jeton offert, adulte avec 1 boisson chaude offerte. Temps de jeu illimité. Tarif spécifique pour les 12–18 mois.",
       "allPrices": "Voir tous les tarifs & jetons →",
       "findUs": "Nous trouver",
@@ -321,8 +337,9 @@
         "intro": "Chaque jour, les enfants adorent La Grande Fête de Girafou, un moment festif incontournable qui se déroule dans l'espace NeoXperience !",
         "body": "Pendant 15 minutes, les enfants profitent d'une animation pleine d'énergie avec de la musique, une projection de mousse et un animateur qui met l'ambiance au micro. Rires, danse et bonne humeur sont au rendez-vous pour rendre leur visite encore plus mémorable.",
         "sessionsLabel": "Deux sessions par jour",
-        "sessions": "12h00 & 14h00",
-        "outro": "Une animation offerte qui fait briller les yeux des enfants et transforme leur journée chez Girafou en un souvenir inoubliable !"
+        "sessions": "12h00 & 16h00",
+        "outro": "Une animation offerte qui fait briller les yeux des enfants et transforme leur journée chez Girafou en un souvenir inoubliable !",
+        "replay": "Revoir la vidéo"
       }
     },
     "karting": {
@@ -435,6 +452,7 @@
         "allAges": "Tous les âges",
         "socksRequired": "Chaussettes obligatoires",
         "attraction": "L'attraction",
+        "replay": "Revoir la vidéo",
         "rulesTitle": "Le règlement de l'attraction",
         "hoursTitle": "Horaires d'ouverture",
         "hours": [
@@ -908,6 +926,21 @@
           "price": "2,00€ + 1 boisson chaude offerte"
         }
       ],
+      "passes": {
+        "badge": "Tarif préférentiel",
+        "items": [
+          {
+            "n": "Pack 5 entrées",
+            "price": "49,00€",
+            "note": "5 entrées à utiliser quand vous voulez. Valable 6 mois."
+          },
+          {
+            "n": "Pack 10 entrées",
+            "price": "93,00€",
+            "note": "10 entrées à utiliser quand vous voulez. Valable 1 an."
+          }
+        ]
+      },
       "tokensTitle": "Les jetons pour nos activités",
       "tokens": [
         {
@@ -927,6 +960,7 @@
           "price": "20,00€"
         }
       ],
+      "tickets": "Billetterie",
       "payment": "Moyens de paiement acceptés : Espèces, Carte Bleue, Chèque vacances ANCV et ANCV Connect",
       "hoursTitle": "Horaires aire de jeux Girafou",
       "allYear": "TOUTE L’ANNÉE",
@@ -959,17 +993,27 @@
       "holidayHours": "10h00 à 19h00",
       "beach": {
         "title": "Girafou Plage — Ouistreham",
-        "season": "De mi-juin à mi-septembre",
+        "season": "Cet été, sur l’Esplanade Alexandre Lofi",
         "hoursLabel": "Horaires",
-        "hours": "Tous les jours, 11h00 – 19h00",
-        "weather": "Fermeture possible en cas de vent violent ou de pluie.",
-        "activitiesLabel": "Sur place",
-        "activities": "Jeux gonflables et trampolines, directement sur la plage de Riva Bella.",
+        "hours": [
+          {
+            "when": "Jusqu’au 3 juillet",
+            "time": "Mercredi, samedi & dimanche · 14h – 19h"
+          },
+          {
+            "when": "À partir du 4 juillet",
+            "time": "7j/7 · 11h30 – 19h"
+          }
+        ],
+        "weather": "Fermeture en cas de météo défavorable.",
+        "activitiesLabel": "Les jeux",
+        "activities": "Structures gonflables géantes pour les enfants de 1 à 12 ans.",
+        "foodLabel": "Sur place",
+        "food": "Boissons, confiseries et glaces.",
         "addressLabel": "Adresse",
-        "address": "Plage de Ouistreham - Riva Bella, 14150 Ouistreham",
-        "priceLabel": "Tarifs",
-        "priceNote": "Tarifs communiqués sur place. Une question ? Appelez-nous au 02 31 53 72 68.",
-        "call": "02 31 53 72 68"
+        "address": "Esplanade Alexandre Lofi, Ouistreham",
+        "priceLabel": "Tarif sur place",
+        "price": "6 € pour 1 heure de jeux"
       }
     },
     "planAcces": {

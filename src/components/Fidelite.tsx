@@ -44,12 +44,14 @@ export default function Fidelite({ t }: { t: Dictionary["home"]["fidelite"] }) {
 
           {/* Contenu */}
           <div className="px-7 sm:px-10 py-8 sm:py-10">
-            <span
+            <motion.span
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-xs font-extrabold uppercase tracking-wide"
               style={{ fontFamily: NUNITO }}
             >
               ⭐ {t.badge}
-            </span>
+            </motion.span>
 
             <h2 className="mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-900 leading-tight" style={{ fontFamily: BALOO }}>
               {t.title}

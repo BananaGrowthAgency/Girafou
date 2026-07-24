@@ -5,12 +5,11 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
 const NUNITO = "var(--font-nunito)";
-const RED = "#C0392B";
 
-// Carte « Girafou Plage — Ouistreham ». Données confirmées sur girafou.com
-// (F.A.Q) : saison, horaires, fermeture météo. Le parc ne publie pas de tarifs
-// pour la plage, d'où le renvoi au téléphone. Réutilisée sur /prix-des-entrees
-// et dans les infos pratiques de la home — source unique : pages.prix.beach.
+// Carte « Girafou Plage — Ouistreham ». Données du flyer officiel : deux périodes
+// d'horaires, structures gonflables (1–12 ans), restauration sur place et tarif
+// réel (6 € / heure). Réutilisée sur /prix-des-entrees et dans les infos
+// pratiques de la home — source unique : pages.prix.beach.
 export default function BeachClub({ t }: { t: Dictionary["pages"]["prix"]["beach"] }) {
   return (
     <div
@@ -27,25 +26,35 @@ export default function BeachClub({ t }: { t: Dictionary["pages"]["prix"]["beach
         </div>
       </div>
 
-      <div className="p-6 sm:p-8 grid gap-5 sm:grid-cols-2">
-        <Row icon="🕚" label={t.hoursLabel} value={t.hours} note={t.weather} />
-        <Row icon="🎪" label={t.activitiesLabel} value={t.activities} />
-        <Row icon="📍" label={t.addressLabel} value={t.address} />
-        <Row icon="🎟️" label={t.priceLabel} value={t.priceNote}>
-          <a
-            href="tel:0231537268"
-            className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-extrabold shadow-md hover:-translate-y-0.5 transition-all"
-            style={{ background: RED, fontFamily: NUNITO }}
-          >
-            📞 {t.call}
-          </a>
-        </Row>
+      {/* Deux colonnes réparties pour combler le vide à droite : à gauche les
+          horaires (détaillés) + le tarif ; à droite les jeux, la restauration et
+          l'adresse. */}
+      <div className="p-6 sm:p-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div className="flex flex-col gap-6">
+          {/* Horaires — deux périodes distinctes (avant/après le 4 juillet). */}
+          <Row icon="🕚" label={t.hoursLabel} note={t.weather}>
+            <div className="space-y-1.5">
+              {t.hours.map((h, i) => (
+                <div key={i}>
+                  <p className="text-[13px] font-extrabold text-amber-900/85 leading-snug" style={{ fontFamily: NUNITO }}>{h.when}</p>
+                  <p className="text-sm sm:text-[15px] font-bold text-amber-900/70 leading-snug" style={{ fontFamily: NUNITO }}>{h.time}</p>
+                </div>
+              ))}
+            </div>
+          </Row>
+          <Row icon="🎟️" label={t.priceLabel} value={t.price} />
+        </div>
+        <div className="flex flex-col gap-6">
+          <Row icon="🎪" label={t.activitiesLabel} value={t.activities} />
+          <Row icon="🍦" label={t.foodLabel} value={t.food} />
+          <Row icon="📍" label={t.addressLabel} value={t.address} />
+        </div>
       </div>
     </div>
   );
 }
 
-/* Ligne : icône + libellé + valeur (+ note ou action optionnelle). */
+/* Ligne : icône + libellé + valeur (ou contenu libre) + note optionnelle. */
 function Row({
   icon,
   label,
@@ -55,7 +64,7 @@ function Row({
 }: {
   icon: string;
   label: string;
-  value: string;
+  value?: string;
   note?: string;
   children?: ReactNode;
 }) {
@@ -64,9 +73,9 @@ function Row({
       <span className="flex-shrink-0 text-2xl" aria-hidden="true">{icon}</span>
       <div>
         <p className="text-[11px] font-extrabold uppercase tracking-wider" style={{ color: "#1B7A94", fontFamily: NUNITO }}>{label}</p>
-        <p className="text-sm sm:text-[15px] font-bold text-amber-900/85 leading-snug" style={{ fontFamily: NUNITO }}>{value}</p>
-        {note && <p className="text-xs text-amber-800/60 leading-snug mt-0.5" style={{ fontFamily: NUNITO }}>{note}</p>}
+        {value && <p className="text-sm sm:text-[15px] font-bold text-amber-900/85 leading-snug" style={{ fontFamily: NUNITO }}>{value}</p>}
         {children}
+        {note && <p className="text-xs text-amber-800/60 leading-snug mt-0.5" style={{ fontFamily: NUNITO }}>{note}</p>}
       </div>
     </div>
   );

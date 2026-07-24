@@ -14,7 +14,8 @@ export type Activite = {
   slug: string; // route /activites/<slug>, clé de traduction et basename de la photo
   tagBg: string; // fond de la pastille
   payant?: boolean; // « payant en supplément »
-  image: string; // photo /images/activites/<slug>.jpg
+  image: string; // photo /images/activites/<slug>.jpg (cartes + par défaut le hero)
+  heroImage?: string; // photo dédiée au hero, si différente/meilleure que `image`
   accent: string; // couleur d'accent
   accentLight: string; // fond doux assorti
   gradient: string; // dégradé du hero
@@ -60,6 +61,8 @@ export const ACTIVITES: Activite[] = [
     slug: "gonflables",
     tagBg: "#F59E0B",
     image: "/images/activites/gonflables.jpg",
+    // Même scène (Serengeti) que la carte, mais en bonne qualité — hero uniquement.
+    heroImage: "/images/activites/gonflables-hero.jpg",
     accent: "#F59E0B",
     accentLight: "#FFFBEB",
     gradient: "linear-gradient(135deg, #D97706, #FBBF24)",

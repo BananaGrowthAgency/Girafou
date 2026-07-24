@@ -106,6 +106,9 @@ export type Dictionary = {
       hours: { day: string; time: string; note?: string }[];
       pricesTitle: string;
       prices: { label: string; price: string }[];
+      // Packs d'entrées à tarif préférentiel (vendus sur Qweekle).
+      passes: { badge: string; items: { n: string; price: string; note: string }[] };
+      book: string;
       pricesNote: string;
       allPrices: string;
       findUs: string;
@@ -159,6 +162,7 @@ export type Dictionary = {
         sessionsLabel: string;
         sessions: string;
         outro: string;
+        replay: string;
       };
     }
   >;
@@ -183,6 +187,7 @@ export type Dictionary = {
         allAges: string;
         socksRequired: string;
         attraction: string;
+        replay: string;
         rulesTitle: string;
         hoursTitle: string;
         hours: { period: string; days: string; time: string }[];
@@ -254,8 +259,11 @@ export type Dictionary = {
       subtitle: string;
       pricesTitle: string;
       prices: { label: string; price: string }[];
+      // Packs d'entrées à tarif préférentiel (vendus sur Qweekle).
+      passes: { badge: string; items: { n: string; price: string; note: string }[] };
       tokensTitle: string;
       tokens: { n: string; price: string }[];
+      tickets: string;
       payment: string;
       hoursTitle: string;
       allYear: string;
@@ -265,21 +273,22 @@ export type Dictionary = {
       holidayZones: string[];
       everyDay: string;
       holidayHours: string;
-      // Girafou Plage (Ouistreham) : horaires confirmés en F.A.Q ; les tarifs
-      // ne sont pas publiés par le parc, d'où le renvoi au téléphone.
+      // Girafou Plage (Ouistreham) : données du flyer officiel — deux périodes
+      // d'horaires, jeux gonflables, restauration sur place et tarif réel.
       beach: {
         title: string;
         season: string;
         hoursLabel: string;
-        hours: string;
+        hours: { when: string; time: string }[];
         weather: string;
         activitiesLabel: string;
         activities: string;
+        foodLabel: string;
+        food: string;
         addressLabel: string;
         address: string;
         priceLabel: string;
-        priceNote: string;
-        call: string;
+        price: string;
       };
     };
     nosOffres: {

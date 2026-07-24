@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import ReglesParc from "./ReglesParc";
 import BeachClub from "./BeachClub";
+import { PACKS_URL, TICKETING_URL } from "@/lib/anniversaires";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const BALOO = "var(--font-baloo)";
@@ -52,11 +53,21 @@ export default function PrixEntrees({ t }: { t: Dictionary["pages"]["prix"] }) {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative pt-16 pb-12 overflow-hidden spots-pattern" style={{ background: "linear-gradient(160deg, #FFF8E1 0%, #FFF3C4 55%, #FFFDF5 100%)" }}>
-        <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full pointer-events-none animate-blob" style={{ background: "radial-gradient(circle, rgba(245,166,35,0.16) 0%, transparent 70%)", filter: "blur(40px)" }} />
-        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full pointer-events-none animate-blob-delay" style={{ background: "radial-gradient(circle, rgba(255,87,34,0.12) 0%, transparent 70%)", filter: "blur(40px)" }} />
+      <section className="relative pt-24 pb-16 overflow-hidden">
+        {/* Fresque peinte du parc (mur « GIRAFOU ») */}
+        <Image
+          src="/images/prix-entrees/hero.jpg"
+          alt="La fresque peinte du parc Girafou"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: "center 44%" }}
+        />
+        {/* Voile crème léger : lisibilité du texte + raccord avec la section crème dessous. */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(255,248,225,0.52) 0%, rgba(255,243,196,0.36) 45%, rgba(255,253,245,0.94) 100%)" }} />
 
-        <div ref={heroRef} className="relative max-w-3xl mx-auto px-6 text-center">
+        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <motion.span
             initial={{ opacity: 0 }}
             animate={heroInView ? { opacity: 1, y: [0, -8, 0] } : { opacity: 0 }}
@@ -99,6 +110,34 @@ export default function PrixEntrees({ t }: { t: Dictionary["pages"]["prix"] }) {
                   ))}
                 </ul>
 
+                {/* Packs d'entrées à tarif préférentiel — mis en avant en deux
+                    cartes cliquables qui renvoient vers leur vente sur Qweekle. */}
+                <div className="mt-10">
+                  <div className="text-center mb-5">
+                    <span
+                      className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-white text-xs sm:text-sm font-extrabold uppercase tracking-wide"
+                      style={{ fontFamily: NUNITO, background: RED }}
+                    >
+                      🎟️ {t.passes.badge}
+                    </span>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                    {t.passes.items.map((pack, i) => (
+                      <a
+                        key={i}
+                        href={PACKS_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group block rounded-2xl bg-white/80 border-2 border-amber-200 p-5 text-center shadow-sm hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md transition-all"
+                      >
+                        <span className="block text-lg sm:text-xl font-extrabold" style={{ fontFamily: BALOO, color: BROWN }}>{pack.n}</span>
+                        <span className="block text-2xl sm:text-3xl font-extrabold mt-1" style={{ fontFamily: BALOO, color: VALUE }}>{pack.price}</span>
+                        <p className="text-xs sm:text-sm mt-2 leading-snug" style={{ fontFamily: NUNITO, color: BROWN }}>{pack.note}</p>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Jetons */}
                 <div className="mt-12">
                   <Title>{t.tokensTitle}</Title>
@@ -110,6 +149,17 @@ export default function PrixEntrees({ t }: { t: Dictionary["pages"]["prix"] }) {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-6 text-center">
+                    <a
+                      href={TICKETING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-shine inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-extrabold text-sm sm:text-base shadow-lg hover:-translate-y-0.5 transition-all"
+                      style={{ background: "linear-gradient(135deg, #F5A623, #FF5722)", fontFamily: NUNITO }}
+                    >
+                      🎟️ {t.tickets}
+                    </a>
+                  </div>
                 </div>
 
                 <p className="mt-9 text-center text-sm sm:text-base font-semibold" style={{ fontFamily: NUNITO, color: BROWN }}>
